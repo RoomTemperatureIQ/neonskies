@@ -7,10 +7,10 @@ if [ "$1" == 'enable' ] ; then
     sudo systemctl set-default graphical.target --force 2>&1
 
     echo "enabling 'graphical.target'"
-    sudo systemctl $1 graphical.target --force 2>&1
+    sudo systemctl "$1" graphical.target --force 2>&1
 
     echo "enabling 'lightdm.service'"
-    sudo systemctl $1 lightdm.service --force 2>&1
+    sudo systemctl "$1" lightdm.service --force 2>&1
 
     echo "reconfiguring lightdm.service"
     sudo dpkg-reconfigure lightdm 2>&1
@@ -24,13 +24,13 @@ elif [ "$1" == 'disable' ] ; then
     sudo systemctl set-default multi-user.target --force 2>&1
 
     echo "disabling 'graphical.target'"
-    sudo systemctl $1 graphical.target --force 2>&1
+    sudo systemctl "$1" graphical.target --force 2>&1
 
     echo "disabling 'lightdm.server'"
-    sudo systemctl $1 lightdm.service --force 2>&1
+    sudo systemctl "$1" lightdm.service --force 2>&1
 
 else
 
-    echo "Call with either "enable" or "disable" as first parameter" 2>&1
+    echo "Call with either \"enable\" or \"disable\" as first parameter" 2>&1
 
 fi
