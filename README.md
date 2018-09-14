@@ -45,11 +45,16 @@ setup WPA_Supplicant on rpi\
 setup OpenVPN on rpi\
 setup easytether on rpi
 
+# pia-nm.sh
+`apt-get install uuid-runtime`
+look into gnome-keyring
+`nmcli con up VPN_Name`
+`nmcli con down VPN_Name`
+
 # extra
 setup kernel build environment\
 recompile kernel\
 setup geth light node sync\
 osquery.io osqueryd
 
-# pia-nm.sh
-`apt-get install uuid-runtime`
+
