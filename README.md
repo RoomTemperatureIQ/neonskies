@@ -49,6 +49,7 @@ setup non-priv user that can `sudo`
 `dpkg-reconfigure openssh-server`  
 `systemctl restart openssh-server`  
 `dpkg-reconfigure tzdata`  
+`update-locale`  
 `gparted`  
 `resize2fs`  
 `apt-get update`  
