@@ -10,14 +10,14 @@ shopt -s histappend
 setup movein.sh\
 rm default install openssh keys\
 `dpkg-reconfigure openssh-server`  
-`dpkg-reconfigure tzdata`
-`/etc/ssh/sshd_config PermitRootLogin false`
+`dpkg-reconfigure tzdata`  
+`/etc/ssh/sshd_config PermitRootLogin false`  
 shell settings (bash_history / etc.)
 
 run I/O benchmarking (dd_obs_test / dd_ibs_test)\
-fdisk -l
-sudo umount /dev/sdX
-sudo dd if=/path/to/OperatingSystem.iso of=/dev/sdX bs=4M && sync
+`fdisk -l`
+`sudo umount /dev/sdX`
+`sudo dd if=/path/to/OperatingSystem.iso of=/dev/sdX bs=4M && sync`
 
 setup swap file\
 setup non-priv user\
