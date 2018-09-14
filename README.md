@@ -2,7 +2,7 @@
 
 
 setup movein.sh\
-run `bootgui.sh disable`\
+run `bootgui.sh disable`
 
 rm openssh keys\
 `dpkg-reconfigure openssh-server`
@@ -28,7 +28,7 @@ setup unattended updates\
 setup fastest deb mirror (netselect)\
 setup deb packages\
 recompile kernel\
-setup kernel build environment\
+setup kernel build environment
 
 # extra
-setup geth-light node\
+setup geth-light node
