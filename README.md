@@ -27,7 +27,7 @@ net.ipv4.ip_forward=1
 `gparted`  
 `resize2fs`  
 `apt-get update`  
-`apt-get install curl htop locate macchanger nethogs speedtest-cli hostapd wireless-tools iw wvdial`  
+`apt-get install curl htop locate macchanger nethogs speedtest-cli ntopng openvpn unbound dnscrypt isc-dhcp-server hostapd wpa_supplicant wireless-tools iw wvdial`  
 `apt-get dist-upgrade`  
 `apt-get autoremove`  
 `apt-get autoclean`  
@@ -54,7 +54,7 @@ setup cron daily restart(?)
 setup `easytether` on rpi\
 setup `openvpn` on rpi\
 setup `unbound` (DNS caching server) on rpi (use VPN DNS as authoritative)\
-setup DNSSEC on rpi\
+setup DNSSEC (`dnscrypt`) on rpi\
 setup `isc-dhcp-server` on rpi\
 setup `hostapd` on rpi\
 setup `wpa_supplicant` on rpi\
