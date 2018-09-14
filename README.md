@@ -52,7 +52,7 @@ setup non-priv user that can `sudo`
 `gparted`  
 `resize2fs`  
 `apt-get update`  
-`apt-get install bleachbit curl htop locate lynx macchanger nethogs speedtest-cli systemd-gui ntopng openvpn unbound dnscrypt isc-dhcp-server hostapd wpa_supplicant wireless-tools iw wvdial`  
+`apt-get install bleachbit curl htop iptables-optimizer locate lynx macchanger nethogs speedtest-cli systemd-gui ntopng openvpn unbound dnscrypt isc-dhcp-server hostapd wpa_supplicant wireless-tools iw wvdial`  
 `apt-get dist-upgrade`  
 `apt-get autoremove`  
 `apt-get autoclean`  
@@ -71,9 +71,10 @@ setup deb packages (sources.list)\
 setup fastest deb mirror (`netselect-apt`)\
 setup `unattended-upgrades`  
 
-setup iptables on rpi\
-setup iptables-save in crontab\
-setup iptables-restore on boot\
+setup `iptables` on rpi\
+setup `iptables-optimizer` in crontab hourly\
+setup `iptables-save` in crontab\
+setup `iptables-restore` on boot\
 setup cron daily restart(?)  
 
 setup `easytether` on rpi\
