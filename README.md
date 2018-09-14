@@ -165,11 +165,15 @@ osquery.io `osqueryd`
 # OpenVPN
  block-outside-dns  
 
+# ProxyChains
+
+# SQUID
+
+# VirtualGL / TurboVNC
+
 # gkeyring.py
 
 # youtube-dl.py
-
-# VirtualGL / TurboVNC
 
 # pfSense
 
