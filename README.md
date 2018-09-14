@@ -69,4 +69,8 @@ recompile kernel\
 setup geth light node sync\
 osquery.io `osqueryd`  
 
+# VirtualGL / TurboVNC
+
+# pfSense
+
 
