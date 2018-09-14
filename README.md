@@ -10,7 +10,6 @@ shopt -s histappend
   export HISTCONTROL=ignoredups:erasedups:ignorespace   
 
 # movein.sh
-setup movein.sh\
 rm default install openssh keys\
 `dpkg-reconfigure openssh-server`  
 `dpkg-reconfigure tzdata`  
@@ -56,6 +55,6 @@ look into gnome-keyring\
 setup kernel build environment\
 recompile kernel\
 setup geth light node sync\
-osquery.io osqueryd  
+osquery.io `osqueryd`  
 
 
