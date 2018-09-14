@@ -1,2 +1,2 @@
-`touch arp.dat`
-`chown arpwatch:arpwatch arp.dat`
+`touch arp.dat`  
+`chown arpwatch:arpwatch arp.dat`  
