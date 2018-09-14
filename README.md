@@ -159,11 +159,17 @@ mode: +Z+i
 # extra
 setup kernel build environment  
 recompile kernel  
+
+# DANE DNSSEC TLS Checker
+
+# GETH
 setup geth light node sync  
-osquery.io `osqueryd`  
 
 # OpenVPN
- block-outside-dns  
+block-outside-dns  
+
+# osquery
+`osqueryd`  
 
 # ProxyChains
 
