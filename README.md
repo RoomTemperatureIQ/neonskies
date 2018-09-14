@@ -60,6 +60,9 @@ look into gnome-keyring\
 `sudo wireshark`  
 `sudo tshark`  
 
+# Node.js (NPM)
+ethereumjs-tx  
+
 # extra
 setup kernel build environment\
 recompile kernel\
