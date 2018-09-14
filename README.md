@@ -39,7 +39,7 @@ proc /proc proc nodev,noexec,nosuid 0  0
 
 # /etc/sysctl.conf
 net.ipv4.ip_forward=1  
-`sysctl -w net.ipv4.ip_forward=1`
+`sysctl -w net.ipv4.ip_forward=1`  
 
 # movein.sh
 `passwd`  
@@ -59,32 +59,32 @@ setup non-priv user that can `sudo`
 `updatedb`  
 shell settings (bash_history / etc.)  
 
-run I/O benchmarking (dd_obs_test / dd_ibs_test)\
+run I/O benchmarking (dd_obs_test / dd_ibs_test)  
 `fdisk -l`  
 `sudo umount /dev/sdX`  
 `sudo dd if=/path/to/OperatingSystem.iso of=/dev/sdX bs=4M && sync`   
-setup swap file\
+setup swap file  
 run `bootgui.sh disable`  
 
 # setup core services
-setup deb packages (sources.list)\
-setup fastest deb mirror (`netselect-apt`)\
+setup deb packages (sources.list)  
+setup fastest deb mirror (`netselect-apt`)  
 setup `unattended-upgrades`  
 
-setup `iptables` on rpi\
-setup `iptables-optimizer` in crontab hourly\
-setup `iptables-save` in crontab\
-setup `iptables-restore` on boot\
+setup `iptables` on rpi  
+setup `iptables-optimizer` in crontab hourly  
+setup `iptables-save` in crontab  
+setup `iptables-restore` on boot  
 setup cron daily restart(?)  
 
-setup `easytether` on rpi\
-setup `openvpn` on rpi\
-setup `unbound` (DNS caching server) on rpi (use VPN DNS as authoritative)\
-setup DNSSEC (`dnscrypt`) on rpi\
-setup `isc-dhcp-server` on rpi\
-setup `hostapd` on rpi\
-setup `wpa_supplicant` on rpi\
-setup `ntopng` on rpi\
+setup `easytether` on rpi  
+setup `openvpn` on rpi  
+setup `unbound` (DNS caching server) on rpi (use VPN DNS as authoritative)  
+setup DNSSEC (`dnscrypt`) on rpi  
+setup `isc-dhcp-server` on rpi  
+setup `hostapd` on rpi  
+setup `wpa_supplicant` on rpi  
+setup `ntopng` on rpi  
 
 # pia-nm.sh
 `apt-get install uuid-runtime`  
@@ -154,9 +154,9 @@ Timestamp Logs: [✔]
 mode: +Z+i  
 
 # extra
-setup kernel build environment\
-recompile kernel\
-setup geth light node sync\
+setup kernel build environment  
+recompile kernel  
+setup geth light node sync  
 osquery.io `osqueryd`  
 
 # OpenVPN
