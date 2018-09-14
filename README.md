@@ -90,8 +90,8 @@ setup `ntopng` on rpi
 # pia-nm.sh
 `apt-get install uuid-runtime`  
 look into gnome-keyring\
-`nmcli con up VPN_Name`  
-`nmcli con down VPN_Name`  
+`nmcli con up id \'VPN_Name\'`  
+`nmcli con down id \'VPN_Name\'`  
 
 # wireshark (tshark)
 `sudo chgrp wireshark /usr/bin/dumpcap`  
