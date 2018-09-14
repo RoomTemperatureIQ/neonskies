@@ -29,6 +29,9 @@ proc /proc proc nodev,noexec,nosuid 0  0
 # /etc/resolv.conf
 `chattr +i /etc/resolv.conf` # make read-only (immutable)
 
+# /etc/sudoers
+`root	ALL=(ALL:ALL) ALL`  
+`pi	ALL=(ALL:ALL) ALL`  
 
 # /etc/hostapd/hostapd.conf
 
@@ -41,6 +44,7 @@ net.ipv4.ip_forward=1
 # movein.sh
 `passwd`  
 setup non-priv user that can `sudo`
+```shell
 `/etc/ssh/sshd_config PermitRootLogin false`  
 `rm /etc/ssh/ssh_host_*`  
 `dpkg-reconfigure openssh-server`  
@@ -54,6 +58,7 @@ setup non-priv user that can `sudo`
 `apt-get autoremove`  
 `apt-get autoclean`  
 `updatedb`  
+```
 shell settings (bash_history / etc.)
 
 run I/O benchmarking (dd_obs_test / dd_ibs_test)\
