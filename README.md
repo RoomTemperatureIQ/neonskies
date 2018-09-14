@@ -10,7 +10,8 @@ shopt -s cmdhist
 shopt -s histappend  
 
 # /etc/fstab
-```# <file system> <mount point>   <type>  <options>       <dump>  <pass>  
+```
+# <file system> <mount point>   <type>  <options>       <dump>  <pass>  
 proc /proc proc nodev,noexec,nosuid 0  0  
 /dev/mmcblk0p2  / ext4 noatime,errors=remount-ro 0 1  
 # Change this if you add a swap partition or file  
