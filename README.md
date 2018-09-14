@@ -158,6 +158,9 @@ recompile kernel\
 setup geth light node sync\
 osquery.io `osqueryd`  
 
+# OpenVPN
+ block-outside-dns  
+
 # VirtualGL / TurboVNC
 
 # pfSense
