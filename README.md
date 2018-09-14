@@ -14,24 +14,23 @@ shopt -s histappend
 # /etc/network/interfaces
 
 # /etc/sysctl.conf
-net.ipv4.ip_forward=1
-
+net.ipv4.ip_forward=1  
 `sysctl -w net.ipv4.ip_forward=1`
 
 # movein.sh
-`rm /etc/ssh/ssh_host_*`
+`rm /etc/ssh/ssh_host_*`  
 `dpkg-reconfigure openssh-server`  
-`systemctl restart openssh-server`
-`passwd`
+`systemctl restart openssh-server`  
+`passwd`  
 `dpkg-reconfigure tzdata`  
 `/etc/ssh/sshd_config PermitRootLogin false`  
-`gparted`
-`resize2fs`
-`apt-get update`
-`apt-get install curl htop locate macchanger nethogs speedtest-cli hostapd wireless-tools iw wvdial`
-`apt-get dist-upgrade`
-`apt-get autoremove`
-`apt-get autoclean`
+`gparted`  
+`resize2fs`  
+`apt-get update`  
+`apt-get install curl htop locate macchanger nethogs speedtest-cli hostapd wireless-tools iw wvdial`  
+`apt-get dist-upgrade`  
+`apt-get autoremove`  
+`apt-get autoclean`  
 setup non-priv user\
 shell settings (bash_history / etc.)
 
