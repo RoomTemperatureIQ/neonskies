@@ -29,7 +29,7 @@ run `bootgui.sh disable`
 
 # setup core services
 setup deb packages (sources.list)\
-setup fastest deb mirror (netselect)\
+setup fastest deb mirror (netselect-apt)\
 setup unattended updates\
 
 setup iptables on rpi\
@@ -50,3 +50,6 @@ setup kernel build environment\
 recompile kernel\
 setup geth light node sync\
 osquery.io osqueryd
+
+# pia-nm.sh
+`apt-get install uuid-runtime`
