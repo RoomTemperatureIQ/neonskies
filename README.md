@@ -15,7 +15,7 @@ rm default install openssh keys\
 `dpkg-reconfigure tzdata`  
 `/etc/ssh/sshd_config PermitRootLogin false`  
 setup non-priv user\
-shell settings (bash_history / etc.)\
+shell settings (bash_history / etc.)
 
 run I/O benchmarking (dd_obs_test / dd_ibs_test)\
 `fdisk -l`  
@@ -32,7 +32,7 @@ setup `unattended-upgrades`
 setup iptables on rpi\
 setup iptables-save in crontab\
 setup iptables-restore on boot\
-setup cron daily restart(?)\
+setup cron daily restart(?)
 
 setup `easytether` on rpi\
 setup `openvpn` on rpi\
