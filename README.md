@@ -89,8 +89,8 @@ SASL: [✔]
 Auto: [ ]  
 Boot: [ ]  
 Nick:  
-User: null
-Name: null
+User: null  
+Name: null  
 SASL Login:  
 SASL PW:  
 Join Channels: (srv), #freenode  
