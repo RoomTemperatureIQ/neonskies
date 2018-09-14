@@ -102,18 +102,18 @@ Logging:
 Log: [✔]  
 Timestamp Logs: [✔]  
 
-`/nick $nick`
-`/msg nickserv register $password $email`
-`/nick $nick`
-`/msg nickserv group`
-`/msg nickserv set hidemail on`
-`/msg nickserv set emailmemos on`
-`/msg nickserv set enforce on`
-`/msg nickserv set private on`
-`/msg nickserv set quietchg on`
-`/msg nickserv set property url $url`
-`/msg nickserv set property icq $icq`
-`/msg nickserv set property sign $language`
+`/nick $nick`  
+`/msg nickserv register $password $email`  
+`/nick $nick`  
+`/msg nickserv group`  
+`/msg nickserv set hidemail on`  
+`/msg nickserv set emailmemos on`  
+`/msg nickserv set enforce on`  
+`/msg nickserv set private on`  
+`/msg nickserv set quietchg on`  
+`/msg nickserv set property url $url`  
+`/msg nickserv set property icq $icq`  
+`/msg nickserv set property sign $language`  
 
 # extra
 setup kernel build environment\
