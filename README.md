@@ -103,6 +103,7 @@ Log: [✔]
 Timestamp Logs: [✔]  
 
 `/nick $nick`  
+`/msg nickserv set accountname $nick`  
 `/msg nickserv register $password $email`  
 `/nick $nick`  
 `/msg nickserv group`  
