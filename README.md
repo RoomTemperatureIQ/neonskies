@@ -57,6 +57,8 @@ look into gnome-keyring\
 `sudo setcap 'CAP_NET_RAW+eip CAP_NET_ADMIN+eip' /usr/bin/dumpcap`  
 `sudo usermod -a -G wireshark $USER`  
 `xhost +si:localuser:wireshark >/dev/null`  
+`sudo wireshark`  
+`sudo tshark`  
 
 # extra
 setup kernel build environment\
