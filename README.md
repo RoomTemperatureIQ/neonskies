@@ -189,3 +189,4 @@ block-outside-dns
 https://wiki.archlinux.org/index.php/security  
 https://wiki.gentoo.org/wiki/Hardened_Gentoo  
 https://wiki.gentoo.org/wiki/Hardened/Grsecurity2_Quickstart  
+https://hardenedbsd.org/~shawn/hbsd_handbook/book.html#hardenedbsd  
