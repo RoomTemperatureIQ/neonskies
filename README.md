@@ -29,21 +29,22 @@ run `bootgui.sh disable`
 
 # setup core services
 setup deb packages (sources.list)\
-setup fastest deb mirror (netselect-apt)\
-setup unattended updates\
+setup fastest deb mirror (`netselect-apt`)\
+setup `unattended-upgrades`\
 
 setup iptables on rpi\
 setup iptables-save in crontab\
 setup iptables-restore on boot\
 setup cron daily restart(?)\
 
-setup dhcpd on rpi\
+setup `easytether` on rpi\
+setup `openvpn` on rpi\
+setup `unbound` (DNS caching server) on rpi (use VPN DNS as authoritative)\
 setup DNSSEC on rpi\
-setup Unbound (DNS caching server) on rpi (use VPN DNS as authoritative)\
-setup hostapd on rpi\
-setup WPA_Supplicant on rpi\
-setup OpenVPN on rpi\
-setup easytether on rpi
+setup `isc-dhcp-server` on rpi\
+setup `hostapd` on rpi\
+setup `wpa_supplicant` on rpi\
+setup `ntopng` on rpi\
 
 # pia-nm.sh
 `apt-get install uuid-runtime`  
