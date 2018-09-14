@@ -9,6 +9,13 @@ export HISTCONTROL=ignoredups:ignorespace
 shopt -s cmdhist  
 shopt -s histappend  
 
+# /etc/ntopng.conf
+`-e=`
+`-i=eth0`
+`-i=wlan0`
+`-i=wlan1`
+`-w=3000`
+
 # /etc/hostapd/hostapd.conf
 
 # /etc/network/interfaces
@@ -18,12 +25,13 @@ net.ipv4.ip_forward=1
 `sysctl -w net.ipv4.ip_forward=1`
 
 # movein.sh
+`passwd`  
+setup non-priv user that can `sudo`
+`/etc/ssh/sshd_config PermitRootLogin false`  
 `rm /etc/ssh/ssh_host_*`  
 `dpkg-reconfigure openssh-server`  
 `systemctl restart openssh-server`  
-`passwd`  
 `dpkg-reconfigure tzdata`  
-`/etc/ssh/sshd_config PermitRootLogin false`  
 `gparted`  
 `resize2fs`  
 `apt-get update`  
@@ -32,7 +40,6 @@ net.ipv4.ip_forward=1
 `apt-get autoremove`  
 `apt-get autoclean`  
 `updatedb`  
-setup non-priv user\
 shell settings (bash_history / etc.)
 
 run I/O benchmarking (dd_obs_test / dd_ibs_test)\
