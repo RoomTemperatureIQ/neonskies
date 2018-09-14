@@ -9,12 +9,25 @@ export HISTCONTROL=ignoredups:ignorespace
 shopt -s cmdhist  
 shopt -s histappend  
 
+# /etc/fstab
+## <file system> <mount point>   <type>  <options>       <dump>  <pass>  
+proc /proc proc nodev,noexec,nosuid 0  0  
+/dev/mmcblk0p2  / ext4 noatime,errors=remount-ro 0 1  
+## Change this if you add a swap partition or file  
+##/dev/SWAP none swap sw 0 0  
+/dev/mmcblk0p1 /boot vfat noauto 0 0  
+
+
 # /etc/ntopng.conf
 `-e=`  
 `-i=eth0`  
 `-i=wlan0`  
 `-i=wlan1`  
 `-w=3000`  
+
+# /etc/resolv.conf
+`chattr +i /etc/resolv.conf` # make read-only (immutable)
+
 
 # /etc/hostapd/hostapd.conf
 
