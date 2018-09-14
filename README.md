@@ -161,6 +161,8 @@ osquery.io `osqueryd`
 # OpenVPN
  block-outside-dns  
 
+# gkeyring.py
+
 # VirtualGL / TurboVNC
 
 # pfSense
