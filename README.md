@@ -51,7 +51,7 @@ look into gnome-keyring\
 `nmcli con up VPN_Name`  
 `nmcli con down VPN_Name`  
 
-#wireshark (tshark)
+# wireshark (tshark)
 `sudo chgrp wireshark /usr/bin/dumpcap`  
 `sudo chmod o-rx /usr/bin/dumpcap`  
 `sudo setcap 'CAP_NET_RAW+eip CAP_NET_ADMIN+eip' /usr/bin/dumpcap`  
