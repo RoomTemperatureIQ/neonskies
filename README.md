@@ -1,19 +1,37 @@
 # neonskies
 
 # .bashrc
+export LANG="en_US.UTF-8"  
+export PROMPT_COMMAND='history -a'  
+export HISTSIZE=1000000  
+export HISTFILESIZE=1000000  
+export HISTCONTROL=ignoredups:ignorespace   
 shopt -s cmdhist  
 shopt -s histappend  
-  export LANG="en_US.UTF-8"  
-  export PROMPT_COMMAND='history -a'  
-  export HISTSIZE=100000  
-  export HISTFILESIZE=100000  
-  export HISTCONTROL=ignoredups:erasedups:ignorespace   
+
+# /etc/hostapd/hostapd.conf
+
+# /etc/network/interfaces
+
+# /etc/sysctl.conf
+net.ipv4.ip_forward=1
+
+`sysctl -w net.ipv4.ip_forward=1`
 
 # movein.sh
-rm default install openssh keys\
+`rm /etc/ssh/ssh_host_*`
 `dpkg-reconfigure openssh-server`  
+`systemctl restart openssh-server`
+`passwd`
 `dpkg-reconfigure tzdata`  
 `/etc/ssh/sshd_config PermitRootLogin false`  
+`gparted`
+`resize2fs`
+`apt-get update`
+`apt-get install curl htop locate macchanger nethogs speedtest-cli hostapd wireless-tools iw wvdial`
+`apt-get dist-upgrade`
+`apt-get autoremove`
+`apt-get autoclean`
 setup non-priv user\
 shell settings (bash_history / etc.)
 
