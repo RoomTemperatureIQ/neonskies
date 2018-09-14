@@ -1,10 +1,13 @@
 # neonskies
 
 # .bashrc
+shopt -s cmdhist  
 shopt -s histappend  
+  export LANG="en_US.UTF-8"  
+  export PROMPT_COMMAND='history -a'  
   export HISTSIZE=100000  
   export HISTFILESIZE=100000  
-  export HISTCONTROL=ignoredups:erasedups:ignorespace  
+  export HISTCONTROL=ignoredups:erasedups:ignorespace   
 
 # movein.sh
 setup movein.sh\
