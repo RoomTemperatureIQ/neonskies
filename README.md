@@ -29,7 +29,7 @@ run `bootgui.sh disable`
 # setup core services
 setup deb packages (sources.list)\
 setup fastest deb mirror (`netselect-apt`)\
-setup `unattended-upgrades`\
+setup `unattended-upgrades`
 
 setup iptables on rpi\
 setup iptables-save in crontab\
