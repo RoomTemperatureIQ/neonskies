@@ -10,11 +10,11 @@ shopt -s cmdhist
 shopt -s histappend  
 
 # /etc/ntopng.conf
-`-e=`
-`-i=eth0`
-`-i=wlan0`
-`-i=wlan1`
-`-w=3000`
+`-e=`  
+`-i=eth0`  
+`-i=wlan0`  
+`-i=wlan1`  
+`-w=3000`  
 
 # /etc/hostapd/hostapd.conf
 
