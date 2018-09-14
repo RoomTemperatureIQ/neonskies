@@ -27,10 +27,11 @@ net.ipv4.ip_forward=1
 `gparted`  
 `resize2fs`  
 `apt-get update`  
-`apt-get install curl htop locate macchanger nethogs speedtest-cli ntopng openvpn unbound dnscrypt isc-dhcp-server hostapd wpa_supplicant wireless-tools iw wvdial`  
+`apt-get install bleachbit curl htop locate lynx macchanger nethogs speedtest-cli systemd-gui ntopng openvpn unbound dnscrypt isc-dhcp-server hostapd wpa_supplicant wireless-tools iw wvdial`  
 `apt-get dist-upgrade`  
 `apt-get autoremove`  
 `apt-get autoclean`  
+`updatedb`  
 setup non-priv user\
 shell settings (bash_history / etc.)
 
@@ -78,6 +79,42 @@ look into gnome-keyring\
 # Node.js (NPM)
 ethereumjs-tx  
 
+# FreeNode - SASL & Cloak
+Server: chat.freenode.net  
+Desc: FreeNode  
+Port: 6697 # Port for SASL  
+Pass:  
+SSL: [✔]  
+SASL: [✔]  
+Auto: [ ]  
+Boot: [ ]  
+Nick:  
+User: null
+Name: null
+SASL Login:  
+SASL PW:  
+Join Channels: (srv), #freenode  
+
+Client behavior:  
+Hide Device Info: [✔]  
+
+Logging:  
+Log: [✔]  
+Timestamp Logs: [✔]  
+
+`/nick $nick`
+`/msg nickserv register $password $email`
+`/nick $nick`
+`/msg nickserv group`
+`/msg nickserv set hidemail on`
+`/msg nickserv set emailmemos on`
+`/msg nickserv set enforce on`
+`/msg nickserv set private on`
+`/msg nickserv set quietchg on`
+`/msg nickserv set property url $url`
+`/msg nickserv set property icq $icq`
+`/msg nickserv set property sign $language`
+
 # extra
 setup kernel build environment\
 recompile kernel\
@@ -87,5 +124,4 @@ osquery.io `osqueryd`
 # VirtualGL / TurboVNC
 
 # pfSense
-
 
