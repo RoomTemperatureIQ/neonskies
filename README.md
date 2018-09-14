@@ -115,6 +115,18 @@ Timestamp Logs: [✔]
 `/msg nickserv set property icq $icq`  
 `/msg nickserv set property sign $language`  
 
+`/msg memoserv help`  
+`/msg nickserv help`  
+`/ping $nick`  
+`/stats p #Staff`  
+`/version $nick`  
+`/whois $nick`  
+`/ctcp $nick ping`  
+`/ctcp $nick userinfo`  
+`/ctcp $nick version`  
+`/ctcp $nick xdcc`  
+mode: +Z+i  
+
 # extra
 setup kernel build environment\
 recompile kernel\
