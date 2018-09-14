@@ -43,8 +43,7 @@ net.ipv4.ip_forward=1
 
 # movein.sh
 `passwd`  
-setup non-priv user that can `sudo`
-```shell
+setup non-priv user that can `sudo`  
 `/etc/ssh/sshd_config PermitRootLogin false`  
 `rm /etc/ssh/ssh_host_*`  
 `dpkg-reconfigure openssh-server`  
@@ -58,25 +57,24 @@ setup non-priv user that can `sudo`
 `apt-get autoremove`  
 `apt-get autoclean`  
 `updatedb`  
-```
-shell settings (bash_history / etc.)
+shell settings (bash_history / etc.)  
 
 run I/O benchmarking (dd_obs_test / dd_ibs_test)\
 `fdisk -l`  
 `sudo umount /dev/sdX`  
-`sudo dd if=/path/to/OperatingSystem.iso of=/dev/sdX bs=4M && sync`  
+`sudo dd if=/path/to/OperatingSystem.iso of=/dev/sdX bs=4M && sync`   
 setup swap file\
-run `bootgui.sh disable`
+run `bootgui.sh disable`  
 
 # setup core services
 setup deb packages (sources.list)\
 setup fastest deb mirror (`netselect-apt`)\
-setup `unattended-upgrades`
+setup `unattended-upgrades`  
 
 setup iptables on rpi\
 setup iptables-save in crontab\
 setup iptables-restore on boot\
-setup cron daily restart(?)
+setup cron daily restart(?)  
 
 setup `easytether` on rpi\
 setup `openvpn` on rpi\
