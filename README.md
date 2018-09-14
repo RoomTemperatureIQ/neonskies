@@ -1,34 +1,51 @@
 # neonskies
 
+# .bashrc
+shopt -s histappend  
+  export HISTSIZE=100000  
+  export HISTFILESIZE=100000  
+  export HISTCONTROL=ignoredups:erasedups:ignorespace  
 
+# movein.sh
 setup movein.sh\
-run `bootgui.sh disable`
-
-rm openssh keys\
+rm default install openssh keys\
 `dpkg-reconfigure openssh-server`  
-`dpkg_reconfigure tzdata`
+`dpkg-reconfigure tzdata`
+`/etc/ssh/sshd_config PermitRootLogin false`
+shell settings (bash_history / etc.)
+
+run I/O benchmarking (dd_obs_test / dd_ibs_test)\
+fdisk -l
+sudo umount /dev/sdX
+sudo dd if=/path/to/OperatingSystem.iso of=/dev/sdX bs=4M && sync
 
 setup swap file\
-run I/O benchmarking (dd_obs_test / dd_ibs_test)\
 setup non-priv user\
-`/etc/ssh/sshd_config PermitRootLogin false`
 
+run `bootgui.sh disable`
+
+# setup core services
+setup deb packages (sources.list)\
+setup fastest deb mirror (netselect)\
+setup unattended updates\
+
+setup iptables on rpi\
+setup iptables-save in crontab\
+setup iptables-restore on boot\
+setup cron daily restart(?)\
+
+setup dhcpd on rpi\
+setup DNSSEC on rpi\
+setup Unbound (DNS caching server) on rpi (use VPN DNS as authoritative)\
+setup hostapd on rpi\
+setup WPA_Supplicant on rpi\
+setup OpenVPN on rpi\
 
 setup easytether on rpi\
-setup dhcpd on rpi\
-setup iptables on rpi\
-setup PIA VPN on rpi\
-setup hostapd on rpi\
-setup WPA Supplicant on rpi\
-setup DNSSEC on rpi\
-setup DNS caching server on rpi (use PIA DNS)\
-setup iptables-restore\
-setup cron daily restart(?)\
-setup unattended updates\
-setup fastest deb mirror (netselect)\
-setup deb packages\
-recompile kernel\
-setup kernel build environment
+
 
 # extra
-setup geth-light node
+setup kernel build environment
+recompile kernel\
+setup geth light node sync
+osquery.io osqueryd
