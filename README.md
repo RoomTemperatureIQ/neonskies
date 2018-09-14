@@ -43,7 +43,7 @@ setup OpenVPN on rpi\
 setup easytether on rpi
 
 # extra
-setup kernel build environment
+setup kernel build environment\
 recompile kernel\
-setup geth light node sync
+setup geth light node sync\
 osquery.io osqueryd
