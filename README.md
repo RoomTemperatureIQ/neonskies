@@ -163,6 +163,8 @@ osquery.io `osqueryd`
 
 # gkeyring.py
 
+# youtube-dl.py
+
 # VirtualGL / TurboVNC
 
 # pfSense
