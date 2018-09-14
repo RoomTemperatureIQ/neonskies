@@ -40,9 +40,7 @@ setup Unbound (DNS caching server) on rpi (use VPN DNS as authoritative)\
 setup hostapd on rpi\
 setup WPA_Supplicant on rpi\
 setup OpenVPN on rpi\
-
-setup easytether on rpi\
-
+setup easytether on rpi
 
 # extra
 setup kernel build environment
