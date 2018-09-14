@@ -186,6 +186,6 @@ block-outside-dns
 # pfSense
 
 # OS Hardening - Grsecurity, ACL, ASLR, PaX, PIE, W^X, setcap
-https://wiki.archlinux.org/index.php/security
-https://wiki.gentoo.org/wiki/Hardened_Gentoo
-https://wiki.gentoo.org/wiki/Hardened/Grsecurity2_Quickstart
+https://wiki.archlinux.org/index.php/security  
+https://wiki.gentoo.org/wiki/Hardened_Gentoo  
+https://wiki.gentoo.org/wiki/Hardened/Grsecurity2_Quickstart  
