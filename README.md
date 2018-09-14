@@ -5,7 +5,7 @@ setup movein.sh\
 run `bootgui.sh disable`
 
 rm openssh keys\
-`dpkg-reconfigure openssh-server`
+`dpkg-reconfigure openssh-server`  
 `dpkg_reconfigure tzdata`
 
 setup swap file\
