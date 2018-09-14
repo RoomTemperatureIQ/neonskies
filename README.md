@@ -167,6 +167,8 @@ osquery.io `osqueryd`
 
 # ProxyChains
 
+# SNORT
+
 # SQUID
 
 # VirtualGL / TurboVNC
