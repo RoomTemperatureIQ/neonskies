@@ -5,13 +5,13 @@ setup movein.sh\
 run `bootgui.sh disable`\
 
 rm openssh keys\
-`dpkg-reconfigure openssh-server`\
-`dpkg_reconfigure tzdata`\
+`dpkg-reconfigure openssh-server`
+`dpkg_reconfigure tzdata`
 
 setup swap file\
 run I/O benchmarking (dd_obs_test / dd_ibs_test)\
 setup non-priv user\
-/etc/ssh/sshd_config PermitRootLogin false\
+`/etc/ssh/sshd_config PermitRootLogin false`
 
 
 setup easytether on rpi\
