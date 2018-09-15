@@ -260,6 +260,8 @@ https://github.com/lfit/itpol/blob/master/linux-workstation-security.md
 https://spritesmods.com/?art=hddhack  
 https://www.pjrc.com/teensy/  
 http://3564020356.org/  
+https://www.vulnhub.com/  
+https://www.pentesteracademy.com/ (used to be SecurityTube.net)  
 https://ctftime.org/  
 https://ctf365.com/  
 https://www.root-me.org/en/Capture-The-Flag/  
