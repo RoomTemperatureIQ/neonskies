@@ -161,6 +161,9 @@ mode: +Z+i
 setup kernel build environment  
 recompile kernel  
 
+# arpwatch (ARP Poisoning)
+`arpwatch`  
+
 # DANE DNSSEC TLS Checker
 
 # GETH
