@@ -206,6 +206,8 @@ block-outside-dns
 
 # strongSwan
 
+# Tripwire
+
 # VirtualGL / TurboVNC
 
 # gkeyring.py
