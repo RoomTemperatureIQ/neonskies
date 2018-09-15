@@ -169,6 +169,8 @@ recompile kernel
 # GETH
 setup geth light node sync  
 
+# honeyd
+
 # IPTABLES
 outgoing only UDP OpenVPN port (VPN Kill Switch)  
 incoming - `ssh`: not 22, `unbound`: 53, `isc-dhcp-server`: 67/68, `nginx`: 80/443, `ntp`: 123, `squid`: 8080, `ntopng`: LAN side, `geth`: LAN side, `turbovnc`: LAN side (use SSH tunnel?)  
@@ -196,9 +198,13 @@ block-outside-dns
 
 # ProxyChains
 
+# SniffDet
+
 # SNORT
 
 # SQUID
+
+# strongSwan
 
 # VirtualGL / TurboVNC
 
