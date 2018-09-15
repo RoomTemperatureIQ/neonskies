@@ -55,7 +55,7 @@ setup non-priv user that can `sudo`
 `resize2fs`  
 `apt-get update`  
 `apt-get install apt-listbugs apt-listchanges arpwatch auditd bleachbit checkrestart curl debsecan debsums firewalk hexchat htop iperf iptables-optimizer irssi linenum locate lynis lynx macchanger nethogs nload screen speedtest-cli systemd-gui ntopng openvpn unbound dnscrypt isc-dhcp-server hostapd wpa_supplicant wireless-tools iw wvdial`  
-mono .net framework  
+mono .net framework - https://www.mono-project.com/download/stable/#download-lin-debian  
 `apt-get dist-upgrade`  
 `apt-get autoremove`  
 `apt-get autoclean`  
