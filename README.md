@@ -220,6 +220,8 @@ W^X
 `trace -p $PID`  
 `erf trace -p $PID`  
 `eptyr $PID`  
+TCP/IP IPID - https://nmap.org/presentations/CanSecWest03/CD_Content/idlescan_paper/idlescan.html  
+TCP/IP Fingerprinting - https://nmap.org/book/osdetect-methods.html  
 https://wiki.archlinux.org/index.php/security  
 https://wiki.gentoo.org/wiki/Hardened_Gentoo  
 https://wiki.gentoo.org/wiki/Hardened/Grsecurity2_Quickstart  
