@@ -11,6 +11,8 @@ shopt -s histappend
 
 # /etc/crontab
 0 0 1 * * /opt/letsencrypt/letsencrypt-auto renew  
+make script to check certificate expiration and adjust crontab for renew  
+
 
 # /etc/fstab
 ```
