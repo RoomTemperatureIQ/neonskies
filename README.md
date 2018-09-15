@@ -262,6 +262,7 @@ https://kali.training/
 https://www.vulnhub.com/  
 https://www.pjrc.com/teensy/  
 https://www.pentesteracademy.com/ (used to be SecurityTube.net)  
+https://www.root-me.org/en/Challenges/  
 http://scanme.nmap.org/  
 VX Heavens
 
@@ -295,3 +296,8 @@ http://ctf.forgottensec.com/wiki/index.php?title=Main_Page
 http://ctf.infosecinstitute.com/  
 https://github.com/ethicalhack3r/DVWA  
 https://github.com/bt3gl/Gray-Hacker-Resources  
+http://hmwyc.org/  
+https://pentesterlab.com/  
+https://www.hackerslab.org/  
+https://backdoor.sdslabs.co/  
+
