@@ -257,6 +257,9 @@ https://hardenedbsd.org/~shawn/hbsd_handbook/book.html#hardenedbsd
 https://web.archive.org/web/20140220055801/http://crunchbang.org:80/forums/viewtopic.php?id=24722  
 https://www.ibm.com/developerworks/linux/tutorials/l-harden-server/index.html  
 https://github.com/lfit/itpol/blob/master/linux-workstation-security.md  
+https://debian-handbook.info/browse/stable/  
+https://kali.training/  
+
 https://spritesmods.com/?art=hddhack  
 https://www.pjrc.com/teensy/  
 http://3564020356.org/  
