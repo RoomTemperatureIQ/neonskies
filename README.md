@@ -180,7 +180,7 @@ IPv6 rules
 # IRSSI
 use `screen` to detach
 
-# Let's Encrypt (SSL Certicate Issuance)
+# Let's Encrypt (SSL Certificate Issuance)
 `certbot`  
 https://wiki.archlinux.org/index.php/Certbot  
 
