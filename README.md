@@ -278,6 +278,7 @@ https://www.pentesteracademy.com/ (used to be SecurityTube.net)
 https://www.root-me.org/en/Challenges/  
 http://scanme.nmap.org/  
 VX Heavens
+http://www.linuxandubuntu.com/home/top-interesting-cron-jobs-to-run-on-linux  
 
 https://spritesmods.com/?art=hddhack  
 http://3564020356.org/  
