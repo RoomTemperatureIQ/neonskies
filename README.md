@@ -54,7 +54,7 @@ setup non-priv user that can `sudo`
 `gparted`  
 `resize2fs`  
 `apt-get update`  
-`apt-get install bleachbit curl htop iptables-optimizer locate lynx macchanger nethogs speedtest-cli systemd-gui ntopng openvpn unbound dnscrypt isc-dhcp-server hostapd wpa_supplicant wireless-tools iw wvdial`  
+`apt-get install bleachbit curl htop iptables-optimizer irssi locate lynx macchanger nethogs screen speedtest-cli systemd-gui ntopng openvpn unbound dnscrypt isc-dhcp-server hostapd wpa_supplicant wireless-tools iw wvdial`  
 `apt-get dist-upgrade`  
 `apt-get autoremove`  
 `apt-get autoclean`  
@@ -173,6 +173,9 @@ setup geth light node sync
 outgoing only UDP OpenVPN port (VPN Kill Switch)  
 incoming - `ssh`: not 22, `unbound`: 53, `isc-dhcp-server`: 67/68, `nginx`: 80/443, `ntp`: 123, `squid`: 8080, `ntopng`: LAN side, `geth`: LAN side, `turbovnc`: LAN side (use SSH tunnel?)  
 IPv6 rules  
+
+# IRSSI
+use `screen` to detach
 
 # Let's Encrypt (SSL Certicate Issuance)
 `certbot`  
