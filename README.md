@@ -206,7 +206,7 @@ block-outside-dns
 chroot  
 jails  
 fstab partitions mounted read-only  
-chattr +a (append-only, breaks logrotate)
+chattr +a (append-only, breaks logrotate)  
 chattr +i  
 kernel tweaking  
 runlevels  
