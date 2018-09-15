@@ -76,14 +76,14 @@ setup `unattended-upgrades`
 
 setup `iptables` on rpi  
 setup `iptables-optimizer` in crontab hourly  
-setup `iptables-save` in crontab  
+setup `iptables-save` in crontab hourly  
 setup `iptables-restore` on boot  
 setup cron daily restart(?)  
 
 setup `easytether` on rpi  
 setup `openvpn` on rpi  
 setup `unbound` (DNS caching server) on rpi (use VPN DNS as authoritative)  
-setup DNSSEC (`dnscrypt`) on rpi  
+setup `dnscrypt` (DNSSEC) on rpi  
 setup `isc-dhcp-server` on rpi  
 setup `hostapd` on rpi  
 setup `wpa_supplicant` on rpi  
@@ -108,6 +108,7 @@ password-flags
 
 # Node.js (NPM)
 ethereumjs-tx  
+jQuery
 
 # FreeNode - SASL & Cloak
 Server: chat.freenode.net  
