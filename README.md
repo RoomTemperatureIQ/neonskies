@@ -199,6 +199,9 @@ block-outside-dns
 
 # ProxyChains
 
+# Selenium
+https://github.com/SeleniumHQ/selenium  
+
 # SniffDet
 
 # SNORT
@@ -210,6 +213,9 @@ block-outside-dns
 # Tripwire
 
 # VirtualGL / TurboVNC
+
+# Visual Studio (MSFT)
+use mono for .Net Framework compatibility  
 
 # gkeyring.py
 
