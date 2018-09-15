@@ -10,7 +10,7 @@ shopt -s cmdhist
 shopt -s histappend  
 
 # /etc/crontab
-check update certificate once a month  
+check update certificate once a month at 00:00  
 check update git repo once a day at 00:00  
 0 0 1 * * /opt/letsencrypt/letsencrypt-auto renew  
 0 0 * * * cd /opt/letsencrypt && git pull  
