@@ -197,7 +197,23 @@ block-outside-dns
 
 # pfSense
 
-# OS Hardening - Grsecurity, setcap, ACL, ASLR, PaX, PIE, RBAC, W^X, jails / chroot, setuid / setguid
+# OS Hardening
+chroot  
+jails  
+fstab read-only  
+chattr +i  
+runlevels  
+grsecurity  
+setcap  
+setuid  
+setgid  
+ACL  
+ASLR  
+PaX  
+PIE  
+RBAC  
+W^X  
+
 `umask 0077`  
 `db -p $PID`  
 `trace -p $PID`  
