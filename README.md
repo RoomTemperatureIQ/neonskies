@@ -9,7 +9,7 @@ export HISTCONTROL=ignoredups:ignorespace
 shopt -s cmdhist  
 shopt -s histappend  
 
-# /etc/cronttab
+# /etc/crontab
 0 0 1 * * /opt/letsencrypt/letsencrypt-auto renew  
 
 # /etc/fstab
