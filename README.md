@@ -259,12 +259,14 @@ https://www.ibm.com/developerworks/linux/tutorials/l-harden-server/index.html
 https://github.com/lfit/itpol/blob/master/linux-workstation-security.md  
 https://debian-handbook.info/browse/stable/  
 https://kali.training/  
+https://www.vulnhub.com/  
+https://www.pjrc.com/teensy/  
+https://www.pentesteracademy.com/ (used to be SecurityTube.net)  
+http://scanme.nmap.org/  
+VX Heavens
 
 https://spritesmods.com/?art=hddhack  
-https://www.pjrc.com/teensy/  
 http://3564020356.org/  
-https://www.vulnhub.com/  
-https://www.pentesteracademy.com/ (used to be SecurityTube.net)  
 https://ctftime.org/  
 https://ctf365.com/  
 https://www.root-me.org/en/Capture-The-Flag/  
@@ -288,10 +290,8 @@ https://www.enigmagroup.org/
 https://google-gruyere.appspot.com/  
 http://www.gameofhacks.com/  
 http://captf.com/practice-ctf/  
-http://scanme.nmap.org/  
 http://shell-storm.org/repo/CTF/  
 http://ctf.forgottensec.com/wiki/index.php?title=Main_Page  
 http://ctf.infosecinstitute.com/  
 https://github.com/ethicalhack3r/DVWA  
 https://github.com/bt3gl/Gray-Hacker-Resources  
-VX Heavens
