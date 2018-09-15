@@ -205,7 +205,8 @@ block-outside-dns
 # OS Hardening
 chroot  
 jails  
-fstab read-only  
+fstab partitions mounted read-only  
+chattr +a (append-only, breaks logrotate)
 chattr +i  
 kernel tweaking  
 runlevels  
