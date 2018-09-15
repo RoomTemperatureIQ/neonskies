@@ -165,6 +165,18 @@ recompile kernel
 # GETH
 setup geth light node sync  
 
+# IPTABLES
+outgoing only UDP OpenVPN port (VPN Kill Switch)  
+incoming - `ssh` - not 22, `unbound` - 53, `nginx` - 80/443, `squid` - 8080, `ntopng` - LAN side, `geth` - LAN side, `turbovnc` - LAN side  
+IPv6 rules  
+
+# NGINX
+.htaccess  
+wildcard forward  
+
+# NtopNG
+see flows for `iptables` rule creation
+
 # OpenVPN
 block-outside-dns  
 
