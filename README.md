@@ -171,7 +171,7 @@ setup geth light node sync
 
 # IPTABLES
 outgoing only UDP OpenVPN port (VPN Kill Switch)  
-incoming - `ssh`: not 22, `unbound`: 53, `nginx`: 80/443, `squid`: 8080, `ntopng`: LAN side, `geth`: LAN side, `turbovnc`: LAN side (use SSH tunnel?)  
+incoming - `ssh`: not 22, `unbound`: 53, `isc-dhcp-server`: 67/68, `nginx`: 80/443, `ntp`: 123, `squid`: 8080, `ntopng`: LAN side, `geth`: LAN side, `turbovnc`: LAN side (use SSH tunnel?)  
 IPv6 rules  
 
 # Let's Encrypt (SSL Certicate Issuance)
