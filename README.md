@@ -54,7 +54,8 @@ setup non-priv user that can `sudo`
 `gparted`  
 `resize2fs`  
 `apt-get update`  
-`apt-get install bleachbit curl htop iptables-optimizer irssi locate lynx macchanger nethogs screen speedtest-cli systemd-gui ntopng openvpn unbound dnscrypt isc-dhcp-server hostapd wpa_supplicant wireless-tools iw wvdial`  
+`apt-get install apt-listbugs apt-listchanges arpwatch auditd bleachbit checkrestart curl debsecan debsums firewalk hexchat htop iperf iptables-optimizer irssi linenum locate lynis lynx macchanger nethogs nload screen speedtest-cli systemd-gui ntopng openvpn unbound dnscrypt isc-dhcp-server hostapd wpa_supplicant wireless-tools iw wvdial` 
+mono .net framework  
 `apt-get dist-upgrade`  
 `apt-get autoremove`  
 `apt-get autoclean`  
