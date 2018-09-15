@@ -230,3 +230,6 @@ https://wiki.archlinux.org/index.php/security
 https://wiki.gentoo.org/wiki/Hardened_Gentoo  
 https://wiki.gentoo.org/wiki/Hardened/Grsecurity2_Quickstart  
 https://hardenedbsd.org/~shawn/hbsd_handbook/book.html#hardenedbsd  
+https://web.archive.org/web/20140220055801/http://crunchbang.org:80/forums/viewtopic.php?id=24722  
+https://www.ibm.com/developerworks/linux/tutorials/l-harden-server/index.html  
+https://github.com/lfit/itpol/blob/master/linux-workstation-security.md  
