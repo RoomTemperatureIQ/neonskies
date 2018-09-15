@@ -11,6 +11,7 @@ shopt -s histappend
 
 # /etc/crontab
 0 0 1 * * /opt/letsencrypt/letsencrypt-auto renew  
+0 0 1 * * cd /opt/letsencrypt && git pull  
 make script to check certificate expiration and adjust crontab for renew  
 
 
