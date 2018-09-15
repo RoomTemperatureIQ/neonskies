@@ -235,6 +235,7 @@ PaX
 PIE  
 RBAC  
 W^X  
+wordlists - rockyou.txt  
 
 `umask 0077`  
 `db -p $PID`  
