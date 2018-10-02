@@ -45,12 +45,12 @@ proc /proc proc nodev,noexec,nosuid 0  0
 
 # /etc/network/interfaces
 
+# /etc/security/limits.conf
+
 # /etc/sysctl.conf
 net.ipv4.ip_forward=1  
 `sysctl -w net.ipv4.ip_forward=1`  
 https://wiki.archlinux.org/index.php/Sysctl  
-
-# /etc/security/limits.conf
 
 # movein.sh
 `passwd`  
