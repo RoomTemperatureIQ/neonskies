@@ -37,15 +37,15 @@ proc /proc proc nodev,noexec,nosuid 0  0
 # /etc/resolv.conf
 `chattr +i /etc/resolv.conf` # make read-only (immutable)
 
-# /etc/sudoers
-`root	ALL=(ALL:ALL) ALL`  
-`pi	ALL=(ALL:ALL) ALL`  
-
 # /etc/hostapd/hostapd.conf
 
 # /etc/network/interfaces
 
 # /etc/security/limits.conf
+
+# /etc/sudoers
+`root	ALL=(ALL:ALL) ALL`  
+`pi	ALL=(ALL:ALL) ALL`  
 
 # /etc/sysctl.conf
 net.ipv4.ip_forward=1  
