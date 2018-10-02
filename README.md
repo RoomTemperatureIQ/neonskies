@@ -50,6 +50,8 @@ net.ipv4.ip_forward=1
 `sysctl -w net.ipv4.ip_forward=1`  
 https://wiki.archlinux.org/index.php/Sysctl  
 
+# /etc/security/limits.conf
+
 # movein.sh
 `passwd`  
 setup non-priv user that can `sudo`  
