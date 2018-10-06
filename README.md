@@ -59,20 +59,30 @@ setup non-priv user that can `sudo`
 `adduser $user`  
 `usermod -aG sudo $user`  
 `/etc/ssh/sshd_config PermitRootLogin false`  
+`/etc/ssh/sshd_config AllowUsers $user`  
 `rm /etc/ssh/ssh_host_*`  
 `dpkg-reconfigure openssh-server`  
 `systemctl restart openssh-server`  
+`systemctl restart ssh`  
 `dpkg-reconfigure tzdata`  
 `update-locale`  
-``  
+`fallocate --length 8GiB /var/swap/swapfile`  
+`mkswap /var/swap/swapfile`  
+`nano /etc/fstab`  
+`swapon`  
 https://wiki.archlinux.org/index.php/swap  
 https://wiki.archlinux.org/index.php/Dm-crypt/Swap_encryption  
+`apt-get update`  
+`apt-get install netselect-apt`  
+`netselect-apt`  
+`apt-get install gparted`  
 `gparted`  
 `resize2fs`  
-`apt-get update`  
-`apt-get install apt-listbugs apt-listchanges arpwatch auditd bleachbit checkrestart curl debsecan debsums firewalk hexchat htop iperf iptables-optimizer irssi linenum locate lynis lynx macchanger netcat nethogs nload screen speedtest-cli systemd-gui ntopng openvpn unbound dnscrypt isc-dhcp-server hostapd wpa_supplicant wireless-tools iw wvdial`  
+`apt-get install apt-listbugs apt-listchanges arpwatch auditd bleachbit curl debsecan debian-goodies debsums firewalk htop iperf iptables-optimizer irssi locate lynis lynx macchanger netcat nethogs nload screen speedtest-cli ntopng openvpn unbound dnscrypt-proxy isc-dhcp-server hostapd wpasupplicant wireless-tools iw wvdial`  
+up for chopping block: `hexchat`  
+we use `debian-goodies` for `checkrestart`  
 mono .net framework - https://www.mono-project.com/download/stable/#download-lin-debian  
-github: dnsperf dnsperf-tcp dnsperf-tls  
+github: dnsperf dnsperf-tcp dnsperf-tls linenum  
 https://dnsprivacy.org/wiki/display/DP/Performance+Measurements  
 `apt-get dist-upgrade`  
 `apt-get autoremove`  
