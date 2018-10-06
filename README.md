@@ -57,7 +57,7 @@ http://www.linuxfromscratch.org/blfs/view/svn/postlfs/initramfs.html
 `passwd`  
 setup non-priv user that can `sudo`  
 `adduser $user`  
-`usermod -aG sudo $user`
+`usermod -aG sudo $user`  
 `/etc/ssh/sshd_config PermitRootLogin false`  
 `rm /etc/ssh/ssh_host_*`  
 `dpkg-reconfigure openssh-server`  
