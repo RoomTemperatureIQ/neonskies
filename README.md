@@ -53,14 +53,20 @@ net.ipv4.ip_forward=1
 https://wiki.archlinux.org/index.php/Sysctl  
 
 # movein.sh
+http://www.linuxfromscratch.org/blfs/view/svn/postlfs/initramfs.html  
 `passwd`  
 setup non-priv user that can `sudo`  
+`adduser $user`  
+`usermod -aG sudo $user`
 `/etc/ssh/sshd_config PermitRootLogin false`  
 `rm /etc/ssh/ssh_host_*`  
 `dpkg-reconfigure openssh-server`  
 `systemctl restart openssh-server`  
 `dpkg-reconfigure tzdata`  
 `update-locale`  
+``  
+https://wiki.archlinux.org/index.php/swap  
+https://wiki.archlinux.org/index.php/Dm-crypt/Swap_encryption  
 `gparted`  
 `resize2fs`  
 `apt-get update`  
