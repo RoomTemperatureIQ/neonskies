@@ -257,7 +257,8 @@ use mono for .Net Framework compatibility
 
 # pfSense
 
-# OS Hardening
+# OS Hardening / tweaking
+https://www.askapache.com/optimize/super-speed-secrets/  
 chroot  
 jails  
 fstab partitions mounted read-only  
