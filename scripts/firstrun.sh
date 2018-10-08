@@ -32,4 +32,4 @@ updatedb
 
 # let's add a cron job (00:00 every day/month/day of week) in case of environment migration for new download mirror: 
 # https://stackoverflow.com/questions/878600/how-to-create-a-cron-job-using-bash-automatically-without-the-interactive-editor#comment75562934_878647
-(crontab -l 2>/dev/null ; echo "00 00 * * * sudo netselect-apt") | crontab -
+(crontab -l 2>/dev/null ; echo "00 00 * * * sudo netselect-apt") | sort | uniq | crontab -
