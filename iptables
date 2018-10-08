@@ -106,7 +106,7 @@ $IPT -A spoofing-src 172.16.0.0/12
 $IPT -A spoofing-src 192.168.0.0/24
 
 # Spoofed IP's as DESTINATION
-$IPT -N spoofing-dest
+$IPT -N spoofing-dst
 $IPT -A spoofing-dst 239.255.255.0/24
 $IPT -A spoofing-dst 255.255.255.255
 
