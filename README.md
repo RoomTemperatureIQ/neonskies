@@ -53,6 +53,7 @@ net.ipv4.ip_forward=1
 https://wiki.archlinux.org/index.php/Sysctl  
 
 # movein.sh
+`fake-hwclock`  
 http://www.linuxfromscratch.org/blfs/view/svn/postlfs/initramfs.html  
 `passwd`  
 setup non-priv user that can `sudo`  
