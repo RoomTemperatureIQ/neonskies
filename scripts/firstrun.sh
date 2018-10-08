@@ -24,12 +24,12 @@ apt-get update
 # install `netselect-apt` for closest download mirror
 apt-get install locate netselect-apt
 
-# update download to closest mirror
+# update closest mirror to download from
 netselect-apt
-
-# index system for use with `locate`
-updatedb
 
 # let's add a cron job (00:00 every day/month/day of week) in case of environment migration for new download mirror: 
 # https://stackoverflow.com/questions/878600/how-to-create-a-cron-job-using-bash-automatically-without-the-interactive-editor#comment75562934_878647
 (crontab -l 2>/dev/null ; echo "00 00 * * * sudo netselect-apt") | sort | uniq | crontab -
+
+# index system for use with `locate`
+updatedb
