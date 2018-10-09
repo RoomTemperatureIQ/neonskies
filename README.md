@@ -92,6 +92,7 @@ shell settings (bash_history / etc.)
 
 run I/O benchmarking (dd_obs_test / dd_ibs_test)  
 `fdisk -l`  
+https://unix.stackexchange.com/a/360080  
 `blockdev --getbsz /dev/mmcblk0`  
 `sudo umount /dev/sdX`  
 `sudo dd if=/path/to/OperatingSystem.iso of=/dev/sdX bs=4M && sync`   
