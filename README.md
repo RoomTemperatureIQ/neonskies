@@ -63,8 +63,7 @@ setup non-priv user that can `sudo`
 `/etc/ssh/sshd_config AllowUsers $user`  
 `rm /etc/ssh/ssh_host_*`  
 `dpkg-reconfigure openssh-server`  
-`systemctl restart openssh-server`  
-`systemctl restart ssh`  
+`systemctl restart ssh.service`  
 `dpkg-reconfigure tzdata`  
 `update-locale`  
 `fallocate --length 8GiB /var/swap/swapfile`  
