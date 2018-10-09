@@ -51,6 +51,8 @@ proc /proc proc nodev,noexec,nosuid 0  0
 net.ipv4.ip_forward=1  
 `sysctl -w net.ipv4.ip_forward=1`  
 https://wiki.archlinux.org/index.php/Sysctl  
+`# use swap (0 is full RAM)`  
+vm.swappiness=10
 
 # movein.sh
 `fake-hwclock`  
@@ -66,12 +68,16 @@ setup non-priv user that can `sudo`
 `systemctl restart ssh.service`  
 `dpkg-reconfigure tzdata`  
 `update-locale`  
-`fallocate --length 8GiB /var/swap/swapfile`  
-`mkswap /var/swap/swapfile`  
+
+`fallocate --length 2GiB /mnt/swapfile`  
+`chmod 600 /mnt/swapfile`  
+`mkswap /mnt/swapfile`  
+`echo /mnt/swapfile swap swap defaults 0 0 >> /etc/fstab`  
 `nano /etc/fstab`  
-`swapon`  
+`swapon /mnt/swapfile`  
 https://wiki.archlinux.org/index.php/swap  
 https://wiki.archlinux.org/index.php/Dm-crypt/Swap_encryption  
+
 `apt-get update`  
 `apt-get install netselect-apt`  
 `netselect-apt`  
