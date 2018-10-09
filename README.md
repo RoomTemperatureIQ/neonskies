@@ -76,6 +76,8 @@ https://www.tecmint.com/create-a-linux-swap-file/
 `echo /mnt/swapfile swap swap defaults 0 0 >> /etc/fstab`  
 `nano /etc/fstab`  
 `swapon /mnt/swapfile`  
+`echo vm.swappiness=10 >> /etc/sysctl.conf`  
+`swapon -s`  
 https://wiki.archlinux.org/index.php/swap  
 https://wiki.archlinux.org/index.php/Dm-crypt/Swap_encryption  
 
