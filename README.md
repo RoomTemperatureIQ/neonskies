@@ -69,6 +69,7 @@ setup non-priv user that can `sudo`
 `dpkg-reconfigure tzdata`  
 `update-locale`  
 
+https://www.tecmint.com/create-a-linux-swap-file/  
 `fallocate --length 2GiB /mnt/swapfile`  
 `chmod 600 /mnt/swapfile`  
 `mkswap /mnt/swapfile`  
