@@ -21,10 +21,10 @@ make script to check certificate expiration and adjust crontab for renew
 ```
 # <file system> <mount point>   <type>  <options>       <dump>  <pass>  
 proc /proc proc nodev,noexec,nosuid 0  0  
-/dev/mmcblk0p2  / ext4 noatime,errors=remount-ro 0 1  
+/dev/mmcblk0p1 /boot vfat defaults 0 2  
+/dev/mmcblk0p2  / ext4 defaults,noatime,errors=remount-ro 0 1  
 # Change this if you add a swap partition or file  
 # dev/SWAP none swap sw 0 0  
-/dev/mmcblk0p1 /boot vfat noauto 0 0  
 ```
 
 # /etc/ntopng.conf
