@@ -5,13 +5,13 @@
 
 # https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/system_administrators_guide/sect-managing_services_with_systemd-targets  
 # Runlevel	Target Units	            Description
-# 0 	runlevel0.target, poweroff.target 	    Shut down and power off the system.
-# 1 	runlevel1.target, rescue.target 	    Set up a rescue shell.
-# 2 	runlevel2.target, multi-user.target 	Set up a non-graphical multi-user system.
-# 3 	runlevel3.target, multi-user.target 	Set up a non-graphical multi-user system.
-# 4 	runlevel4.target, multi-user.target 	Set up a non-graphical multi-user system.
-# 5 	runlevel5.target, graphical.target 	    Set up a graphical multi-user system.
-# 6 	runlevel6.target, reboot.target 	    Shut down and reboot the system. 
+# 0 	runlevel0.target, poweroff.target      Shut down and power off the system.  
+# 1 	runlevel1.target, rescue.target        Set up a rescue shell.  
+# 2 	runlevel2.target, multi-user.target    Set up a non-graphical multi-user system.  
+# 3 	runlevel3.target, multi-user.target    Set up a non-graphical multi-user system.  
+# 4 	runlevel4.target, multi-user.target    Set up a non-graphical multi-user system.  
+# 5 	runlevel5.target, graphical.target     Set up a graphical multi-user system.  
+# 6 	runlevel6.target, reboot.target        Shut down and reboot the system.  
 
 if [ "$1" == 'enable' ] ; then
 
