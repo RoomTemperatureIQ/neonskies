@@ -4,7 +4,7 @@
 # systemctl get-default
 
 # https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/system_administrators_guide/sect-managing_services_with_systemd-targets  
-# Runlevel	Target Units	            Description
+# Runlevel	Target Units	               Description
 # 0 	runlevel0.target, poweroff.target      Shut down and power off the system.  
 # 1 	runlevel1.target, rescue.target        Set up a rescue shell.  
 # 2 	runlevel2.target, multi-user.target    Set up a non-graphical multi-user system.  
