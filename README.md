@@ -131,6 +131,8 @@ setup `wpa_supplicant` on rpi
 setup `ntopng` on rpi  
 
 # pia-nm.sh
+https://wiki.archlinux.org/index.php/NetworkManager  
+https://wiki.archlinux.org/index.php/GNOME/Keyring  
 `apt-get install uuid-runtime`  
 look into gnome-keyring  
 password-flags  
