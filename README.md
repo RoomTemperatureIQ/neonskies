@@ -73,7 +73,7 @@ https://www.tecmint.com/create-a-linux-swap-file/
 `fallocate --length 2GiB /mnt/swapfile`  
 `chmod 600 /mnt/swapfile`  
 `mkswap /mnt/swapfile`  
-`echo /mnt/swapfile swap swap defaults 0 0 >> /etc/fstab`  
+`echo /mnt/swapfile none swap defaults 0 0 >> /etc/fstab`  
 `nano /etc/fstab`  
 `swapon /mnt/swapfile`  
 `echo vm.swappiness=10 >> /etc/sysctl.conf`  
@@ -105,7 +105,7 @@ run I/O benchmarking (dd_obs_test / dd_ibs_test)
 https://unix.stackexchange.com/a/360080  
 `blockdev --getbsz /dev/mmcblk0`  
 `sudo umount /dev/sdX`  
-`sudo dd if=/path/to/OperatingSystem.iso of=/dev/sdX bs=4M && sync`   
+`sudo dd if=/path/to/OperatingSystem.iso of=/dev/sdX bs=4M && sync`  
 setup swap file  
 run `bootgui.sh disable`  
 
