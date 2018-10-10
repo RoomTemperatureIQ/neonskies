@@ -2,12 +2,13 @@
 
 # .bashrc
 LANG="en_US.UTF-8"  
-PROMPT_COMMAND='history -a'  
 HISTSIZE=1000000  
 HISTFILESIZE=2000000  
 HISTCONTROL=ignoreboth  
 shopt -s histappend  
 shopt -s cmdhist  
+shopt -s lithist  
+https://unix.stackexchange.com/questions/109032/how-to-get-a-history-entry-to-properly-display-on-multiple-lines  
 
 # /etc/crontab
 check update certificate once a month at 00:00  
