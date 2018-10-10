@@ -1,4 +1,5 @@
 # Tethering
+https://wiki.debian.org/Android_Tethering  
 https://wiki.archlinux.org/index.php/Android_tethering  
 https://github.com/aziwoqpd/azilink  
 https://github.com/aziwoqpd/azilink/blob/master/HOWTO  
