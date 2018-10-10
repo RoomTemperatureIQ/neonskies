@@ -1,13 +1,13 @@
 # neonskies
 
 # .bashrc
-export LANG="en_US.UTF-8"  
-export PROMPT_COMMAND='history -a'  
-export HISTSIZE=1000000  
-export HISTFILESIZE=1000000  
-export HISTCONTROL=ignoredups:ignorespace   
-shopt -s cmdhist  
+LANG="en_US.UTF-8"  
+PROMPT_COMMAND='history -a'  
+HISTSIZE=1000000  
+HISTFILESIZE=2000000  
+HISTCONTROL=ignoreboth  
 shopt -s histappend  
+shopt -s cmdhist  
 
 # /etc/crontab
 check update certificate once a month at 00:00  
