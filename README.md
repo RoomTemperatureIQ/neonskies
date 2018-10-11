@@ -89,7 +89,7 @@ https://wiki.archlinux.org/index.php/Dm-crypt/Swap_encryption
 `apt-get install gparted`  
 `gparted`  
 `resize2fs`  
-`apt-get install apt-listbugs apt-listchanges arpwatch auditd bleachbit curl debsecan debian-goodies debsums firewalk htop iperf iptables-optimizer irssi locate lynis lynx macchanger netcat nethogs nload screen speedtest-cli ntopng openvpn unbound dnscrypt-proxy isc-dhcp-server hostapd wpasupplicant wireless-tools iw wvdial`  
+`apt-get install apt-listbugs apt-listchanges arpwatch auditd bleachbit curl debsecan debian-goodies debsums firewalk htop iperf iptables-optimizer iptables-persistent irssi locate lynis lynx macchanger netcat nethogs nload screen speedtest-cli ntopng openvpn unbound dnscrypt-proxy isc-dhcp-server hostapd wpasupplicant wireless-tools iw wvdial`  
 up for chopping block: `hexchat`  
 we use `debian-goodies` for `checkrestart`  
 mono .net framework - https://www.mono-project.com/download/stable/#download-lin-debian  
