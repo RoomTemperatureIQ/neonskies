@@ -98,6 +98,13 @@ if [ -z "$pia_username" ]; then
 	error "Username is required, aborting."
 fi
 
+# bypass gkeyring
+echo -n "PIA password: "
+read pia_password
+
+if [ -z "$pia_password" ]; then
+	error "Password is required, aborting."
+fi
 
 echo -n "Connection method (UDP/tcp): "
 read pia_tcp
@@ -201,6 +208,40 @@ method=auto
 EOF
 	chmod 0600 "$nmfile"
 done
+
+# vpn.secrets file path
+	vpnSecretsFile="/root/vpnSecretsFile"
+	cat <<EOF > "$vpnSecretsFile"
+vpn.secrets.password:$pia_password
+EOF
+	chmod 0600 "$vpnSecretsFile"
+
+# VPN NM dispatcher script
+	vpnDispatcher="/etc/NetworkManager/dispatcher.d/vpn-up"
+	cat <<EOF > "$vpnDispatcher"
+#!/bin/sh
+VPN_NAME="name of VPN connection defined in NetworkManager"
+ESSID="Wi-Fi network ESSID (not connection name)"
+vpnSecretsFile="/root/vpnSecretsFile"
+
+interface=$1 status=$2
+case $status in
+  up|vpn-down)
+    if iwgetid | grep -qs ":\"$ESSID\""; then
+      nmcli connection up id "$VPN_NAME" passwd-file $vpnSecretsFile
+    fi
+    ;;
+  down)
+    if iwgetid | grep -qs ":\"$ESSID\""; then
+      if nmcli connection show --active | grep "$VPN_NAME"; then
+        nmcli connection down id "$VPN_NAME"
+      fi
+    fi
+    ;;
+esac
+EOF
+	chmod 0700 "$vpnDispatcher"
+
 
 nmcli connection reload || \
 	error "Failed to reload NetworkManager connections: installation was complete, but may require a restart to be effective."
