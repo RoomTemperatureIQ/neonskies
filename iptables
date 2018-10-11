@@ -146,12 +146,12 @@ $IPT -A POSTROUTING -o $WAN_NIC -j MASQUERADE
 # Flush all rules: -F
 # Delete all chains: -X
 # Zero all packets: -Z
-$IPT -F
-$IPT -X
 $IPT -t nat -F
 $IPT -t nat -X
 $IPT -t mangle -F
 $IPT -t mangle -X
+$IPT -F
+$IPT -X
 $IPT -Z
 
 ###############################
