@@ -16,4 +16,4 @@ netmask 255.255.255.0
 broadcast 192.168.2.255
 # gateway 192.168.2.1
 
-# NetworkManager handles wlan0 DHCP configuration
+# NetworkManager handles wlan1 DHCP configuration
