@@ -23,25 +23,33 @@ LAN_RANGE="192.168.50.0/24"
 
 ### sysctl variables
 # do something here, check current status
-$KERNCONF -a | grep net\.*
+$KERNCONF -a | grep net.ipv
 
 # toggle allow forwarding
 $KERNCONF -w net.ipv4.ip_forward=1
-$KERNCONF -w net.ipv6.conf.default.forwarding=1
-$KERNCONF -w net.ipv6.conf.all.forwarding=1
+#$KERNCONF -w net.ipv6.conf.default.forwarding=1
+#$KERNCONF -w net.ipv6.conf.all.forwarding=1
+
+# VPN Killswitch
+# https://linuxconfig.org/how-to-create-a-vpn-killswitch-using-iptables-on-linux
+$KERNCONF -w net.ipv6.conf.all.disable_ipv6=1
+$KERNCONF -w net.ipv6.conf.default.disable_ipv6=1
+$KERNCONF -w net.ipv6.conf.lo.disable_ipv6=1
+$KERNCONF -w net.ipv6.conf.eth0.disable_ipv6=1
+$KERNCONF -w net.ipv6.conf.wlan0.disable_ipv6=1
+$KERNCONF -w net.ipv6.conf.wlan1.disable_ipv6=1
 
 # toggle ICMP ping response
-$KERNCONF -w net.ipv4.icmp_echo_ignore_all=0
+#$KERNCONF -w net.ipv4.icmp_echo_ignore_all=0
 
 # log martians
-$KERNCONF -w net.ipv4.conf.all.log_martians=1
+#$KERNCONF -w net.ipv4.conf.all.log_martians=1
 
 # change port range
 # $KERNCONF -w net.ipv4.ip_local_port_range="32768 60999"
 # $KERNCONF -w net.ipv4.ip_unprivileged_port_start=1024
 
 # adjust TCP/IP settings (tweak MTU or w/e)
-
 
 
 ################################
@@ -75,6 +83,48 @@ IPT_SNMP="161"
 IPT_SNMPTRAP="162"
 
 
+####################
+## VPN Killswitch ##
+####################
+# *filter table
+$IPT -P INPUT DROP
+$IPT -P FORWARD DROP
+$IPT -P OUTPUT DROP
+
+# Input - It's most secure to only allow inbound traffic from established or related connections. Set that up next.
+$IPT -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+
+# Loopback and Ping - allow the loopback interface and ping.
+$IPT -A OUTPUT -o lo -j ACCEPT
+$IPT -A OUTPUT -o tun0 -p icmp -j ACCEPT
+
+# LAN - It doesn't make much sense to shut down or block your LAN traffic, especially on a home network, so allow that too.
+$IPT -A OUTPUT -d 192.168.1.0/24 -j ACCEPT
+
+# DNS - For this next part, you're going to need to know the IP address of your VPN's DNS server(s).
+#       If your VPN has access or your resolv.conf, you'll probably find them i there.
+# DNS Server IP's: https://www.privateinternetaccess.com/helpdesk/guides/desktop/linux/linux-change-dns
+#   resolver1.privateinternetaccess.com @ 209.222.18.222
+#   resolver2.privateinternetaccess.com @ 209.222.18.218
+# multiple IP matching: https://www.cyberciti.biz/faq/how-to-use-iptables-with-multiple-source-destination-ips-addresses/
+$IPT -A OUTPUT -d 209.222.18.218,209.222.18.222 -j ACCEPT
+
+# Allow the VPN - Of course, you need to allow the VPN itself. There are two parts to this. 
+# You need to allow both the service port and the interface.
+$IPT -A OUTPUT -p udp -m udp --dport 1194 -j ACCEPT
+$IPT -A OUTPUT -o tun0 -j ACCEPT
+
+# Example
+#$IPT -A OUTPUT -o tun0 -p tcp --dport 443 -j ACCEPT
+#$IPT -A OUTPUT -o tun0 -p tcp --dport 80 -j ACCEPT
+
+#$IPT -A OUTPUT -o tun0 -p tcp --dport 993 -j ACCEPT
+#$IPT -A OUTPUT -o tun0 -p tcp --dport 465 -j ACCEPT
+
+
+
+
+
 ######################
 ## Default Policies ##
 ######################
@@ -87,12 +137,10 @@ $IPT -A POSTROUTING -o $WAN_NIC -j MASQUERADE
 
 
 ### *filter rules, doesn't do anything to *nat
-
 ### Default to ACCEPT to prevent SSH lockout if rules Flush
-$IPT -P INPUT ACCEPT
-$IPT -P FORWARD ACCEPT
-$IPT -P OUTPUT ACCEPT
-
+# $IPT -P INPUT ACCEPT
+# $IPT -P FORWARD ACCEPT
+# $IPT -P OUTPUT ACCEPT
 
 ### Reset iptables rules
 # Flush all rules: -F
