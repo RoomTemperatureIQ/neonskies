@@ -1,4 +1,5 @@
 # forked copy from: https://github.com/gronke/systemd-iptables/blob/master/etc/iptables/iptables.rules
+# updated name schema for `iptables-persistent` package
 
 *filter
 :INPUT DROP [0:0]
