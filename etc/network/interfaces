@@ -5,11 +5,15 @@ auto eth0
 iface eth0 inet static
 address 192.168.232.1
 netmask 255.255.255.0
-#dns-nameserver 127.0.0.1
+broadcast 192.168.232.255
+# gateway 192.168.232.1
 
 auto wlan0
 iface wlan0 inet static
 hwaddress 00:de:ad:be:ef:00
 address 192.168.2.1
 netmask 255.255.255.0
-#dns-nameserver 127.0.0.1
+broadcast 192.168.2.255
+# gateway 192.168.2.1
+
+# NetworkManager handles wlan0 DHCP configuration
