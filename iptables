@@ -6,25 +6,42 @@
 #
 # Script is for stopping Portscanning, Nmap Scanning(Fin, Null, Xmas), Smurf Attacks, Shell brute-forcing
 #
-### sysctl variables
-# do something here, check current status
-# toggle allow forwarding
-# toggle ICMP ping response
-# log martians
-# change port range
-# adjust TCP/IP settings (tweak MTU or w/e)
-
 # location of iptables
-IPT="/sbin/iptables"
+IPT="/usr/sbin/iptables"
+
+#location of sysctl
+KERNCONF="/usr/sbin/sysctl"
 
 # connected to Internet
-WAN_NIC="ens3"
+WAN_NIC="wlan1"
 
 # server IP
 HOST_IP="192.168.50.254"
 
 # your LAN IP range
 LAN_RANGE="192.168.50.0/24"
+
+### sysctl variables
+# do something here, check current status
+$KERNCONF -a | grep net\.*
+
+# toggle allow forwarding
+$KERNCONF -w net.ipv4.ip_forward=1
+$KERNCONF -w net.ipv6.conf.default.forwarding=1
+$KERNCONF -w net.ipv6.conf.all.forwarding=1
+
+# toggle ICMP ping response
+$KERNCONF -w net.ipv4.icmp_echo_ignore_all=0
+
+# log martians
+$KERNCONF -w net.ipv4.conf.all.log_martians=1
+
+# change port range
+# $KERNCONF -w net.ipv4.ip_local_port_range="32768 60999"
+# $KERNCONF -w net.ipv4.ip_unprivileged_port_start=1024
+
+# adjust TCP/IP settings (tweak MTU or w/e)
+
 
 
 ################################
@@ -61,6 +78,14 @@ IPT_SNMPTRAP="162"
 ######################
 ## Default Policies ##
 ######################
+# *nat table - MASQUERADING
+$IPT -t nat -P PREROUTING ACCEPT
+$IPT -t nat -P INPUT ACCEPT
+$IPT -t nat -P OUTPUT ACCEPT
+$IPT -t nat -P POSTROUTING ACCEPT
+$IPT -A POSTROUTING -o $WAN_NIC -j MASQUERADE
+
+
 ### *filter rules, doesn't do anything to *nat
 
 ### Default to ACCEPT to prevent SSH lockout if rules Flush
@@ -68,14 +93,18 @@ $IPT -P INPUT ACCEPT
 $IPT -P FORWARD ACCEPT
 $IPT -P OUTPUT ACCEPT
 
+
 ### Reset iptables rules
 # Flush all rules: -F
 # Delete all chains: -X
 # Zero all packets: -Z
 $IPT -F
 $IPT -X
+$IPT -t nat -F
+$IPT -t nat -X
+$IPT -t mangle -F
+$IPT -t mangle -X
 $IPT -Z
-
 
 ###############################
 ### Define all jump targets ###
