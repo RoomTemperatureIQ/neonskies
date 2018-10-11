@@ -31,6 +31,11 @@ pkgerror="Failed to install the required packages, aborting."
 if command -v apt-get 2>&1 >/dev/null; then
 	installpkg=()
 
+	# dependency check for `uuid-runtime`
+	if ! dpkg -l uuid-runtime | grep -q '^ii'; then
+		installpkg+=(uuid-runtime)
+	fi
+
 	if ! dpkg -l python2.7 | grep -q '^ii'; then
 		installpkg+=(python2.7)
 	fi
