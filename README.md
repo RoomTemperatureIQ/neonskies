@@ -1,14 +1,18 @@
-# neonskies #
-**This is currently marked [EXPERIMENTAL], this is NOT production ready!**
+# neonskies - **This is currently marked [EXPERIMENTAL], this is NOT production ready!** #
 
-Feature  | Program  | Implemented | 
+Feature  | Program  | Implemented
 ------------- | ------------- | -------------
 Wireless Access Point | hostapd  | [✔]
 Wireless Authentication | wpa_supplicant  | [✔]
 DHCP Server | isc-dhcp-server  | [✔]
 DNS Server | Unbound  | [✔]
-DNSSEC Support | DNSCrypt  | [ ]
+DNSSEC Support | DNSCrypt  | [❌]
 VPN | OpenVPN  | [✔]
+VPN Killswitch | iptables | [✔]
+Network Statistics | NtopNG | [✔]
+Web Server | NGINX | [❌]
+Load Balancing | HAProxy | [❌]
+Caching Proxy | Squid | [❌]
 
 - - - -
 
