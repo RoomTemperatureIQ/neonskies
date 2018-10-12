@@ -6,10 +6,10 @@
 Feature | Program | Implemented | Priority | Notes |   
 ------------- | ------------- | ------------- | ------------- | -------------  
 Optimized Disk Layout Settings | dd_obs_test.sh / dd_ibs_test.sh | [❌] | critical | http://blog.tdg5.com/tuning-dd-block-size/  
-Disk Encryption | dm-crypt + LUKS | [❌] | critical | https://wiki.archlinux.org/index.php/disk_encryption  
 Virtual RAM | swapon | [✔] | critical | https://wiki.archlinux.org/index.php/swap  
+Disk Encryption | dm-crypt + LUKS | [❌] | critical | https://wiki.archlinux.org/index.php/disk_encryption  
 Virtual RAM Encryption | dm-crypt + LUKS | [❌] | critical | https://wiki.archlinux.org/index.php/Dm-crypt/Swap_encryption  
-Network Device MAC Address Spoofing | udev / systemd-networkd / NetworkManager / macchanger | [✔] | critical | https://wiki.archlinux.org/index.php/MAC_address_spoofing  
+Network Device MAC Address Spoofing | udev / systemd-networkd / NetworkManager / macchanger | [❌] | critical | https://wiki.archlinux.org/index.php/MAC_address_spoofing  
 Packet Filter "Firewall" / VPN Killswitch | iptables | [✔] | critical | https://wiki.archlinux.org/index.php/iptables  
 Optimized Firewall Rules | iptables-optimizer | [✔] | critical | http://manpages.ubuntu.com/manpages/xenial/man8/iptables-optimizer.8.html  
 Optimized Network Settings | sysctl | [❌] | critical | https://wiki.archlinux.org/index.php/sysctl  
