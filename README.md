@@ -20,7 +20,7 @@ Network Statistics | ntopng | [✔] | https://www.ntop.org/guides/ntopng/index.h
 Virtual RAM | swapon | [✔] | https://wiki.archlinux.org/index.php/swap  
 
 Priority | Feature | Program | Implemented | Notes |   
-------------- | ------------- | ------------- | -------------  
+------------- | ------------- | ------------- | ------------- | -------------  
 high | Internet Tethering | AziLink | [❌] | https://wiki.archlinux.org/index.php/Android_tethering  
 low | UPS Management | nut | [❌] | https://wiki.archlinux.org/index.php/Network_UPS_Tools https://loganmarchione.com/2017/02/raspberry-pi-ups-monitor-with-nginx-web-monitoring/  
 medium | DNSSEC Support | dnscrypt-proxy  | [❌] | https://wiki.archlinux.org/index.php/Dnscrypt-proxy https://dnscrypt.info/faq/  
