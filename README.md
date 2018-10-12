@@ -17,6 +17,7 @@ Network Device Management | NetworkManager | [✔] | https://wiki.archlinux.org/
 VPN Client/Server | openvpn  | [✔] | https://docs.openvpn.net/  
 SSH Server | openssh-server | [✔] | https://wiki.archlinux.org/index.php/Secure_Shell  
 Network Statistics | ntopng | [✔] | https://www.ntop.org/guides/ntopng/index.html  
+Dynamic DNS Client (DDNS) | ddclient | [❌] | https://freedns.afraid.org/scripts/freedns.clients.php
 Web Server | nginx | [❌] | https://docs.nginx.com/  
 Web Server Certificate Issuance (HTTPS) | certbot | [❌] | https://certbot.eff.org/docs/  
 Load Balancing | haproxy | [❌] | https://www.haproxy.org/#docs  
