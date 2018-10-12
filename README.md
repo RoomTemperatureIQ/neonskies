@@ -12,6 +12,7 @@ VPN | OpenVPN  | [✔]
 VPN Killswitch | iptables | [✔]
 Network Statistics | NtopNG | [✔]
 Web Server | NGINX | [❌]
+HTTPS Certificate Issuance | LetsEncrypt.org certbot | [❌]
 Load Balancing | HAProxy | [❌]
 Web Caching Proxy | Squid | [❌]
 
@@ -119,6 +120,7 @@ https://dnsprivacy.org/wiki/display/DP/Performance+Measurements
 `updatedb`  
 shell settings (bash_history / etc.)  
 
+`nload -U G -u M -i 102400 -o 102400`
 run I/O benchmarking (dd_obs_test / dd_ibs_test)  
 `fdisk -l`  
 https://unix.stackexchange.com/a/360080  
