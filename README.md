@@ -1,10 +1,10 @@
 # neonskies #
 ![Danger: Experimental](https://camo.githubusercontent.com/275bc882f21b154b5537b9c123a171a30de9e6aa/68747470733a2f2f7261772e6769746875622e636f6d2f63727970746f7370686572652f63727970746f7370686572652f6d61737465722f696d616765732f6578706572696d656e74616c2e706e67)
 
-Long-term Roadmap | | |  
-------------- | ------------- | ------------- | -------------
+Long-term Roadmap |  |  |  
+------------- | ------------- | ------------- | -------------  
 Feature  | Program  | Implemented | Notes |   
-------------- | ------------- | ------------- | -------------
+------------- | ------------- | ------------- | -------------  
 IPv4 Network Settings | | [✔] | 
 IPv6 Network Settings | | [❌] | https://www.privateinternetaccess.com/helpdesk/kb/articles/why-do-you-block-ipv6  
 Packet Filter "Firewall" / VPN Killswitch | iptables | [✔] | https://wiki.archlinux.org/index.php/iptables  
