@@ -10,7 +10,7 @@ Internet Tethering | AziLink | [❌] | https://wiki.archlinux.org/index.php/Andr
 Wireless Access Point | hostapd  | [✔] | https://w1.fi/cgit/hostap/plain/hostapd/hostapd.conf  
 802.11 Authentication (WPA2/WPA/WEP) | wpa_supplicant  | [✔] | https://wiki.archlinux.org/index.php/WPA_supplicant  
 DHCP Server | isc-dhcp-server  | [✔] | https://wiki.debian.org/DHCP_Server  
-DNS Server | unbound  | [❌] | https://wiki.archlinux.org/index.php/Unbound  
+DNS Server | unbound  | [❌] | https://wiki.archlinux.org/index.php/Unbound https://calomel.org/unbound_dns.html  
 DNSSEC Support | dnscrypt-proxy  | [❌] | https://wiki.archlinux.org/index.php/Dnscrypt-proxy https://dnscrypt.info/faq/  
 DNS Resolver Management Framework | openresolv | [✔] | https://wiki.archlinux.org/index.php/Openresolv  
 Network Device Management | NetworkManager | [✔] | https://wiki.archlinux.org/index.php/NetworkManager  
