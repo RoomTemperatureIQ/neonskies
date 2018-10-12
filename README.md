@@ -1,20 +1,24 @@
 # neonskies #
 **This is currently marked [EXPERIMENTAL], this is NOT production ready!**
 
-Feature  | Program  | Implemented |
+Feature  | Program  | Implemented | Notes
 ------------- | ------------- | -------------
-Wireless Access Point | hostapd  | [✔]
-Wireless Authentication | WPA_Supplicant  | [✔]
-DHCP Server | isc-dhcp-server  | [✔]
-DNS Server | Unbound  | [✔]
-DNSSEC Support | DNSCrypt  | [❌]
-VPN | OpenVPN  | [✔]
-VPN Killswitch | iptables | [✔]
-Network Statistics | NtopNG | [✔]
-Web Server | NGINX | [❌]
-HTTPS Certificate Issuance | LetsEncrypt.org certbot | [❌]
-Load Balancing | HAProxy | [❌]
-Web Caching Proxy | Squid | [❌]
+Wireless Access Point | hostapd  | [✔] | https://w1.fi/cgit/hostap/plain/hostapd/hostapd.conf  
+Wireless Authentication | WPA_Supplicant  | [✔] | https://wiki.archlinux.org/index.php/WPA_supplicant
+DHCP Server | isc-dhcp-server  | [✔] | https://wiki.debian.org/DHCP_Server  
+DNS Server | Unbound  | [❌] | https://wiki.archlinux.org/index.php/Unbound  
+DNSSEC Support | DNSCrypt  | [❌] | https://wiki.archlinux.org/index.php/Dnscrypt-proxy https://dnscrypt.info/faq/  
+VPN Client/Server | OpenVPN  | [✔] | https://docs.openvpn.net/  
+Packet Filter "Firewall" / VPN Killswitch | iptables | [✔] | https://wiki.archlinux.org/index.php/iptables  
+Network Statistics | NtopNG | [✔] | https://www.ntop.org/guides/ntopng/index.html  
+Web Server | NGINX | [❌] | https://docs.nginx.com/  
+HTTPS Certificate Issuance | certbot | [❌] | https://letsencrypt.org/  
+Load Balancing | HAProxy | [❌] | https://www.haproxy.org/#docs  
+Web Caching Proxy | Squid | [❌] | http://www.squid-cache.org/Doc/  
+
+Network Device Management | NetworkManager | [✔] | https://wiki.archlinux.org/index.php/NetworkManager  
+ | openresolv | [✔] | https://wiki.archlinux.org/index.php/Openresolv  
+
 
 - - - -
 
