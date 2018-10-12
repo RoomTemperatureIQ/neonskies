@@ -19,23 +19,23 @@ SSH Server | openssh-server | [✔] | https://wiki.archlinux.org/index.php/Secur
 Network Statistics | ntopng | [✔] | https://www.ntop.org/guides/ntopng/index.html  
 Virtual RAM | swapon | [✔] | https://wiki.archlinux.org/index.php/swap  
 
-Feature | Program | Implemented | Notes |   
+Priority | Feature | Program | Implemented | Notes |   
 ------------- | ------------- | ------------- | -------------  
-Internet Tethering | AziLink | [❌] | https://wiki.archlinux.org/index.php/Android_tethering  
-UPS Management | nut | [❌] | https://wiki.archlinux.org/index.php/Network_UPS_Tools https://loganmarchione.com/2017/02/raspberry-pi-ups-monitor-with-nginx-web-monitoring/  
-DNSSEC Support | dnscrypt-proxy  | [❌] | https://wiki.archlinux.org/index.php/Dnscrypt-proxy https://dnscrypt.info/faq/  
-Dynamic DNS Client (DDNS) | ddclient | [❌] | https://freedns.afraid.org/scripts/freedns.clients.php https://calomel.org/dyndns_org.html  
-Web Server | nginx | [❌] | https://docs.nginx.com/  
-Web Server Certificate Issuance (HTTPS) | certbot | [❌] | https://certbot.eff.org/docs/  
-Web Caching Proxy | squid | [❌] | http://www.squid-cache.org/Doc/  
-Load Balancing | haproxy | [❌] | https://www.haproxy.org/#docs  
-Mail Server | confidantmail | [❌] | https://www.confidantmail.org  
-HTTP Domain Filtering | squid | [❌] | https://www.cyberciti.biz/faq/squid-proxy-server-block-domain-accessing-internet/  
-DNS Domain Filtering | unbound | [❌] | https://calomel.org/unbound_dns.html  
-Disk Encryption | dm-crypt + LUKS | [❌] | https://wiki.archlinux.org/index.php/disk_encryption  
-Virtual RAM Encryption | dm-crypt + LUKS | [❌] | https://wiki.archlinux.org/index.php/Dm-crypt/Swap_encryption  
-Optimized Network Settings | sysctl | [❌] | https://wiki.archlinux.org/index.php/sysctl  
-Optimized Disk Layout Settings | dd_obs_test.sh / dd_ibs_test.sh | [❌] | http://blog.tdg5.com/tuning-dd-block-size/  
+high | Internet Tethering | AziLink | [❌] | https://wiki.archlinux.org/index.php/Android_tethering  
+low | UPS Management | nut | [❌] | https://wiki.archlinux.org/index.php/Network_UPS_Tools https://loganmarchione.com/2017/02/raspberry-pi-ups-monitor-with-nginx-web-monitoring/  
+medium | DNSSEC Support | dnscrypt-proxy  | [❌] | https://wiki.archlinux.org/index.php/Dnscrypt-proxy https://dnscrypt.info/faq/  
+low | Dynamic DNS Client (DDNS) | ddclient | [❌] | https://freedns.afraid.org/scripts/freedns.clients.php https://calomel.org/dyndns_org.html  
+low | Web Server | nginx | [❌] | https://docs.nginx.com/  
+low | Web Server Certificate Issuance (HTTPS) | certbot | [❌] | https://certbot.eff.org/docs/  
+very low | Web Caching Proxy | squid | [❌] | http://www.squid-cache.org/Doc/  
+very low | Load Balancing | haproxy | [❌] | https://www.haproxy.org/#docs  
+low | Mail Server | confidantmail | [❌] | https://www.confidantmail.org  
+low | HTTP Domain Filtering | squid | [❌] | https://www.cyberciti.biz/faq/squid-proxy-server-block-domain-accessing-internet/  
+low | DNS Domain Filtering | unbound | [❌] | https://calomel.org/unbound_dns.html  
+medium | Disk Encryption | dm-crypt + LUKS | [❌] | https://wiki.archlinux.org/index.php/disk_encryption  
+medium | Virtual RAM Encryption | dm-crypt + LUKS | [❌] | https://wiki.archlinux.org/index.php/Dm-crypt/Swap_encryption  
+very high | Optimized Network Settings | sysctl | [❌] | https://wiki.archlinux.org/index.php/sysctl  
+high | Optimized Disk Layout Settings | dd_obs_test.sh / dd_ibs_test.sh | [❌] | http://blog.tdg5.com/tuning-dd-block-size/  
 
 
 - - - -
