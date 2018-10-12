@@ -3,7 +3,7 @@
 Feature  | Program  | Implemented
 ------------- | ------------- | -------------
 Wireless Access Point | hostapd  | [✔]
-Wireless Authentication | wpa_supplicant  | [✔]
+Wireless Authentication | WPA_Supplicant  | [✔]
 DHCP Server | isc-dhcp-server  | [✔]
 DNS Server | Unbound  | [✔]
 DNSSEC Support | DNSCrypt  | [❌]
@@ -11,8 +11,8 @@ VPN | OpenVPN  | [✔]
 VPN Killswitch | iptables | [✔]
 Network Statistics | NtopNG | [✔]
 Web Server | NGINX | [❌]
-Load Balancing | HAProxy | [✖]
-Caching Proxy | Squid | [✖]
+Load Balancing | HAProxy | [❌]
+Caching Proxy | Squid | [❌]
 
 - - - -
 
