@@ -1,6 +1,6 @@
 # neonskies - **This is currently marked [EXPERIMENTAL], this is NOT production ready!** #
 
-Feature  | Program  | Implemented
+Feature  | Program  | Implemented |
 ------------- | ------------- | -------------
 Wireless Access Point | hostapd  | [✔]
 Wireless Authentication | WPA_Supplicant  | [✔]
