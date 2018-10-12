@@ -30,6 +30,7 @@ Virtual RAM | swapon | [✔] | https://wiki.archlinux.org/index.php/swap
 Virtual RAM Encryption | dm-crypt + LUKS | [❌] | https://wiki.archlinux.org/index.php/Dm-crypt/Swap_encryption  
 HTTP Domain Filtering | squid | [❌] | https://www.cyberciti.biz/faq/squid-proxy-server-block-domain-accessing-internet/  
 DNS Domain Filtering | unbound | [❌] | https://calomel.org/unbound_dns.html  
+UPS Management | nut | [❌] | https://wiki.archlinux.org/index.php/Network_UPS_Tools https://loganmarchione.com/2017/02/raspberry-pi-ups-monitor-with-nginx-web-monitoring/  
 
 - - - -
 
