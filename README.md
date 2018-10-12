@@ -13,21 +13,21 @@ DHCP Server | isc-dhcp-server  | [✔] | https://wiki.debian.org/DHCP_Server
 DNS Server | unbound  | [❌] | https://wiki.archlinux.org/index.php/Unbound https://calomel.org/unbound_dns.html  
 DNSSEC Support | dnscrypt-proxy  | [❌] | https://wiki.archlinux.org/index.php/Dnscrypt-proxy https://dnscrypt.info/faq/  
 DNS Resolver Management Framework | openresolv | [✔] | https://wiki.archlinux.org/index.php/Openresolv  
+Dynamic DNS Client (DDNS) | ddclient | [❌] | https://freedns.afraid.org/scripts/freedns.clients.php https://calomel.org/dyndns_org.html  
 Network Device Management | NetworkManager | [✔] | https://wiki.archlinux.org/index.php/NetworkManager  
 VPN Client/Server | openvpn  | [✔] | https://docs.openvpn.net/  
 SSH Server | openssh-server | [✔] | https://wiki.archlinux.org/index.php/Secure_Shell  
 Network Statistics | ntopng | [✔] | https://www.ntop.org/guides/ntopng/index.html  
-Dynamic DNS Client (DDNS) | ddclient | [❌] | https://freedns.afraid.org/scripts/freedns.clients.php https://calomel.org/dyndns_org.html  
+Web Caching Proxy | squid | [❌] | http://www.squid-cache.org/Doc/  
 Web Server | nginx | [❌] | https://docs.nginx.com/  
 Web Server Certificate Issuance (HTTPS) | certbot | [❌] | https://certbot.eff.org/docs/  
 Load Balancing | haproxy | [❌] | https://www.haproxy.org/#docs  
-Web Caching Proxy | squid | [❌] | http://www.squid-cache.org/Doc/  
+Mail Server | confidantmail | [❌] | https://www.confidantmail.org  
 Optimized Network Settings | sysctl | [❌] | https://wiki.archlinux.org/index.php/sysctl  
 Optimized Disk Layout Settings | dd_obs_test.sh / dd_ibs_test.sh | [❌] | http://blog.tdg5.com/tuning-dd-block-size/  
+Disk Encryption | dm-crypt + LUKS | [❌] | https://wiki.archlinux.org/index.php/disk_encryption  
 Virtual RAM | swapon | [✔] | https://wiki.archlinux.org/index.php/swap  
 Virtual RAM Encryption | dm-crypt + LUKS | [❌] | https://wiki.archlinux.org/index.php/Dm-crypt/Swap_encryption  
-Disk Encryption | dm-crypt + LUKS | [❌] | https://wiki.archlinux.org/index.php/disk_encryption  
-Mail Server | confidantmail | [❌] | https://www.confidantmail.org  
 HTTP Domain Filtering | squid | [❌] | https://www.cyberciti.biz/faq/squid-proxy-server-block-domain-accessing-internet/  
 DNS Domain Filtering | unbound | [❌] | https://calomel.org/unbound_dns.html  
 
