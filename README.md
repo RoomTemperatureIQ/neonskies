@@ -3,9 +3,9 @@
 
 Feature  | Program  | Implemented | Notes |   
 ------------- | ------------- | ------------- | -------------
-Internet Tethering | AziLink | [❌] | https://wiki.archlinux.org/index.php/Android_tethering
+Internet Tethering | AziLink | [❌] | https://wiki.archlinux.org/index.php/Android_tethering  
 Wireless Access Point | hostapd  | [✔] | https://w1.fi/cgit/hostap/plain/hostapd/hostapd.conf  
-Wireless Authentication | wpa_supplicant  | [✔] | https://wiki.archlinux.org/index.php/WPA_supplicant
+Wireless Authentication | wpa_supplicant  | [✔] | https://wiki.archlinux.org/index.php/WPA_supplicant  
 DHCP Server | isc-dhcp-server  | [✔] | https://wiki.debian.org/DHCP_Server  
 DNS Server | unbound  | [❌] | https://wiki.archlinux.org/index.php/Unbound  
 DNSSEC Support | dnscrypt-proxy  | [❌] | https://wiki.archlinux.org/index.php/Dnscrypt-proxy https://dnscrypt.info/faq/  
@@ -13,13 +13,17 @@ DNS Resolver Management Framework | openresolv | [✔] | https://wiki.archlinux.
 Network Device Management | NetworkManager | [✔] | https://wiki.archlinux.org/index.php/NetworkManager  
 Packet Filter "Firewall" / VPN Killswitch | iptables | [✔] | https://wiki.archlinux.org/index.php/iptables  
 VPN Client/Server | openvpn  | [✔] | https://docs.openvpn.net/  
-SSH Server | openssh-server | [✔] | https://wiki.archlinux.org/index.php/Secure_Shell
+SSH Server | openssh-server | [✔] | https://wiki.archlinux.org/index.php/Secure_Shell  
 Network Statistics | ntopng | [✔] | https://www.ntop.org/guides/ntopng/index.html  
 Web Server | nginx | [❌] | https://docs.nginx.com/  
 Web Server Certificate Issuance (HTTPS) | certbot | [❌] | https://letsencrypt.org/  
 Load Balancing | haproxy | [❌] | https://www.haproxy.org/#docs  
 Web Caching Proxy | squid | [❌] | http://www.squid-cache.org/Doc/  
-Optimized Network Settings | sysctl | [❌] | https://wiki.archlinux.org/index.php/sysctl
+Optimized Network Settings | sysctl | [❌] | https://wiki.archlinux.org/index.php/sysctl  
+Optimized Disk Layout Settings | dd_obs_test.sh / dd_ibs_test.sh | [❌] | http://blog.tdg5.com/tuning-dd-block-size/  
+Virtual RAM | swapon | [✔] | https://wiki.archlinux.org/index.php/swap  
+Virtual RAM Encryption | luks | [❌] | https://wiki.archlinux.org/index.php/Dm-crypt/Swap_encryption  
+Disk Encryption | luks | [❌] | https://wiki.archlinux.org/index.php/disk_encryption  
 
 - - - -
 
