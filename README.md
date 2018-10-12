@@ -13,11 +13,13 @@ DNS Resolver Management Framework | openresolv | [✔] | https://wiki.archlinux.
 Network Device Management | NetworkManager | [✔] | https://wiki.archlinux.org/index.php/NetworkManager  
 Packet Filter "Firewall" / VPN Killswitch | iptables | [✔] | https://wiki.archlinux.org/index.php/iptables  
 VPN Client/Server | openvpn  | [✔] | https://docs.openvpn.net/  
+SSH Server | openssh-server | [✔] | https://wiki.archlinux.org/index.php/Secure_Shell
 Network Statistics | ntopng | [✔] | https://www.ntop.org/guides/ntopng/index.html  
 Web Server | nginx | [❌] | https://docs.nginx.com/  
 Web Server Certificate Issuance (HTTPS) | certbot | [❌] | https://letsencrypt.org/  
 Load Balancing | haproxy | [❌] | https://www.haproxy.org/#docs  
 Web Caching Proxy | squid | [❌] | http://www.squid-cache.org/Doc/  
+Optimized Network Settings | sysctl | [❌] | https://wiki.archlinux.org/index.php/sysctl
 
 - - - -
 
