@@ -3,7 +3,7 @@
 
 Feature | Program | Implemented | Priority | Notes |   
 ------------- | ------------- | ------------- | ------------- | -------------  
-Virtual RAM | swapon | [✔] | very high | https://wiki.archlinux.org/index.php/swap  
+Virtual RAM | swapon | [✔] | critical | https://wiki.archlinux.org/index.php/swap  
 Optimized Disk Layout Settings | dd_obs_test.sh / dd_ibs_test.sh | [❌] | very high | http://blog.tdg5.com/tuning-dd-block-size/  
 Optimized Network Settings | sysctl | [❌] | very high | https://wiki.archlinux.org/index.php/sysctl  
 Network Device Management | NetworkManager | [✔] | very high | https://wiki.archlinux.org/index.php/NetworkManager  
