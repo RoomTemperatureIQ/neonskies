@@ -3,24 +3,21 @@
 
 **Long-term Roadmap** 
 
-Feature | Program | Implemented | Notes |   
-------------- | ------------- | ------------- | -------------  
-IPv4 Network Settings | | [✔] | 
-IPv6 Network Settings | | [❌] | https://www.privateinternetaccess.com/helpdesk/kb/articles/why-do-you-block-ipv6  
-Packet Filter "Firewall" / VPN Killswitch | iptables | [✔] | https://wiki.archlinux.org/index.php/iptables  
-Wireless Access Point | hostapd  | [✔] | https://w1.fi/cgit/hostap/plain/hostapd/hostapd.conf  
-802.11 Authentication (WPA2/WPA/WEP) | wpa_supplicant  | [✔] | https://wiki.archlinux.org/index.php/WPA_supplicant  
-DHCP Server | isc-dhcp-server  | [✔] | https://wiki.debian.org/DHCP_Server  
-DNS Server | unbound  | [❌] | https://wiki.archlinux.org/index.php/Unbound https://calomel.org/unbound_dns.html  
-DNS Resolver Management Framework | openresolv | [✔] | https://wiki.archlinux.org/index.php/Openresolv  
-Network Device Management | NetworkManager | [✔] | https://wiki.archlinux.org/index.php/NetworkManager  
-VPN Client/Server | openvpn  | [✔] | https://docs.openvpn.net/  
-SSH Server | openssh-server | [✔] | https://wiki.archlinux.org/index.php/Secure_Shell  
-Network Statistics | ntopng | [✔] | https://www.ntop.org/guides/ntopng/index.html  
-Virtual RAM | swapon | [✔] | https://wiki.archlinux.org/index.php/swap  
-
 Priority | Feature | Program | Implemented | Notes |   
 ------------- | ------------- | ------------- | ------------- | -------------  
+very high | IPv4 Network Settings | | [✔] | 
+low | IPv6 Network Settings | | [❌] | https://www.privateinternetaccess.com/helpdesk/kb/articles/why-do-you-block-ipv6  
+very high | Packet Filter "Firewall" / VPN Killswitch | iptables | [✔] | https://wiki.archlinux.org/index.php/iptables  
+medium | Wireless Access Point | hostapd  | [✔] | https://w1.fi/cgit/hostap/plain/hostapd/hostapd.conf  
+medium | 802.11 Authentication (WPA2/WPA/WEP) | wpa_supplicant  | [✔] | https://wiki.archlinux.org/index.php/WPA_supplicant  
+very high | DHCP Server | isc-dhcp-server  | [✔] | https://wiki.debian.org/DHCP_Server  
+very high | DNS Server | unbound  | [❌] | https://wiki.archlinux.org/index.php/Unbound https://calomel.org/unbound_dns.html  
+medium | DNS Resolver Management Framework | openresolv | [✔] | https://wiki.archlinux.org/index.php/Openresolv  
+very high | Network Device Management | NetworkManager | [✔] | https://wiki.archlinux.org/index.php/NetworkManager  
+very high | VPN Client/Server | openvpn  | [✔] | https://docs.openvpn.net/  
+very high | SSH Server | openssh-server | [✔] | https://wiki.archlinux.org/index.php/Secure_Shell  
+medium | Network Statistics | ntopng | [✔] | https://www.ntop.org/guides/ntopng/index.html  
+very high | Virtual RAM | swapon | [✔] | https://wiki.archlinux.org/index.php/swap  
 high | Internet Tethering | AziLink | [❌] | https://wiki.archlinux.org/index.php/Android_tethering  
 low | UPS Management | nut | [❌] | https://wiki.archlinux.org/index.php/Network_UPS_Tools https://loganmarchione.com/2017/02/raspberry-pi-ups-monitor-with-nginx-web-monitoring/  
 medium | DNSSEC Support | dnscrypt-proxy  | [❌] | https://wiki.archlinux.org/index.php/Dnscrypt-proxy https://dnscrypt.info/faq/  
