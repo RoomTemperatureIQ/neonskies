@@ -7,14 +7,14 @@ Feature | Program | Implemented | Priority | Notes |
 ------------- | ------------- | ------------- | ------------- | -------------  
 Virtual RAM | swapon | [✔] | very high | https://wiki.archlinux.org/index.php/swap  
 Network Device Management | NetworkManager | [✔] | very high | https://wiki.archlinux.org/index.php/NetworkManager  
-DNS Server | unbound  | [❌] | very high | https://wiki.archlinux.org/index.php/Unbound https://calomel.org/unbound_dns.html  
-VPN Client/Server | openvpn  | [✔] | very high | https://docs.openvpn.net/  
 SSH Server | openssh-server | [✔] | very high | https://wiki.archlinux.org/index.php/Secure_Shell  
 DHCP Server | isc-dhcp-server  | [✔] | very high | https://wiki.debian.org/DHCP_Server  
+DNS Server | unbound  | [❌] | very high | https://wiki.archlinux.org/index.php/Unbound https://calomel.org/unbound_dns.html  
+VPN Client/Server | openvpn  | [✔] | very high | https://docs.openvpn.net/  
 Packet Filter "Firewall" / VPN Killswitch | iptables | [✔] | very high | https://wiki.archlinux.org/index.php/iptables  
 Optimized Network Settings | sysctl | [❌] | very high | https://wiki.archlinux.org/index.php/sysctl  
-Internet Tethering | AziLink | [❌] | high | https://wiki.archlinux.org/index.php/Android_tethering  
 Optimized Disk Layout Settings | dd_obs_test.sh / dd_ibs_test.sh | [❌] | high | http://blog.tdg5.com/tuning-dd-block-size/  
+Internet Tethering | AziLink | [❌] | high | https://wiki.archlinux.org/index.php/Android_tethering  
 Wireless Access Point | hostapd  | [✔] | medium | https://w1.fi/cgit/hostap/plain/hostapd/hostapd.conf  
 802.11 Authentication (WPA2/WPA/WEP) | wpa_supplicant  | [✔] | medium | https://wiki.archlinux.org/index.php/WPA_supplicant  
 DNS Resolver Management Framework | openresolv | [✔] | medium | https://wiki.archlinux.org/index.php/Openresolv  
