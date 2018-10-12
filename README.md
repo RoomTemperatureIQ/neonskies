@@ -1,8 +1,8 @@
 # neonskies #
 **This is currently marked [EXPERIMENTAL], this is NOT production ready!**
 
-Feature  | Program  | Implemented | Notes
-------------- | ------------- | -------------
+Feature  | Program  | Implemented | Notes  
+------------- | ------------- | ------------- | -------------
 Wireless Access Point | hostapd  | [✔] | https://w1.fi/cgit/hostap/plain/hostapd/hostapd.conf  
 Wireless Authentication | WPA_Supplicant  | [✔] | https://wiki.archlinux.org/index.php/WPA_supplicant
 DHCP Server | isc-dhcp-server  | [✔] | https://wiki.debian.org/DHCP_Server  
