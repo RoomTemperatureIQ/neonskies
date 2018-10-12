@@ -27,6 +27,9 @@ Optimized Disk Layout Settings | dd_obs_test.sh / dd_ibs_test.sh | [❌] | http:
 Virtual RAM | swapon | [✔] | https://wiki.archlinux.org/index.php/swap  
 Virtual RAM Encryption | dm-crypt + LUKS | [❌] | https://wiki.archlinux.org/index.php/Dm-crypt/Swap_encryption  
 Disk Encryption | dm-crypt + LUKS | [❌] | https://wiki.archlinux.org/index.php/disk_encryption  
+Mail Server | confidantmail | [❌] | https://www.confidantmail.org  
+HTTP Domain Filtering | squid | [❌] | https://www.cyberciti.biz/faq/squid-proxy-server-block-domain-accessing-internet/  
+DNS Domain Filtering | unbound | [❌] | https://calomel.org/unbound_dns.html  
 
 - - - -
 
@@ -120,7 +123,7 @@ https://wiki.archlinux.org/index.php/Dm-crypt/Swap_encryption
 `apt-get install gparted`  
 `gparted`  
 `resize2fs`  
-`apt-get install apt-listbugs apt-listchanges arpwatch auditd bleachbit curl debsecan debian-goodies debsums firewalk htop iperf iptables-optimizer iptables-persistent irssi locate lynis lynx macchanger netcat nethogs nload openresolv screen speedtest-cli ntopng openvpn unbound dnscrypt-proxy isc-dhcp-server hostapd wpasupplicant wireless-tools iw wvdial`  
+`apt-get install apt-listbugs apt-listchanges arpwatch auditd bleachbit curl debsecan debian-goodies debsums dnstop firewalk htop iperf iptables-optimizer iptables-persistent irssi locate lynis lynx macchanger netcat nethogs nload openresolv screen speedtest-cli ntopng openvpn unbound dnscrypt-proxy isc-dhcp-server hostapd wpasupplicant wireless-tools iw wvdial`  
 up for chopping block: `hexchat`  
 we use `debian-goodies` for `checkrestart`  
 mono .net framework - https://www.mono-project.com/download/stable/#download-lin-debian  
@@ -132,6 +135,7 @@ https://dnsprivacy.org/wiki/display/DP/Performance+Measurements
 `updatedb`  
 shell settings (bash_history / etc.)  
 
+`dnstop`  
 `nload -U G -u M -i 102400 -o 102400`
 run I/O benchmarking (dd_obs_test / dd_ibs_test)  
 `fdisk -l`  
