@@ -5,6 +5,7 @@ Feature  | Program  | Implemented | Notes |
 ------------- | ------------- | ------------- | -------------
 IPv4 Network Settings | | [✔] | 
 IPv6 Network Settings | | [❌] | 
+Packet Filter "Firewall" / VPN Killswitch | iptables | [✔] | https://wiki.archlinux.org/index.php/iptables  
 Internet Tethering | AziLink | [❌] | https://wiki.archlinux.org/index.php/Android_tethering  
 Wireless Access Point | hostapd  | [✔] | https://w1.fi/cgit/hostap/plain/hostapd/hostapd.conf  
 Wireless Authentication | wpa_supplicant  | [✔] | https://wiki.archlinux.org/index.php/WPA_supplicant  
@@ -13,7 +14,6 @@ DNS Server | unbound  | [❌] | https://wiki.archlinux.org/index.php/Unbound
 DNSSEC Support | dnscrypt-proxy  | [❌] | https://wiki.archlinux.org/index.php/Dnscrypt-proxy https://dnscrypt.info/faq/  
 DNS Resolver Management Framework | openresolv | [✔] | https://wiki.archlinux.org/index.php/Openresolv  
 Network Device Management | NetworkManager | [✔] | https://wiki.archlinux.org/index.php/NetworkManager  
-Packet Filter "Firewall" / VPN Killswitch | iptables | [✔] | https://wiki.archlinux.org/index.php/iptables  
 VPN Client/Server | openvpn  | [✔] | https://docs.openvpn.net/  
 SSH Server | openssh-server | [✔] | https://wiki.archlinux.org/index.php/Secure_Shell  
 Network Statistics | ntopng | [✔] | https://www.ntop.org/guides/ntopng/index.html  
