@@ -48,7 +48,7 @@ proc /proc proc nodev,noexec,nosuid 0  0
 `root	ALL=(ALL:ALL) ALL`  
 `pi	ALL=(ALL:ALL) ALL`  
 
-# /etc/sysctl.conf
+# /etc/sysctl.d/99-sysctl.conf
 net.ipv4.ip_forward=1  
 `sysctl -w net.ipv4.ip_forward=1`  
 https://wiki.archlinux.org/index.php/Sysctl  
@@ -69,6 +69,7 @@ setup non-priv user that can `sudo`
 `systemctl restart ssh.service`  
 `dpkg-reconfigure tzdata`  
 `update-locale`  
+`timedatectl`  
 
 https://www.tecmint.com/create-a-linux-swap-file/  
 `fallocate --length 2GiB /mnt/swapfile`  
