@@ -3,6 +3,8 @@
 
 Feature  | Program  | Implemented | Notes |   
 ------------- | ------------- | ------------- | -------------
+IPv4 Network Settings | | [✔] | 
+IPv6 Network Settings | | [❌] | 
 Internet Tethering | AziLink | [❌] | https://wiki.archlinux.org/index.php/Android_tethering  
 Wireless Access Point | hostapd  | [✔] | https://w1.fi/cgit/hostap/plain/hostapd/hostapd.conf  
 Wireless Authentication | wpa_supplicant  | [✔] | https://wiki.archlinux.org/index.php/WPA_supplicant  
