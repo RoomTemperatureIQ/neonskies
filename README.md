@@ -1,7 +1,7 @@
 # neonskies #
 **This is currently marked [EXPERIMENTAL], this is NOT production ready!**
 
-Feature  | Program  | Implemented | Notes  
+Feature  | Program  | Implemented | Notes |   
 ------------- | ------------- | ------------- | -------------
 Wireless Access Point | hostapd  | [✔] | https://w1.fi/cgit/hostap/plain/hostapd/hostapd.conf  
 Wireless Authentication | WPA_Supplicant  | [✔] | https://wiki.archlinux.org/index.php/WPA_supplicant
@@ -15,9 +15,8 @@ Web Server | NGINX | [❌] | https://docs.nginx.com/
 HTTPS Certificate Issuance | certbot | [❌] | https://letsencrypt.org/  
 Load Balancing | HAProxy | [❌] | https://www.haproxy.org/#docs  
 Web Caching Proxy | Squid | [❌] | http://www.squid-cache.org/Doc/  
-
 Network Device Management | NetworkManager | [✔] | https://wiki.archlinux.org/index.php/NetworkManager  
- | openresolv | [✔] | https://wiki.archlinux.org/index.php/Openresolv  
+DNS Resolver Management Framework | openresolv | [✔] | https://wiki.archlinux.org/index.php/Openresolv  
 
 
 - - - -
