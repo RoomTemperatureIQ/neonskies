@@ -12,7 +12,7 @@ VPN Killswitch | iptables | [✔]
 Network Statistics | NtopNG | [✔]
 Web Server | NGINX | [❌]
 Load Balancing | HAProxy | [❌]
-Caching Proxy | Squid | [❌]
+Web Caching Proxy | Squid | [❌]
 
 - - - -
 
