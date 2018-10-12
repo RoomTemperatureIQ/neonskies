@@ -5,33 +5,33 @@
 
 Feature | Program | Implemented | Priority | Notes |   
 ------------- | ------------- | ------------- | ------------- | -------------  
-IPv6 Network Settings | | [❌] | low | https://www.privateinternetaccess.com/helpdesk/kb/articles/why-do-you-block-ipv6  
-Packet Filter "Firewall" / VPN Killswitch | iptables | [✔] | very high | https://wiki.archlinux.org/index.php/iptables  
-Wireless Access Point | hostapd  | [✔] | medium | https://w1.fi/cgit/hostap/plain/hostapd/hostapd.conf  
-802.11 Authentication (WPA2/WPA/WEP) | wpa_supplicant  | [✔] | medium | https://wiki.archlinux.org/index.php/WPA_supplicant  
-DHCP Server | isc-dhcp-server  | [✔] | very high | https://wiki.debian.org/DHCP_Server  
-DNS Server | unbound  | [❌] | very high | https://wiki.archlinux.org/index.php/Unbound https://calomel.org/unbound_dns.html  
-DNS Resolver Management Framework | openresolv | [✔] | medium | https://wiki.archlinux.org/index.php/Openresolv  
+Virtual RAM | swapon | [✔] | very high | https://wiki.archlinux.org/index.php/swap  
 Network Device Management | NetworkManager | [✔] | very high | https://wiki.archlinux.org/index.php/NetworkManager  
+DNS Server | unbound  | [❌] | very high | https://wiki.archlinux.org/index.php/Unbound https://calomel.org/unbound_dns.html  
 VPN Client/Server | openvpn  | [✔] | very high | https://docs.openvpn.net/  
 SSH Server | openssh-server | [✔] | very high | https://wiki.archlinux.org/index.php/Secure_Shell  
-Network Statistics | ntopng | [✔] | medium | https://www.ntop.org/guides/ntopng/index.html  
-Virtual RAM | swapon | [✔] | very high | https://wiki.archlinux.org/index.php/swap  
+DHCP Server | isc-dhcp-server  | [✔] | very high | https://wiki.debian.org/DHCP_Server  
+Packet Filter "Firewall" / VPN Killswitch | iptables | [✔] | very high | https://wiki.archlinux.org/index.php/iptables  
+Optimized Network Settings | sysctl | [❌] | very high | https://wiki.archlinux.org/index.php/sysctl  
 Internet Tethering | AziLink | [❌] | high | https://wiki.archlinux.org/index.php/Android_tethering  
-UPS Management | nut | [❌] | low | https://wiki.archlinux.org/index.php/Network_UPS_Tools https://loganmarchione.com/2017/02/raspberry-pi-ups-monitor-with-nginx-web-monitoring/  
+Optimized Disk Layout Settings | dd_obs_test.sh / dd_ibs_test.sh | [❌] | high | http://blog.tdg5.com/tuning-dd-block-size/  
+Wireless Access Point | hostapd  | [✔] | medium | https://w1.fi/cgit/hostap/plain/hostapd/hostapd.conf  
+802.11 Authentication (WPA2/WPA/WEP) | wpa_supplicant  | [✔] | medium | https://wiki.archlinux.org/index.php/WPA_supplicant  
+DNS Resolver Management Framework | openresolv | [✔] | medium | https://wiki.archlinux.org/index.php/Openresolv  
+Network Statistics | ntopng | [✔] | medium | https://www.ntop.org/guides/ntopng/index.html  
 DNSSEC Support | dnscrypt-proxy  | [❌] | medium | https://wiki.archlinux.org/index.php/Dnscrypt-proxy https://dnscrypt.info/faq/  
-Dynamic DNS Client (DDNS) | ddclient | [❌] | very low | https://freedns.afraid.org/scripts/freedns.clients.php https://calomel.org/dyndns_org.html  
-Web Server | nginx | [❌] | low | https://docs.nginx.com/  
-Web Server Certificate Issuance (HTTPS) | certbot | [❌] | low | https://certbot.eff.org/docs/  
-Web Caching Proxy | squid | [❌] | very low | http://www.squid-cache.org/Doc/  
-Load Balancing | haproxy | [❌] | very low | https://www.haproxy.org/#docs  
-Mail Server | confidantmail | [❌] | low | https://www.confidantmail.org  
-HTTP Domain Filtering | squid | [❌] | very low | https://www.cyberciti.biz/faq/squid-proxy-server-block-domain-accessing-internet/  
 DNS Domain Filtering | unbound | [❌] | medium | https://calomel.org/unbound_dns.html  
 Disk Encryption | dm-crypt + LUKS | [❌] | medium | https://wiki.archlinux.org/index.php/disk_encryption  
 Virtual RAM Encryption | dm-crypt + LUKS | [❌] | medium | https://wiki.archlinux.org/index.php/Dm-crypt/Swap_encryption  
-Optimized Network Settings | sysctl | [❌] | very high | https://wiki.archlinux.org/index.php/sysctl  
-Optimized Disk Layout Settings | dd_obs_test.sh / dd_ibs_test.sh | [❌] | high | http://blog.tdg5.com/tuning-dd-block-size/  
+IPv6 Network Settings | | [❌] | low | https://www.privateinternetaccess.com/helpdesk/kb/articles/why-do-you-block-ipv6  
+Web Server | nginx | [❌] | low | https://docs.nginx.com/  
+Web Server Certificate Issuance (HTTPS) | certbot | [❌] | low | https://certbot.eff.org/docs/  
+UPS Management | nut | [❌] | low | https://wiki.archlinux.org/index.php/Network_UPS_Tools https://loganmarchione.com/2017/02/raspberry-pi-ups-monitor-with-nginx-web-monitoring/  
+Mail Server | confidantmail | [❌] | low | https://www.confidantmail.org  
+Dynamic DNS Client (DDNS) | ddclient | [❌] | very low | https://freedns.afraid.org/scripts/freedns.clients.php https://calomel.org/dyndns_org.html  
+Web Caching Proxy | squid | [❌] | very low | http://www.squid-cache.org/Doc/  
+Load Balancing | haproxy | [❌] | very low | https://www.haproxy.org/#docs  
+HTTP Domain Filtering | squid | [❌] | very low | https://www.cyberciti.biz/faq/squid-proxy-server-block-domain-accessing-internet/  
 
 
 - - - -
