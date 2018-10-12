@@ -4,7 +4,7 @@
 Feature  | Program  | Implemented | Notes |   
 ------------- | ------------- | ------------- | -------------
 IPv4 Network Settings | | [✔] | 
-IPv6 Network Settings | | [❌] | 
+IPv6 Network Settings | | [❌] | https://www.privateinternetaccess.com/helpdesk/kb/articles/why-do-you-block-ipv6  
 Packet Filter "Firewall" / VPN Killswitch | iptables | [✔] | https://wiki.archlinux.org/index.php/iptables  
 Internet Tethering | AziLink | [❌] | https://wiki.archlinux.org/index.php/Android_tethering  
 Wireless Access Point | hostapd  | [✔] | https://w1.fi/cgit/hostap/plain/hostapd/hostapd.conf  
