@@ -6,10 +6,12 @@
 Feature | Program | Implemented | Priority | Notes |   
 ------------- | ------------- | ------------- | ------------- | -------------  
 Virtual RAM | swapon | [✔] | critical | https://wiki.archlinux.org/index.php/swap  
+Virtual RAM Encryption | dm-crypt + LUKS | [❌] | critical | https://wiki.archlinux.org/index.php/Dm-crypt/Swap_encryption  
 Optimized Disk Layout Settings | dd_obs_test.sh / dd_ibs_test.sh | [❌] | critical | http://blog.tdg5.com/tuning-dd-block-size/  
-Optimized Network Settings | sysctl | [❌] | critical | https://wiki.archlinux.org/index.php/sysctl  
+Disk Encryption | dm-crypt + LUKS | [❌] | critical | https://wiki.archlinux.org/index.php/disk_encryption  
 Packet Filter "Firewall" / VPN Killswitch | iptables | [✔] | critical | https://wiki.archlinux.org/index.php/iptables  
 Optimized Firewall Rules | iptables-optimizer | [✔] | critical | http://manpages.ubuntu.com/manpages/xenial/man8/iptables-optimizer.8.html  
+Optimized Network Settings | sysctl | [❌] | critical | https://wiki.archlinux.org/index.php/sysctl  
 Network Device Management | NetworkManager | [✔] | very high | https://wiki.archlinux.org/index.php/NetworkManager  
 DNS Resolver Management Framework | openresolv | [✔] | very high | https://wiki.archlinux.org/index.php/Openresolv  
 SSH Server | openssh-server | [✔] | very high | https://wiki.archlinux.org/index.php/Secure_Shell  
@@ -26,8 +28,6 @@ Web Server | nginx | [❌] | medium | https://docs.nginx.com/
 Web Server Certificate Issuance (HTTPS) | certbot | [❌] | medium | https://certbot.eff.org/docs/  
 UPS Management | nut | [❌] | medium | https://wiki.archlinux.org/index.php/Network_UPS_Tools https://loganmarchione.com/2017/02/raspberry-pi-ups-monitor-with-nginx-web-monitoring/  
 Dynamic DNS Client (DDNS) | ddclient | [❌] | medium | https://freedns.afraid.org/scripts/freedns.clients.php https://calomel.org/dyndns_org.html  
-Disk Encryption | dm-crypt + LUKS | [❌] | low | https://wiki.archlinux.org/index.php/disk_encryption  
-Virtual RAM Encryption | dm-crypt + LUKS | [❌] | low | https://wiki.archlinux.org/index.php/Dm-crypt/Swap_encryption  
 Mail Server | confidantmail | [❌] | low | https://www.confidantmail.org  
 Load Balancing | haproxy | [❌] | very low | https://www.haproxy.org/#docs  
 Web Caching Proxy | squid | [❌] | very low | http://www.squid-cache.org/Doc/  
