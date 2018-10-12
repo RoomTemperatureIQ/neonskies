@@ -1,6 +1,9 @@
-# neonskies
+# neonskies #
+This is currently marked [EXPERIMENTAL], this is NOT production ready!
 
-# .bashrc
+
+
+# .bashrc #
 LANG="en_US.UTF-8"  
 HISTSIZE=1000000  
 HISTFILESIZE=2000000  
@@ -10,7 +13,7 @@ shopt -s cmdhist
 shopt -s lithist  
 https://unix.stackexchange.com/questions/109032/how-to-get-a-history-entry-to-properly-display-on-multiple-lines  
 
-# /etc/crontab
+# /etc/crontab #
 check update certificate once a month at 00:00  
 check update git repo once a day at 00:00  
 0 0 1 * * /opt/letsencrypt/letsencrypt-auto renew  
@@ -18,7 +21,7 @@ check update git repo once a day at 00:00
 make script to check certificate expiration and adjust crontab for renew  
 
 
-# /etc/fstab
+# /etc/fstab #
 ```
 # <file system> <mount point>   <type>  <options>       <dump>  <pass>  
 proc /proc proc nodev,noexec,nosuid 0  0  
@@ -28,34 +31,34 @@ proc /proc proc nodev,noexec,nosuid 0  0
 # dev/SWAP none swap sw 0 0  
 ```
 
-# /etc/ntopng.conf
+# /etc/ntopng.conf #
 `-e=`  
 `-i=eth0`  
 `-i=wlan0`  
 `-i=wlan1`  
 `-w=3000`  
 
-# /etc/resolv.conf
+# /etc/resolv.conf #
 `chattr +i /etc/resolv.conf` # make read-only (immutable)
 
-# /etc/hostapd/hostapd.conf
+# /etc/hostapd/hostapd.conf #
 
-# /etc/network/interfaces
+# /etc/network/interfaces #
 
-# /etc/security/limits.conf
+# /etc/security/limits.conf #
 
-# /etc/sudoers
+# /etc/sudoers #
 `root	ALL=(ALL:ALL) ALL`  
 `pi	ALL=(ALL:ALL) ALL`  
 
-# /etc/sysctl.d/99-sysctl.conf
+# /etc/sysctl.d/99-sysctl.conf #
 net.ipv4.ip_forward=1  
 `sysctl -w net.ipv4.ip_forward=1`  
 https://wiki.archlinux.org/index.php/Sysctl  
 `# use swap (0 is full RAM)`  
 vm.swappiness=10
 
-# movein.sh
+# movein.sh #
 `fake-hwclock`  
 http://www.linuxfromscratch.org/blfs/view/svn/postlfs/initramfs.html  
 `passwd`  
@@ -111,7 +114,7 @@ https://unix.stackexchange.com/a/360080
 setup swap file  
 run `bootgui.sh disable`  
 
-# setup core services
+# setup core services #
 setup deb packages (sources.list)  
 setup fastest deb mirror (`netselect-apt`)  
 setup `unattended-upgrades`  
@@ -131,7 +134,7 @@ setup `hostapd` on rpi
 setup `wpa_supplicant` on rpi  
 setup `ntopng` on rpi  
 
-# pia-nm.sh
+# pia-nm.sh #
 https://wiki.archlinux.org/index.php/NetworkManager  
 https://wiki.archlinux.org/index.php/GNOME/Keyring  
 `apt-get install uuid-runtime`  
@@ -140,7 +143,7 @@ password-flags
 `nmcli con up id 'VPN_Name'`  
 `nmcli con down id 'VPN_Name'`  
 
-# wireshark (tshark)
+# wireshark (tshark) #
 `sudo chgrp wireshark /usr/bin/dumpcap`  
 `sudo chmod o-rx /usr/bin/dumpcap`  
 `sudo setcap 'CAP_NET_RAW+eip CAP_NET_ADMIN+eip' /usr/bin/dumpcap`  
@@ -150,11 +153,11 @@ password-flags
 `sudo wireshark`  
 `sudo tshark`  
 
-# Node.js (NPM)
+# Node.js (NPM) #
 ethereumjs-tx  
 jQuery
 
-# FreeNode - SASL & Cloak
+# FreeNode - SASL & Cloak #
 Server: chat.freenode.net  
 Desc: FreeNode  
 Port: 6697 # Port for SASL  
@@ -203,76 +206,76 @@ Timestamp Logs: [✔]
 `/ctcp $nick xdcc`  
 mode: +Z+i  
 
-# extra
+# extra #
 setup kernel build environment  
 recompile kernel  
 
-# arpwatch (ARP Poisoning)
+# arpwatch (ARP Poisoning) #
 `arpwatch`  
 
-# DANE DNSSEC TLS Checker
+# DANE DNSSEC TLS Checker #
 
-# GETH
+# GETH #
 setup geth light node sync  
 
-# honeyd
+# honeyd #
 
-# IDA Pro
+# IDA Pro #
 
-# IPTABLES
+# IPTABLES #
 outgoing only UDP OpenVPN port (VPN Kill Switch) tun0  
 incoming - `ssh`: not 22, `unbound`: 53, `isc-dhcp-server`: 67/68, `nginx`: 80/443, `ntp`: 123, `squid`: 8080, `ntopng`: LAN side, `geth`: LAN side, `turbovnc`: LAN side (use SSH tunnel?)  
 IPv6 rules  
 
-# IRSSI
+# IRSSI #
 use `screen` to detach
 
-# Let's Encrypt (SSL Certificate Issuance)
+# Let's Encrypt (SSL Certificate Issuance) #
 `certbot`  
 https://wiki.archlinux.org/index.php/Certbot  
 
-# NGINX
+# NGINX #
 .htaccess  
 wildcard forward  
 
-# NtopNG
+# NtopNG #
 see flows for `iptables` rule creation
 
-# OllyDbg
+# OllyDbg #
 
-# OpenVPN
+# OpenVPN #
 block-outside-dns  
 
-# osquery
+# osquery #
 `osqueryd`  
 
-# ProxyChains
+# ProxyChains #
 
-# Selenium
+# Selenium #
 https://github.com/SeleniumHQ/selenium  
 
-# SniffDet
+# SniffDet #
 
-# SNORT
+# SNORT #
 
-# SQUID
+# SQUID #
 
-# strongSwan
+# strongSwan #
 
-# Tripwire
+# Tripwire #
 
-# VirtualGL / TurboVNC
+# VirtualGL / TurboVNC #
 
-# Visual Studio (MSFT)
+# Visual Studio (MSFT) #
 use mono for .Net Framework compatibility  
 
-# gkeyring.py
+# gkeyring.py #
 
-# youtube-dl.py
+# youtube-dl.py #
 
-# pfSense
+# pfSense #
 
-# OS Hardening / tweaking
+# OS Hardening / tweaking #
 https://www.askapache.com/optimize/super-speed-secrets/  
 chroot  
 jails  
