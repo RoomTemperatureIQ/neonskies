@@ -22,8 +22,8 @@ Web Caching Proxy | squid | [❌] | http://www.squid-cache.org/Doc/
 Optimized Network Settings | sysctl | [❌] | https://wiki.archlinux.org/index.php/sysctl  
 Optimized Disk Layout Settings | dd_obs_test.sh / dd_ibs_test.sh | [❌] | http://blog.tdg5.com/tuning-dd-block-size/  
 Virtual RAM | swapon | [✔] | https://wiki.archlinux.org/index.php/swap  
-Virtual RAM Encryption | luks | [❌] | https://wiki.archlinux.org/index.php/Dm-crypt/Swap_encryption  
-Disk Encryption | luks | [❌] | https://wiki.archlinux.org/index.php/disk_encryption  
+Virtual RAM Encryption | dm-crypt + LUKS | [❌] | https://wiki.archlinux.org/index.php/Dm-crypt/Swap_encryption  
+Disk Encryption | dm-crypt + LUKS | [❌] | https://wiki.archlinux.org/index.php/disk_encryption  
 
 - - - -
 
