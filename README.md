@@ -12,7 +12,6 @@ Disk Encryption | dm-crypt + LUKS | [❌] | critical | https://wiki.archlinux.or
 Packet Filter "Firewall" / VPN Killswitch | iptables | [✔] | critical | https://wiki.archlinux.org/index.php/iptables  
 Optimized Firewall Rules | iptables-optimizer | [✔] | critical | http://manpages.ubuntu.com/manpages/xenial/man8/iptables-optimizer.8.html  
 Optimized Network Settings | sysctl | [❌] | critical | https://wiki.archlinux.org/index.php/sysctl  
-
 Network Device MAC Address Spoofing | udev systemd-networkd NetworkManager macchanger | [✔] | critical | https://wiki.archlinux.org/index.php/MAC_address_spoofing  
 Network Device Management | NetworkManager | [✔] | very high | https://wiki.archlinux.org/index.php/NetworkManager  
 DNS Resolver Management Framework | openresolv | [✔] | very high | https://wiki.archlinux.org/index.php/Openresolv  
