@@ -1,7 +1,16 @@
 # neonskies #
-This is currently marked [EXPERIMENTAL], this is NOT production ready!
+**This is currently marked [EXPERIMENTAL], this is NOT production ready!**
 
+Feature  | Program  | Implemented | 
+------------- | ------------- | -------------
+Wireless Access Point | hostapd  | [✔]
+Wireless Authentication | wpa_supplicant  | [✔]
+DHCP Server | isc-dhcp-server  | [✔]
+DNS Server | Unbound  | [✔]
+DNSSEC Support | DNSCrypt  | [ ]
+VPN | OpenVPN  | [✔]
 
+- - - -
 
 # .bashrc #
 LANG="en_US.UTF-8"  
