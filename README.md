@@ -12,11 +12,11 @@ DNSSEC Support | dnscrypt-proxy  | [❌] | https://wiki.archlinux.org/index.php/
 DNS Resolver Management Framework | openresolv | [✔] | https://wiki.archlinux.org/index.php/Openresolv  
 Network Device Management | NetworkManager | [✔] | https://wiki.archlinux.org/index.php/NetworkManager  
 Packet Filter "Firewall" / VPN Killswitch | iptables | [✔] | https://wiki.archlinux.org/index.php/iptables  
-VPN Client/Server | OpenVPN  | [✔] | https://docs.openvpn.net/  
-Network Statistics | NtopNG | [✔] | https://www.ntop.org/guides/ntopng/index.html  
+VPN Client/Server | openvpn  | [✔] | https://docs.openvpn.net/  
+Network Statistics | ntopng | [✔] | https://www.ntop.org/guides/ntopng/index.html  
 Web Server | nginx | [❌] | https://docs.nginx.com/  
 Web Server Certificate Issuance (HTTPS) | certbot | [❌] | https://letsencrypt.org/  
-Load Balancing | HAProxy | [❌] | https://www.haproxy.org/#docs  
+Load Balancing | haproxy | [❌] | https://www.haproxy.org/#docs  
 Web Caching Proxy | squid | [❌] | http://www.squid-cache.org/Doc/  
 
 - - - -
