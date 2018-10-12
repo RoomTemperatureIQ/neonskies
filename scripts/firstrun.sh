@@ -22,7 +22,11 @@ apt-get update
 
 # install `locate` and run `updatedb` to index system
 # install `netselect-apt` for closest download mirror
-apt-get install locate netselect-apt
+apt-get install iptables-optimizer iptables-persistent locate netselect-apt
+
+# enable iptables load at boot
+systemctl enable netfilter-persistent
+systemctl start netfilter-persistent
 
 # update closest mirror to download from
 netselect-apt
