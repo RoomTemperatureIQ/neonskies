@@ -5,7 +5,6 @@
 
 Feature | Program | Implemented | Priority | Notes |   
 ------------- | ------------- | ------------- | ------------- | -------------  
-IPv4 Network Settings | | [✔] | very high |  
 IPv6 Network Settings | | [❌] | low | https://www.privateinternetaccess.com/helpdesk/kb/articles/why-do-you-block-ipv6  
 Packet Filter "Firewall" / VPN Killswitch | iptables | [✔] | very high | https://wiki.archlinux.org/index.php/iptables  
 Wireless Access Point | hostapd  | [✔] | medium | https://w1.fi/cgit/hostap/plain/hostapd/hostapd.conf  
