@@ -52,6 +52,7 @@ sudo apt-get dselect-upgrade
 ```
 https://kalilinuxtutorials.com/dnsdiag/  
 https://kalilinuxtutorials.com/mail-security-testing/  
+https://piratefache.ch/display-real-time-tweets-on-a-map-with-basemap-and-tweepy/  
 
 
 # NODES  
