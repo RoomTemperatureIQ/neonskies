@@ -1,5 +1,7 @@
 #!/bin/sh  
 
+# wget https://example.com/firstrun.sh -O – | sh – 
+
 # remove existing SSH Server Key files (installed from ISO)
 rm /etc/ssh/ssh_host_*
 
