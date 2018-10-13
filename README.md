@@ -51,6 +51,8 @@ sudo apt-get autoremove
 sudo apt-get dselect-upgrade  
 ```
 https://kalilinuxtutorials.com/dnsdiag/  
+https://kalilinuxtutorials.com/mail-security-testing/  
+
 
 # NODES  
 * Partition disk per Blockchain Node server ($fullnode)  
