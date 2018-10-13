@@ -92,6 +92,9 @@ https://wiki.archlinux.org/index.php/Sysctl
 `# use swap (0 is full RAM)`  
 vm.swappiness=10
 
+# /etc/unbound/unbound.conf.d/unbound.conf
+run `unbound-control-setup`  
+
 # movein.sh #
 `fake-hwclock`  
 http://www.linuxfromscratch.org/blfs/view/svn/postlfs/initramfs.html  
