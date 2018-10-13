@@ -21,7 +21,7 @@ Internet Tethering | AziLink | [❌] | very high | https://wiki.archlinux.org/in
 DHCP Server | isc-dhcp-server  | [✔] | high | https://wiki.debian.org/DHCP_Server  
 DNS Server | unbound  | [❌] | high | https://wiki.archlinux.org/index.php/Unbound https://calomel.org/unbound_dns.html  
 DNSSEC Support | dnscrypt-proxy  | [❌] | high | https://wiki.archlinux.org/index.php/Dnscrypt-proxy https://dnscrypt.info/faq/  
-DNS Domain Filtering | unbound | [❌] | high | https://calomel.org/unbound_dns.html  
+DNS Domain Filtering (Adblocker) | unbound | [❌] | high | https://calomel.org/unbound_dns.html https://wiki.archlinux.org/index.php/unbound#Block_advertising  
 Wireless Access Point | hostapd  | [✔] | high | https://w1.fi/cgit/hostap/plain/hostapd/hostapd.conf  
 802.11 Authentication (WPA2/WPA/WEP) | wpa_supplicant  | [✔] | high | https://wiki.archlinux.org/index.php/WPA_supplicant  
 Network Statistics | ntopng | [✔] | high | https://www.ntop.org/guides/ntopng/index.html  
