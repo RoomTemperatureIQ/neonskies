@@ -17,6 +17,7 @@ Network Device Management | NetworkManager | [✔] | very high | https://wiki.ar
 DNS Resolver Management Framework | openresolv | [✔] | very high | https://wiki.archlinux.org/index.php/Openresolv  
 SSH Server | openssh-server | [✔] | very high | https://wiki.archlinux.org/index.php/Secure_Shell  
 VPN Client/Server | openvpn  | [✔] | very high | https://docs.openvpn.net/  
+Tor Support | tor  | [❌] | very high | https://wiki.archlinux.org/index.php/tor  
 Internet Tethering | AziLink | [❌] | very high | https://wiki.archlinux.org/index.php/Android_tethering  
 DHCP Server | isc-dhcp-server  | [✔] | high | https://wiki.debian.org/DHCP_Server  
 DNS Server | unbound  | [❌] | high | https://wiki.archlinux.org/index.php/Unbound https://calomel.org/unbound_dns.html  
@@ -37,18 +38,24 @@ IPv6 Network Settings | | [❌] | very low | https://www.privateinternetaccess.c
 
 - - - -
 
-# Notes
+# Notes  
 https://arstechnica.com/civis/viewtopic.php?p=23543504&sid=6fbaab4021a7f5f8b0059e3b04410fb3#p23543504  
-```I found this. Seems like parts of it may be relevant. Create a backup of what packages are currently installed:
-sudo dpkg --get-selections > list.txt
-# Then (on another system) restore installations from that list:
-sudo dpkg --clear-selections
-sudo dpkg --set-selections < list.txt
-# To get rid of stale packages
-sudo apt-get autoremove
-# To get installed like at backup time
-sudo apt-get dselect-upgrade
+```I found this. Seems like parts of it may be relevant. Create a backup of what packages are currently installed:  
+sudo dpkg --get-selections > list.txt  
+# Then (on another system) restore installations from that list:  
+sudo dpkg --clear-selections  
+sudo dpkg --set-selections < list.txt  
+# To get rid of stale packages  
+sudo apt-get autoremove  
+# To get installed like at backup time  
+sudo apt-get dselect-upgrade  
 ```
+
+# NODES  
+* Partition disk per Blockchain Node server ($fullnode)  
+* Utilize SSD page files  
+* Node chroot export as TMPFS sandbox (use page file of that partition)  
+USB 2.0 <-- 480 Mbps shared 4 ports == 120 Mbps ceiling; 15 MB/sec --> SSD  
 
 
 # .bashrc #
