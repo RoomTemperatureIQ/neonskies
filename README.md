@@ -50,6 +50,7 @@ sudo apt-get autoremove
 # To get installed like at backup time  
 sudo apt-get dselect-upgrade  
 ```
+https://kalilinuxtutorials.com/dnsdiag/  
 
 # NODES  
 * Partition disk per Blockchain Node server ($fullnode)  
