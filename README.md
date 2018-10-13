@@ -37,6 +37,20 @@ IPv6 Network Settings | | [❌] | very low | https://www.privateinternetaccess.c
 
 - - - -
 
+# Notes
+https://arstechnica.com/civis/viewtopic.php?p=23543504&sid=6fbaab4021a7f5f8b0059e3b04410fb3#p23543504  
+```I found this. Seems like parts of it may be relevant. Create a backup of what packages are currently installed:
+sudo dpkg --get-selections > list.txt
+# Then (on another system) restore installations from that list:
+sudo dpkg --clear-selections
+sudo dpkg --set-selections < list.txt
+# To get rid of stale packages
+sudo apt-get autoremove
+# To get installed like at backup time
+sudo apt-get dselect-upgrade
+```
+
+
 # .bashrc #
 LANG="en_US.UTF-8"  
 HISTSIZE=1000000  
