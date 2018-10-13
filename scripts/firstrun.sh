@@ -38,7 +38,8 @@ netselect-apt
 (crontab -l 2>/dev/null ; echo "00 00 * * * sudo netselect-apt") | sort | uniq | crontab -
 
 # grab the root.hints file for unbound
-wget -S -N https://www.internic.net/domain/named.cache -O /etc/unbound/root.hints
+# we make two requests because timestamping isn't compatible with output, we use `touch` to update the filesystem timestamp
+wget https://www.internic.net/domain/named.cache -O /etc/unbound/root.hints && roothintsTIMESTAMP=`wget -S https://www.internic.net/domain/named.cache` && touch -a -m -t $roothintsTIMESTAMP /etc/unbound/root.hints
 
 # index system for use with `locate`
 updatedb
