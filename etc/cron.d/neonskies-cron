@@ -29,7 +29,10 @@
 # 59 23 * * * root /root/scripts/pia-nm.sh
 
 
-#
+# iptables-optimizer - run every hour
+# 00 * * * * root iptables-optimizer > /etc/iptables/rules.v4
+# 00 * * * * root ip6tables-optimizer > /etc/iptables/rules.v6
+
 
 
 
