@@ -7,8 +7,29 @@
 # |  |  |  |  |
 # *  *  *  *  * user-name command to be executed
 
+###################################
+# update unbound root.hints job   #
+# update netselect-apt mirror job #
+# update PIA VPN server list job  #
+# 
+###################################
+
+
+# first of every month at 00:00 update unbound root.hints file
+# 00 00 1 * * root /usr/bin/curl -o /etc/unbound/root.hints https://www.internic.net/domain/named.cache && chown unbound:unbound /etc/unbound/root.hints
+
 
 # let's add a cron job (00:00 every day/month/day of week) in case of environment migration for new download mirror: 
 # https://stackoverflow.com/questions/878600/how-to-create-a-cron-job-using-bash-automatically-without-the-interactive-editor#comment75562934_878647
+# 00 00 * * * root netselect-apt
 
-# 00 00 * * * sudo netselect-apt
+
+# renew PIA server list at 11:59 PM every day
+# https://www.privateinternetaccess.com/vpninfo/servers
+# 59 23 * * * root /root/scripts/pia-nm.sh
+
+
+#
+
+
+
