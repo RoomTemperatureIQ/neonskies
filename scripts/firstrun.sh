@@ -37,5 +37,8 @@ netselect-apt
 # https://stackoverflow.com/questions/878600/how-to-create-a-cron-job-using-bash-automatically-without-the-interactive-editor#comment75562934_878647
 (crontab -l 2>/dev/null ; echo "00 00 * * * sudo netselect-apt") | sort | uniq | crontab -
 
+# grab the root.hints file for unbound
+wget -S -N https://www.internic.net/domain/named.cache -O /etc/unbound/root.hints
+
 # index system for use with `locate`
 updatedb
