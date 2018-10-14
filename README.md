@@ -155,7 +155,7 @@ https://wiki.archlinux.org/index.php/Dm-crypt/Swap_encryption
 `apt-get install gparted`  
 `gparted`  
 `resize2fs`  
-`apt-get install apt-listbugs apt-listchanges arpwatch auditd bleachbit curl debsecan debian-goodies debsums dnstop firewalk htop iperf iptables-optimizer iptables-persistent irssi locate lynis lynx macchanger netcat nethogs nload openresolv screen speedtest-cli ntopng openvpn unbound dnscrypt-proxy isc-dhcp-server hostapd wpasupplicant wireless-tools iw wvdial`  
+`apt-get install apt-listbugs apt-listchanges arpwatch auditd bleachbit curl debsecan debian-goodies debsums dnstop firewalk htop iperf iptables-optimizer iptables-persistent irssi locate lynis lynx macchanger netcat nethogs nload openresolv screen speedtest-cli ntopng openvpn unbound dnscrypt-proxy isc-dhcp-server hostapd hostapd_cli wpasupplicant wireless-tools iw wvdial`  
 up for chopping block: `hexchat`  
 we use `debian-goodies` for `checkrestart`  
 mono .net framework - https://www.mono-project.com/download/stable/#download-lin-debian  
@@ -167,6 +167,8 @@ https://dnsprivacy.org/wiki/display/DP/Performance+Measurements
 `updatedb`  
 shell settings (bash_history / etc.)  
 
+`systemctl unmask hostapd`  
+`systemctl enable hostapd`  
 `dnstop`  
 `nload -U G -u M -i 102400 -o 102400`
 run I/O benchmarking (dd_obs_test / dd_ibs_test)  
