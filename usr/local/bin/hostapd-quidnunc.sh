@@ -1,5 +1,5 @@
 #!/bin/sh
-# placed under /usr/local/bin so user `hostapd` can execute
+# placed under /usr/local/bin so user `hostapd_cli` can execute
 # chmod +x hostapd-quidnunc.sh
 logger -t $0 "hostapd event received $1 $2 $3"
 
