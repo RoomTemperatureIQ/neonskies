@@ -1,4 +1,6 @@
 #!/bin/sh
+# placed under /usr/local/bin so user `hostapd` can execute
+# chmod +x hostapd-quidnunc.sh
 logger -t $0 "hostapd event received $1 $2 $3"
 
 if [[ $2 == "AP-STA-CONNECTED" ]]
