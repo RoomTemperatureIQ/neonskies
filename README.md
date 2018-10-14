@@ -39,6 +39,7 @@ IPv6 Network Settings | | [❌] | very low | https://www.privateinternetaccess.c
 - - - -
 
 # Notes  
+https://wiki.archlinux.org/index.php/Power_management#Network_interfaces  
 https://arstechnica.com/civis/viewtopic.php?p=23543504&sid=6fbaab4021a7f5f8b0059e3b04410fb3#p23543504  
 ```I found this. Seems like parts of it may be relevant. Create a backup of what packages are currently installed:  
 sudo dpkg --get-selections > list.txt  
