@@ -41,5 +41,8 @@ netselect-apt
 # we make two requests because timestamping isn't compatible with output, we use `touch` to update the filesystem timestamp
 wget https://www.internic.net/domain/named.cache -O /etc/unbound/root.hints && roothintsTIMESTAMP=`wget -S https://www.internic.net/domain/named.cache` && touch -a -m -t $roothintsTIMESTAMP /etc/unbound/root.hints
 
+# update `hostapd` default file to utilize the `hostapd.conf` file
+sed -i -- 's/#DAEMON_CONF=""/DAEMON_CONF="\/etc\/hostapd\/hostapd.conf"/g' /etc/default/hostapd
+
 # index system for use with `locate`
 updatedb
