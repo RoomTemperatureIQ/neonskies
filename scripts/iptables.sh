@@ -10,7 +10,7 @@
 IPT="/usr/sbin/iptables"
 
 #location of sysctl
-KERNCONF="/usr/sbin/sysctl"
+KERNCONF='`which sysctl`'
 
 # connected to Internet
 WAN_NIC="wlan1"
