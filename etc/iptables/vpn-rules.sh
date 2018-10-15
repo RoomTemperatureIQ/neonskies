@@ -189,9 +189,9 @@ $IPT -P FORWARD DROP
 $IPT -P OUTPUT DROP
 
 ### Forwarding
+### jump to LOGACCEPT table for debugging
 $IPT -A FORWARD -o $VPN_NIC -j LOGACCEPT
 $IPT -A FORWARD -o $WAN_NIC -j LOGACCEPT
-### jump to LOGREJECT table for debugging
 $IPT -A FORWARD -j LOGACCEPT
 
 ### *nat table
@@ -245,6 +245,9 @@ $IPT -A OUTPUT -o $WLAN_NIC -j ACCEPT
 ### WAN - allow the WAN_NIC to be issued a DHCP lease
 $IPT -A OUTPUT -o $WAN_NIC -p udp -m multiport --dports $DHCP_PORT,$DHCPC_PORT -j LOGACCEPT
 $IPT -A OUTPUT -o $WAN_NIC -p tcp -m multiport --dports $DHCP_PORT,$DHCPC_PORT -j LOGACCEPT
+
+### WAN - allow the WAN_NIC to accept ICMP for ping requests
+$IPT -A OUTPUT -o $WAN_NIC -p icmp -j LOGACCEPT
 
 ### DNS - For this next part, you're going to need to know the IP address of your VPN's DNS server(s).
 ###       If your VPN has access or your resolv.conf, you'll probably find them i there.
