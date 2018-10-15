@@ -174,12 +174,6 @@ $IPT -t nat -N LOGACCEPT-NAT
 $IPT -t nat -I LOGACCEPT-NAT -j LOG --log-prefix "IPTables-NAT-Accepted: " --log-level 4
 $IPT -t nat -A LOGACCEPT-NAT -j ACCEPT
 
-### Jump point to LOG and DROP to blackhole connection (FTP, Telnet)
-$IPT -t nat -N LOGDROP-NAT
-# $IPT -t nat -I LOGDROP-NAT -m limit --limit 10/min -j LOG --log-prefix "IPTables-NAT-Dropped: " --log-level 4
-$IPT -t nat -I LOGDROP-NAT -j LOG --log-prefix "IPTables-NAT-Dropped: " --log-level 4
-$IPT -t nat -A LOGDROP-NAT -j DROP
-
 ### Jump point to LOG and MASQUERADE
 $IPT -t nat -N LOGMASQUERADE-NAT
 # $IPT -t nat -I LOGMASQUERADE-NAT -m limit --limit 10/min -j LOG --log-prefix "IPTables-NAT-Masqueraded: " --log-level 4
