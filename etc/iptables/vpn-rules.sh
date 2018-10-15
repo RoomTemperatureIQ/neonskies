@@ -41,6 +41,8 @@ SSH_PORT="22"
 ####################
 # https://linuxconfig.org/how-to-create-a-vpn-killswitch-using-iptables-on-linux
 
+echo "DEBUG 1"
+
 # Kill IPv6
 $KERNCONF -w net.ipv6.conf.all.disable_ipv6=1
 $KERNCONF -w net.ipv6.conf.default.disable_ipv6=1
@@ -50,6 +52,8 @@ $KERNCONF -w net.ipv6.conf.mon.disable_ipv6=1
 $KERNCONF -w net.ipv6.conf.tun.disable_ipv6=1
 $KERNCONF -w net.ipv6.conf.wlan0.disable_ipv6=1
 $KERNCONF -w net.ipv6.conf.wlan1.disable_ipv6=1
+
+echo "DEBUG 2"
 
 # toggle ICMP ping response
 $KERNCONF -w net.ipv4.icmp_echo_ignore_all=0
@@ -65,8 +69,12 @@ $KERNCONF -w net.ipv6.conf.tun.forwarding=0
 $KERNCONF -w net.ipv6.conf.wlan0.forwarding=0
 $KERNCONF -w net.ipv6.conf.wlan1.forwarding=0
 
+echo "DEBUG 3"
+
 # make sysctl settings persistent; commit to file
 $KERNCONF -p
+
+echo "DEBUG 4"
 
 ### Reset iptables rules
 # Flush all rules: -F
@@ -80,10 +88,14 @@ $IPT -F
 $IPT -X
 $IPT -Z
 
+echo "DEBUG 5"
+
 # *filter table
 $IPT -P INPUT DROP
 $IPT -P FORWARD ALLOW
 $IPT -P OUTPUT DROP
+
+echo "DEBUG 6"
 
 # *nat table
 $IPT -t nat -P PREROUTING ACCEPT
@@ -92,6 +104,8 @@ $IPT -t nat -P OUTPUT ACCEPT
 $IPT -t nat -P POSTROUTING ACCEPT
 $IPT -t nat -A POSTROUTING -o $VPN_NIC -j MASQUERADE
 $IPT -t nat -A POSTROUTING -o $WAN_NIC -j MASQUERADE
+
+echo "DEBUG 7"
 
 # Input - It's most secure to only allow inbound traffic from established or related connections. Set that up next.
 $IPT -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
