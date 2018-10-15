@@ -84,76 +84,76 @@ $KERNCONF -w net.ipv6.conf.wlan0.forwarding=0
 $KERNCONF -w net.ipv6.conf.wlan1.forwarding=0
 
 ### TCP/IP stack tweaking
-$KERNCONF -w net.core.somaxconn = 1024
-$KERNCONF -w net.core.rmem_default = 1048576
-$KERNCONF -w net.core.rmem_max = 16777216
-$KERNCONF -w net.core.wmem_default = 1048576
-$KERNCONF -w net.core.wmem_max = 16777216
-$KERNCONF -w net.core.optmem_max = 65536
-$KERNCONF -w net.ipv4.tcp_rmem = 4096 1048576 2097152
-$KERNCONF -w net.ipv4.tcp_wmem = 4096 65536 16777216
-$KERNCONF -w net.ipv4.udp_rmem_min = 8192
-$KERNCONF -w net.ipv4.udp_wmem_min = 8192
-$KERNCONF -w net.ipv4.tcp_fastopen = 3
-$KERNCONF -w net.ipv4.tcp_max_syn_backlog = 30000
-$KERNCONF -w net.ipv4.tcp_syncookies = 1
-$KERNCONF -w net.ipv4.tcp_max_tw_buckets = 2000000
-$KERNCONF -w net.ipv4.tcp_tw_reuse = 1
-$KERNCONF -w net.ipv4.tcp_fin_timeout = 10
-$KERNCONF -w net.ipv4.tcp_slow_start_after_idle = 0
-$KERNCONF -w net.ipv4.tcp_keepalive_time = 60
-$KERNCONF -w net.ipv4.tcp_keepalive_intvl = 10
-$KERNCONF -w net.ipv4.tcp_keepalive_probes = 6
-$KERNCONF -w net.ipv4.tcp_mtu_probing = 1
-# $KERNCONF -w net.ipv4.tcp_timestamps = 0
-$KERNCONF -w net.ipv4.tcp_timestamps = 1
-$KERNCONF -w net.ipv4.tcp_rfc1337 = 1
-$KERNCONF -w net.ipv4.conf.default.rp_filter = 1
-$KERNCONF -w net.ipv4.conf.all.rp_filter = 1
-$KERNCONF -w net.ipv4.conf.default.log_martians = 1
+$KERNCONF -w net.core.somaxconn=1024
+$KERNCONF -w net.core.rmem_default=1048576
+$KERNCONF -w net.core.rmem_max=16777216
+$KERNCONF -w net.core.wmem_default=1048576
+$KERNCONF -w net.core.wmem_max=16777216
+$KERNCONF -w net.core.optmem_max=65536
+$KERNCONF -w net.ipv4.tcp_rmem=4096 1048576 2097152
+$KERNCONF -w net.ipv4.tcp_wmem=4096 65536 16777216
+$KERNCONF -w net.ipv4.udp_rmem_min=8192
+$KERNCONF -w net.ipv4.udp_wmem_min=8192
+$KERNCONF -w net.ipv4.tcp_fastopen=3
+$KERNCONF -w net.ipv4.tcp_max_syn_backlog=30000
+$KERNCONF -w net.ipv4.tcp_syncookies=1
+$KERNCONF -w net.ipv4.tcp_max_tw_buckets=2000000
+$KERNCONF -w net.ipv4.tcp_tw_reuse=1
+$KERNCONF -w net.ipv4.tcp_fin_timeout=10
+$KERNCONF -w net.ipv4.tcp_slow_start_after_idle=0
+$KERNCONF -w net.ipv4.tcp_keepalive_time=60
+$KERNCONF -w net.ipv4.tcp_keepalive_intvl=10
+$KERNCONF -w net.ipv4.tcp_keepalive_probes=6
+$KERNCONF -w net.ipv4.tcp_mtu_probing=1
+# $KERNCONF -w net.ipv4.tcp_timestamps=0
+$KERNCONF -w net.ipv4.tcp_timestamps=1
+$KERNCONF -w net.ipv4.tcp_rfc1337=1
+$KERNCONF -w net.ipv4.conf.default.rp_filter=1
+$KERNCONF -w net.ipv4.conf.all.rp_filter=1
+$KERNCONF -w net.ipv4.conf.default.log_martians=1
 ### packet debugging
-$KERNCONF -w net.ipv4.conf.all.log_martians = 1
+$KERNCONF -w net.ipv4.conf.all.log_martians=1
 
 ### set all these redirect settings to '0' for security
-$KERNCONF -w net.ipv4.conf.all.accept_redirects = 1
-$KERNCONF -w net.ipv4.conf.default.accept_redirects = 1
-$KERNCONF -w net.ipv4.conf.all.secure_redirects = 1
-$KERNCONF -w net.ipv4.conf.default.secure_redirects = 1
-$KERNCONF -w net.ipv6.conf.all.accept_redirects = 1
-$KERNCONF -w net.ipv6.conf.default.accept_redirects = 1
-$KERNCONF -w net.ipv4.conf.all.send_redirects = 1
-$KERNCONF -w net.ipv4.conf.default.send_redirects = 1
+$KERNCONF -w net.ipv4.conf.all.accept_redirects=1
+$KERNCONF -w net.ipv4.conf.default.accept_redirects=1
+$KERNCONF -w net.ipv4.conf.all.secure_redirects=1
+$KERNCONF -w net.ipv4.conf.default.secure_redirects=1
+$KERNCONF -w net.ipv6.conf.all.accept_redirects=1
+$KERNCONF -w net.ipv6.conf.default.accept_redirects=1
+$KERNCONF -w net.ipv4.conf.all.send_redirects=1
+$KERNCONF -w net.ipv4.conf.default.send_redirects=1
 
 ### Kali RPi `vm.dirty_ratio` default is '20'
-$KERNCONF -w vm.dirty_ratio = 10
+$KERNCONF -w vm.dirty_ratio=10
 
 ### Kali RPi `vm.dirty_background_ratio` default is '10'
-$KERNCONF -w vm.dirty_background_ratio = 5
+$KERNCONF -w vm.dirty_background_ratio=5
 
 ### Kali RPi `vm.vfs_cache_pressure` default is '100'
-$KERNCONF -w vm.vfs_cache_pressure = 50
+$KERNCONF -w vm.vfs_cache_pressure=50
 
 # Accept IP source route packets (we are a router)
-$KERNCONF -w net.ipv4.conf.all.accept_source_route = 1
-$KERNCONF -w net.ipv6.conf.all.accept_source_route = 1
+$KERNCONF -w net.ipv4.conf.all.accept_source_route=1
+$KERNCONF -w net.ipv6.conf.all.accept_source_route=1
 
 ##### Reset iptables rules
 ### Flush all rules: -F
 ### Delete all chains: -X
 ### Zero all packets: -Z
-$IPT -t LOGGING -F
-$IPT -t LOGGING -X
 $IPT -t nat -F
 $IPT -t nat -X
 $IPT -t mangle -F
 $IPT -t mangle -X
+$IPT -F LOGGING
+$IPT -X LOGGING
 $IPT -F
 $IPT -X
 $IPT -Z
 
-### *LOGGING table - we use to debug DROPPED packets
+### LOGGING chain - we use to debug DROPPED packets
 $IPT -N LOGGING
-$IPT -A LOGGING -m limit --limit 2/sec -j LOG --log-prefix "IPTables-Dropped: " --log-level 4
+$IPT -A LOGGING -m limit --limit 10/min -j LOG --log-prefix "IPTables-Dropped: " --log-level 4
 $IPT -A LOGGING -j DROP
 
 ### *filter table
