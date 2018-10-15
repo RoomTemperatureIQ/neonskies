@@ -55,9 +55,8 @@ nmcli device set $WAN_NIC autoconnect yes
 ### VPN Killswitch ##
 #####################
 ### https://linuxconfig.org/how-to-create-a-vpn-killswitch-using-iptables-on-linux
-
-
-### make sysctl settings persistent; commit to file
+### https://wiki.archlinux.org/index.php/sysctl
+### read in sysctl settings file
 $KERNCONF -p
 
 ### Kill IPv6
@@ -84,14 +83,60 @@ $KERNCONF -w net.ipv6.conf.tun.forwarding=0
 $KERNCONF -w net.ipv6.conf.wlan0.forwarding=0
 $KERNCONF -w net.ipv6.conf.wlan1.forwarding=0
 
-# $KERNCONF -w net.ipv4.conf.default.rp_filter = 1
-# $KERNCONF -w net.ipv4.conf.all.rp_filter = 1
-# $KERNCONF -w net.ipv4.tcp_syncookies = 1
-# $KERNCONF -w net.ipv6.conf.all.forwarding = 0
-# $KERNCONF -w net.ipv4.conf.all.send_redirects = 1
-# $KERNCONF -w net.ipv4.conf.all.accept_source_route = 1
-# $KERNCONF -w net.ipv6.conf.all.accept_source_route = 1
-# $KERNCONF -w net.ipv4.conf.all.log_martians = 1
+### TCP/IP stack tweaking
+$KERNCONF -w net.core.somaxconn = 1024
+$KERNCONF -w net.core.rmem_default = 1048576
+$KERNCONF -w net.core.rmem_max = 16777216
+$KERNCONF -w net.core.wmem_default = 1048576
+$KERNCONF -w net.core.wmem_max = 16777216
+$KERNCONF -w net.core.optmem_max = 65536
+$KERNCONF -w net.ipv4.tcp_rmem = 4096 1048576 2097152
+$KERNCONF -w net.ipv4.tcp_wmem = 4096 65536 16777216
+$KERNCONF -w net.ipv4.udp_rmem_min = 8192
+$KERNCONF -w net.ipv4.udp_wmem_min = 8192
+$KERNCONF -w net.ipv4.tcp_fastopen = 3
+$KERNCONF -w net.ipv4.tcp_max_syn_backlog = 30000
+$KERNCONF -w net.ipv4.tcp_syncookies = 1
+$KERNCONF -w net.ipv4.tcp_max_tw_buckets = 2000000
+$KERNCONF -w net.ipv4.tcp_tw_reuse = 1
+$KERNCONF -w net.ipv4.tcp_fin_timeout = 10
+$KERNCONF -w net.ipv4.tcp_slow_start_after_idle = 0
+$KERNCONF -w net.ipv4.tcp_keepalive_time = 60
+$KERNCONF -w net.ipv4.tcp_keepalive_intvl = 10
+$KERNCONF -w net.ipv4.tcp_keepalive_probes = 6
+$KERNCONF -w net.ipv4.tcp_mtu_probing = 1
+# $KERNCONF -w net.ipv4.tcp_timestamps = 0
+$KERNCONF -w net.ipv4.tcp_timestamps = 1
+$KERNCONF -w net.ipv4.tcp_rfc1337 = 1
+$KERNCONF -w net.ipv4.conf.default.rp_filter = 1
+$KERNCONF -w net.ipv4.conf.all.rp_filter = 1
+$KERNCONF -w net.ipv4.conf.default.log_martians = 1
+### packet debugging
+$KERNCONF -w net.ipv4.conf.all.log_martians = 1
+
+### set all these redirect settings to '0' for security
+$KERNCONF -w net.ipv4.conf.all.accept_redirects = 1
+$KERNCONF -w net.ipv4.conf.default.accept_redirects = 1
+$KERNCONF -w net.ipv4.conf.all.secure_redirects = 1
+$KERNCONF -w net.ipv4.conf.default.secure_redirects = 1
+$KERNCONF -w net.ipv6.conf.all.accept_redirects = 1
+$KERNCONF -w net.ipv6.conf.default.accept_redirects = 1
+$KERNCONF -w net.ipv4.conf.all.send_redirects = 1
+$KERNCONF -w net.ipv4.conf.default.send_redirects = 1
+# $KERNCONF -w net.ipv4.icmp_echo_ignore_all = 1
+$KERNCONF -w net.ipv4.icmp_echo_ignore_all = 0
+
+### Kali RPi `vm.dirty_ratio` default is '20'
+$KERNCONF -w vm.dirty_ratio = 10
+
+### Kali RPi `vm.dirty_background_ratio` default is '10'
+$KERNCONF -w vm.dirty_background_ratio = 5
+
+### Kali RPi `vm.vfs_cache_pressure` default is '100'
+$KERNCONF -w vm.vfs_cache_pressure = 50
+
+$KERNCONF -w net.ipv4.conf.all.accept_source_route = 1
+$KERNCONF -w net.ipv6.conf.all.accept_source_route = 1
 
 ##### Reset iptables rules
 ### Flush all rules: -F
