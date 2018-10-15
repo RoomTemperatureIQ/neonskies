@@ -112,6 +112,11 @@ $IPT -t nat -P POSTROUTING ACCEPT
 $IPT -t nat -A POSTROUTING -o $VPN_NIC -j MASQUERADE
 $IPT -t nat -A POSTROUTING -o $WAN_NIC -j MASQUERADE
 
+### *LOGGING table - we use to debug DROPPED packets
+$IPT -N LOGGING
+$IPT -A LOGGING -m limit --limit 2/sec -j LOG --log-prefix "IPTables-Dropped: " --log-level 4
+$IPT -A LOGGING -j DROP
+
 ### Input - It's most secure to only allow inbound traffic from established or related connections. Set that up next.
 $IPT -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
 
@@ -131,10 +136,13 @@ $IPT -A INPUT -i $WAN_NIC -p tcp -m multiport --dports $DHCP_PORT,$DHCPC_PORT -j
 ### WAN - allow the WAN_NIC to accept ICMP for ping requests
 $IPT -A INPUT -i $WAN_NIC -p icmp -j ACCEPT
 
+# jump to LOGGING table for debugging
+$IPT -A INPUT -j LOGGING
+
 ### Loopback and Ping - allow the loopback interface and ping.
 $IPT -A OUTPUT -o lo -j ACCEPT
 ### the `$IPT -A OUTPUT -o $VPN_NIC -j ACCEPT` covers this case, uncomment if not using that rule (explicit port ACCEPT)
-#$IPT -A OUTPUT -o $VPN_NIC -p icmp -j ACCEPT
+# $IPT -A OUTPUT -o $VPN_NIC -p icmp -j ACCEPT
 
 ### LAN - It doesn't make much sense to shut down or block your LAN traffic, especially on a home network, so allow that too.
 ### commented out $WAN_RANGE to prevent leaks
@@ -162,15 +170,18 @@ $IPT -A OUTPUT -p udp -m udp --dport 1197 -j ACCEPT
 $IPT -A OUTPUT -p udp -m udp --dport 1194 -j ACCEPT
 $IPT -A OUTPUT -o $VPN_NIC -j ACCEPT
 
+# jump to LOGGING table for debugging
+$IPT -A OUTPUT -j LOGGING
+
 
 
 
 ### Example
-#$IPT -A OUTPUT -o $VPN_NIC -p tcp --dport 443 -j ACCEPT
-#$IPT -A OUTPUT -o $VPN_NIC -p tcp --dport 80 -j ACCEPT
+# $IPT -A OUTPUT -o $VPN_NIC -p tcp --dport 443 -j ACCEPT
+# $IPT -A OUTPUT -o $VPN_NIC -p tcp --dport 80 -j ACCEPT
 
-#$IPT -A OUTPUT -o $VPN_NIC -p tcp --dport 993 -j ACCEPT
-#$IPT -A OUTPUT -o $VPN_NIC -p tcp --dport 465 -j ACCEPT
+# $IPT -A OUTPUT -o $VPN_NIC -p tcp --dport 993 -j ACCEPT
+# $IPT -A OUTPUT -o $VPN_NIC -p tcp --dport 465 -j ACCEPT
 
 # $IPT -A OUTPUT -p udp -m multiport --dports 53,80,110,443,501,502,1194,1197,1198,8080,9201 -j ACCEPT
 # $IPT -A OUTPUT -p tcp -m multiport --dports 53,80,110,443,501,502,1194,1197,1198,8080,9201 -j ACCEPT
