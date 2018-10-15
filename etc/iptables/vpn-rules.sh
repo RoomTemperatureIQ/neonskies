@@ -191,8 +191,8 @@ $IPT -P OUTPUT DROP
 ### Forwarding
 ### jump to LOGACCEPT table for debugging
 $IPT -A FORWARD -o $VPN_NIC -j LOGACCEPT
-$IPT -A FORWARD -o $WAN_NIC -j LOGACCEPT
 $IPT -A FORWARD -o $LAN_NIC -j LOGACCEPT
+$IPT -A FORWARD -o $WAN_NIC -j LOGACCEPT
 $IPT -A FORWARD -o $WLAN_NIC -j LOGACCEPT
 $IPT -A FORWARD -o lo -j LOGACCEPT
 $IPT -A FORWARD -j LOGACCEPT
@@ -209,7 +209,10 @@ $IPT -t nat -I OUTPUT -j LOGACCEPT-NAT
 
 $IPT -t nat -P POSTROUTING ACCEPT
 $IPT -t nat -A POSTROUTING -o $VPN_NIC -j LOGMASQUERADE-NAT
+$IPT -t nat -A POSTROUTING -o $LAN_NIC -j LOGMASQUERADE-NAT
 $IPT -t nat -A POSTROUTING -o $WAN_NIC -j LOGMASQUERADE-NAT
+$IPT -t nat -A POSTROUTING -o $WLAN_NIC -j LOGMASQUERADE-NAT
+$IPT -t nat -A POSTROUTING -o lo -j LOGMASQUERADE-NAT
 $IPT -t nat -A POSTROUTING -j LOGMASQUERADE-NAT
 
 ### Input - It's most secure to only allow inbound traffic from established or related connections. Set that up next.
