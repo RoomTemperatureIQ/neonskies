@@ -36,6 +36,9 @@ WLAN_RANGE="192.168.2.0/24"
 # SSH port
 SSH_PORT="22"
 
+# DNS port
+DNS_PORT="53"
+
 ####################
 ## VPN Killswitch ##
 ####################
@@ -92,8 +95,11 @@ echo "DEBUG 5"
 
 # *filter table
 $IPT -P INPUT DROP
-$IPT -P FORWARD ALLOW
 $IPT -P OUTPUT DROP
+
+# Forwarding
+$IPT -P FORWARD ALLOW
+$IPT -A FORWARD -o $VPN_NIC -j ALLOW
 
 echo "DEBUG 6"
 
@@ -110,9 +116,10 @@ echo "DEBUG 7"
 # Input - It's most secure to only allow inbound traffic from established or related connections. Set that up next.
 $IPT -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
 $IPT -A INPUT -i lo -j ACCEPT
+$IPT -A INPUT -p tcp -m tcp --dport $DNS_PORT -j ACCEPT
+$IPT -A INPUT -p tcp -m tcp --dport $SSH_PORT -j ACCEPT
 $IPT -A INPUT -i $LAN_NIC -j ACCEPT
 $IPT -A INPUT -i $WLAN_NIC -j ACCEPT
-$IPT -A INPUT -p tcp -m tcp --dport $SSH_PORT -j ACCEPT
 
 # Loopback and Ping - allow the loopback interface and ping.
 $IPT -A OUTPUT -o lo -j ACCEPT
