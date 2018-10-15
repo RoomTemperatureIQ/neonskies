@@ -44,8 +44,6 @@ DNS_PORT="53"
 ####################
 # https://linuxconfig.org/how-to-create-a-vpn-killswitch-using-iptables-on-linux
 
-echo "DEBUG 1"
-
 # Kill IPv6
 $KERNCONF -w net.ipv6.conf.all.disable_ipv6=1
 $KERNCONF -w net.ipv6.conf.default.disable_ipv6=1
@@ -55,8 +53,6 @@ $KERNCONF -w net.ipv6.conf.mon.disable_ipv6=1
 $KERNCONF -w net.ipv6.conf.tun.disable_ipv6=1
 $KERNCONF -w net.ipv6.conf.wlan0.disable_ipv6=1
 $KERNCONF -w net.ipv6.conf.wlan1.disable_ipv6=1
-
-echo "DEBUG 2"
 
 # toggle ICMP ping response
 $KERNCONF -w net.ipv4.icmp_echo_ignore_all=0
@@ -72,12 +68,8 @@ $KERNCONF -w net.ipv6.conf.tun.forwarding=0
 $KERNCONF -w net.ipv6.conf.wlan0.forwarding=0
 $KERNCONF -w net.ipv6.conf.wlan1.forwarding=0
 
-echo "DEBUG 3"
-
 # make sysctl settings persistent; commit to file
 $KERNCONF -p
-
-echo "DEBUG 4"
 
 ### Reset iptables rules
 # Flush all rules: -F
@@ -91,17 +83,14 @@ $IPT -F
 $IPT -X
 $IPT -Z
 
-echo "DEBUG 5"
-
 # *filter table
 $IPT -P INPUT DROP
 $IPT -P OUTPUT DROP
 
 # Forwarding
-$IPT -P FORWARD ALLOW
-$IPT -A FORWARD -o $VPN_NIC -j ALLOW
-
-echo "DEBUG 6"
+$IPT -P FORWARD ACCEPT
+$IPT -A FORWARD -o $VPN_NIC -j ACCEPT
+$IPT -A FORWARD -o $WAN_NIC -j ACCEPT
 
 # *nat table
 $IPT -t nat -P PREROUTING ACCEPT
@@ -110,8 +99,6 @@ $IPT -t nat -P OUTPUT ACCEPT
 $IPT -t nat -P POSTROUTING ACCEPT
 $IPT -t nat -A POSTROUTING -o $VPN_NIC -j MASQUERADE
 $IPT -t nat -A POSTROUTING -o $WAN_NIC -j MASQUERADE
-
-echo "DEBUG 7"
 
 # Input - It's most secure to only allow inbound traffic from established or related connections. Set that up next.
 $IPT -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
@@ -127,8 +114,8 @@ $IPT -A OUTPUT -o $VPN_NIC -p icmp -j ACCEPT
 
 # LAN - It doesn't make much sense to shut down or block your LAN traffic, especially on a home network, so allow that too.
 # $IPT -A OUTPUT -d 192.168.1.0/24 -j ACCEPT
-$IPT -A OUTPUT -d $LAN_RANGE -j ACCEPT
-$IPT -A OUTPUT -d $WLAN_RANGE -j ACCEPT
+$IPT -A OUTPUT -o $LAN_NIC -j ACCEPT
+$IPT -A OUTPUT -o $WLAN_NIC -j ACCEPT
 
 # DNS - For this next part, you're going to need to know the IP address of your VPN's DNS server(s).
 #       If your VPN has access or your resolv.conf, you'll probably find them i there.
@@ -138,15 +125,15 @@ $IPT -A OUTPUT -d $WLAN_RANGE -j ACCEPT
 # multiple IP matching: https://www.cyberciti.biz/faq/how-to-use-iptables-with-multiple-source-destination-ips-addresses/
 $IPT -A OUTPUT -d 209.222.18.218,209.222.18.222 -j ACCEPT
 
-# Allow the VPN - Of course, you need to allow the VPN itself. There are two parts to this. 
+# Allow the VPN - Of course, you need to allow the VPN itself. There are two parts to this.
 # You need to allow both the service port and the interface.
 # OpenVPN uses default port 1194, PIA uses port 1197
 $IPT -A OUTPUT -p udp -m udp --dport 1197 -j ACCEPT
 $IPT -A OUTPUT -p udp -m udp --dport 1194 -j ACCEPT
 $IPT -A OUTPUT -o $VPN_NIC -j ACCEPT
 
-# $IPT -A OUTPUT -p udp -m multiport --dports 53,80,110,443,501,502,1194,1197,1198,8080,9201 -j ACCEPT
-# $IPT -A OUTPUT -p tcp -m multiport --dports 53,80,110,443,501,502,1194,1197,1198,8080,9201 -j ACCEPT
+
+
 
 # Example
 #$IPT -A OUTPUT -o $VPN_NIC -p tcp --dport 443 -j ACCEPT
@@ -154,3 +141,6 @@ $IPT -A OUTPUT -o $VPN_NIC -j ACCEPT
 
 #$IPT -A OUTPUT -o $VPN_NIC -p tcp --dport 993 -j ACCEPT
 #$IPT -A OUTPUT -o $VPN_NIC -p tcp --dport 465 -j ACCEPT
+
+# $IPT -A OUTPUT -p udp -m multiport --dports 53,80,110,443,501,502,1194,1197,1198,8080,9201 -j ACCEPT
+# $IPT -A OUTPUT -p tcp -m multiport --dports 53,80,110,443,501,502,1194,1197,1198,8080,9201 -j ACCEPT
