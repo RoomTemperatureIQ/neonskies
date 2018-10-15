@@ -62,7 +62,7 @@ https://piratefache.ch/display-real-time-tweets-on-a-map-with-basemap-and-tweepy
 * Utilize SSD page files  
 * Node chroot export as TMPFS sandbox (use page file of that partition)  
 USB 2.0 <-- 480 Mbps shared 4 ports == 120 Mbps ceiling; 15 MB/sec --> SSD  
-
+`apt-get install tuned`  
 
 # .bashrc #
 LANG="en_US.UTF-8"  
