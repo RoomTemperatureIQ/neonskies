@@ -145,8 +145,6 @@ $IPT -t nat -F
 $IPT -t nat -X
 $IPT -t mangle -F
 $IPT -t mangle -X
-$IPT -F LOGGING
-$IPT -X LOGGING
 $IPT -F
 $IPT -X
 $IPT -Z
