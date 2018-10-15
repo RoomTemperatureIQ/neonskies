@@ -87,6 +87,8 @@ $KERNCONF -p
 ### Flush all rules: -F
 ### Delete all chains: -X
 ### Zero all packets: -Z
+$IPT -t LOGGING -F
+$IPT -t LOGGING -X
 $IPT -t nat -F
 $IPT -t nat -X
 $IPT -t mangle -F
@@ -95,14 +97,21 @@ $IPT -F
 $IPT -X
 $IPT -Z
 
+### *LOGGING table - we use to debug DROPPED packets
+$IPT -N LOGGING
+$IPT -A LOGGING -m limit --limit 2/sec -j LOG --log-prefix "IPTables-Dropped: " --log-level 4
+$IPT -A LOGGING -j DROP
+
 ### *filter table
 $IPT -P INPUT DROP
+$IPT -P FORWARD DROP
 $IPT -P OUTPUT DROP
 
 ### Forwarding
-$IPT -P FORWARD DROP
 $IPT -A FORWARD -o $VPN_NIC -j ACCEPT
 # $IPT -A FORWARD -o $WAN_NIC -j ACCEPT
+### jump to LOGGING table for debugging
+$IPT -A FORWARD -j LOGGING
 
 ### *nat table
 $IPT -t nat -P PREROUTING ACCEPT
@@ -112,10 +121,7 @@ $IPT -t nat -P POSTROUTING ACCEPT
 $IPT -t nat -A POSTROUTING -o $VPN_NIC -j MASQUERADE
 $IPT -t nat -A POSTROUTING -o $WAN_NIC -j MASQUERADE
 
-### *LOGGING table - we use to debug DROPPED packets
-$IPT -N LOGGING
-$IPT -A LOGGING -m limit --limit 2/sec -j LOG --log-prefix "IPTables-Dropped: " --log-level 4
-$IPT -A LOGGING -j DROP
+
 
 ### Input - It's most secure to only allow inbound traffic from established or related connections. Set that up next.
 $IPT -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
@@ -136,7 +142,7 @@ $IPT -A INPUT -i $WAN_NIC -p tcp -m multiport --dports $DHCP_PORT,$DHCPC_PORT -j
 ### WAN - allow the WAN_NIC to accept ICMP for ping requests
 $IPT -A INPUT -i $WAN_NIC -p icmp -j ACCEPT
 
-# jump to LOGGING table for debugging
+### jump to LOGGING table for debugging
 $IPT -A INPUT -j LOGGING
 
 ### Loopback and Ping - allow the loopback interface and ping.
@@ -170,7 +176,7 @@ $IPT -A OUTPUT -p udp -m udp --dport 1197 -j ACCEPT
 $IPT -A OUTPUT -p udp -m udp --dport 1194 -j ACCEPT
 $IPT -A OUTPUT -o $VPN_NIC -j ACCEPT
 
-# jump to LOGGING table for debugging
+### jump to LOGGING table for debugging
 $IPT -A OUTPUT -j LOGGING
 
 
