@@ -80,10 +80,13 @@ $IPT -P INPUT DROP
 $IPT -P FORWARD ALLOW
 $IPT -P OUTPUT DROP
 
-# LAN MASQUERADE
+# *nat table
+$IPT -t nat -P PREROUTING ACCEPT
+$IPT -t nat -P INPUT ACCEPT
+$IPT -t nat -P OUTPUT ACCEPT
 $IPT -t nat -P POSTROUTING ACCEPT
-$IPT -A POSTROUTING -o $VPN_NIC -j MASQUERADE
 $IPT -A POSTROUTING -o $WAN_NIC -j MASQUERADE
+$IPT -A POSTROUTING -o $VPN_NIC -j MASQUERADE
 
 # Input - It's most secure to only allow inbound traffic from established or related connections. Set that up next.
 $IPT -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
@@ -112,7 +115,10 @@ $IPT -A OUTPUT -d 209.222.18.218,209.222.18.222 -j ACCEPT
 $IPT -A OUTPUT -p udp -m udp --dport 1197 -j ACCEPT
 $IPT -A OUTPUT -p udp -m udp --dport 1194 -j ACCEPT
 $IPT -A OUTPUT -o $VPN_NIC -j ACCEPT
+$IPT -A OUTPUT -o $WAN_NIC -j ACCEPT
 
+# $IPT -A OUTPUT -p udp -m multiport --dports 53,80,110,443,501,502,1194,1197,1198,8080,9201 -j ACCEPT
+# $IPT -A OUTPUT -p tcp -m multiport --dports 53,80,110,443,501,502,1194,1197,1198,8080,9201 -j ACCEPT
 
 # Example
 #$IPT -A OUTPUT -o $VPN_NIC -p tcp --dport 443 -j ACCEPT
