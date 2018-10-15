@@ -123,8 +123,6 @@ $KERNCONF -w net.ipv6.conf.all.accept_redirects = 1
 $KERNCONF -w net.ipv6.conf.default.accept_redirects = 1
 $KERNCONF -w net.ipv4.conf.all.send_redirects = 1
 $KERNCONF -w net.ipv4.conf.default.send_redirects = 1
-# $KERNCONF -w net.ipv4.icmp_echo_ignore_all = 1
-$KERNCONF -w net.ipv4.icmp_echo_ignore_all = 0
 
 ### Kali RPi `vm.dirty_ratio` default is '20'
 $KERNCONF -w vm.dirty_ratio = 10
@@ -135,6 +133,7 @@ $KERNCONF -w vm.dirty_background_ratio = 5
 ### Kali RPi `vm.vfs_cache_pressure` default is '100'
 $KERNCONF -w vm.vfs_cache_pressure = 50
 
+# Accept IP source route packets (we are a router)
 $KERNCONF -w net.ipv4.conf.all.accept_source_route = 1
 $KERNCONF -w net.ipv6.conf.all.accept_source_route = 1
 
