@@ -109,6 +109,7 @@ echo "DEBUG 7"
 
 # Input - It's most secure to only allow inbound traffic from established or related connections. Set that up next.
 $IPT -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+$IPT -A INPUT -i lo -j ACCEPT
 $IPT -A INPUT -i $LAN_NIC -j ACCEPT
 $IPT -A INPUT -i $WLAN_NIC -j ACCEPT
 $IPT -A INPUT -p tcp -m tcp --dport $SSH_PORT -j ACCEPT
