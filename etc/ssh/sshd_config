@@ -5,5 +5,5 @@ ListenAddress 0.0.0.0
 PermitRootLogin no
 
 # https://serverfault.com/a/870476
-AllowUsers *@192.168.1.0/24 *@*.example.com *@1.2.3.4
+AllowUsers *@192.168.0.0/16 *@*.example.com *@10.0.0.1
 AllowGroups ssh
