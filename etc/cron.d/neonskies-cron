@@ -17,8 +17,8 @@
 
 
 # iptables-optimizer - run every hour
-# 0 * * * * root iptables-optimizer > /etc/iptables/rules.v4
-# 0 * * * * root ip6tables-optimizer > /etc/iptables/rules.v6
+0 * * * * root iptables-optimizer -c && sleep 2 && netfilter-persistent save
+0 * * * * root ip6tables-optimizer -c && sleep 2 && netfilter-persistent save
 
 # let's add a cron job (00:00 every day/month/day of week) in case of environment migration for new download mirror: 
 # https://stackoverflow.com/questions/878600/how-to-create-a-cron-job-using-bash-automatically-without-the-interactive-editor#comment75562934_878647
@@ -29,10 +29,10 @@
 # 0 0 * * * root /root/scripts/pia-nm.sh
 
 # first of every month at 00:00 update unbound root.hints file
-# 0 0 1 * * root /usr/bin/curl -o /etc/unbound/root.hints https://www.internic.net/domain/named.cache && chown unbound:unbound /etc/unbound/root.hints
+0 0 1 * * root /usr/bin/curl -o /etc/unbound/root.hints https://www.internic.net/domain/named.cache && sleep 2 && chown unbound:unbound /etc/unbound/root.hints
 
-# first of every month at 00:00 update unbound root.key file
-# 0 0 1 * * root /usr/sbin/unbound-anchor
+# every day at 00:00 update unbound_ad_servers file
+0 0 * * * root /usr/bin/curl -o /etc/unbound/unbound_ad_servers "https://pgl.yoyo.org/adservers/serverlist.php?hostformat=unbound&showintro=0&startdate%5Bday%5D=&startdate%5Bmonth%5D=&startdate%5Byear%5D=&mimetype=plaintext" && sleep 2 && chown unbound:unbound /etc/unbound/unbounds_ad_servers
 
 # Let's Encrypt certificate renewal
 # 0 0 1 * * root /opt/letsencrypt/letsencrypt-auto renew
