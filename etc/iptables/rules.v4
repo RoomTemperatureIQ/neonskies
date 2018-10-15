@@ -21,4 +21,13 @@
 # SSH
 -A INPUT -p tcp -i eth0 --dport 22 -m state --state NEW -j ACCEPT
 
+# iptables -t nat -A PREROUTING -p tcp --dport 53 -j DNAT --to 127.0.0.1:53
+-A PREROUTING -p tcp --dport 53 -j DNAT --to 127.0.0.1:53
+
+# iptables -t nat -A PREROUTING -p udb --dport 53 -j DNAT --to 127.0.0.1:53
+-A PREROUTING -p udb --dport 53 -j DNAT --to 127.0.0.1:53
+
+# iptables -t nat -A POSTROUTING -j MASQUERADE
+-A POSTROUTING -j MASQUERADE
+
 COMMIT
