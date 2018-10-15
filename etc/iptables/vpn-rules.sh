@@ -90,8 +90,8 @@ $IPT -t nat -P PREROUTING ACCEPT
 $IPT -t nat -P INPUT ACCEPT
 $IPT -t nat -P OUTPUT ACCEPT
 $IPT -t nat -P POSTROUTING ACCEPT
-$IPT -A POSTROUTING -o $VPN_NIC -j MASQUERADE
-$IPT -A POSTROUTING -o $WAN_NIC -j MASQUERADE
+$IPT -t nat -A POSTROUTING -o $VPN_NIC -j MASQUERADE
+$IPT -t nat -A POSTROUTING -o $WAN_NIC -j MASQUERADE
 
 # Input - It's most secure to only allow inbound traffic from established or related connections. Set that up next.
 $IPT -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
