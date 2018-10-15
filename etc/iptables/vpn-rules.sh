@@ -151,27 +151,53 @@ $IPT -Z
 
 ### Jump point to LOG and ACCEPT, make a note of request (SSH, VPN)
 $IPT -N LOGACCEPT
-# $IPT -I LOGACCEPT -m limit --limit 10/min -j LOG --log-prefix "IPTables-Accepted: " --log-level 4
+# $IPT -I LOGACCEPT -m limit --limit 10/min -j LOG --log-prefix "IPTables-FILTER-Accepted: " --log-level 4
 $IPT -I LOGACCEPT -j LOG --log-prefix "IPTables-Accepted: " --log-level 4
 $IPT -A LOGACCEPT -j ACCEPT
 
 ### Jump point to LOG and DROP to blackhole connection (FTP, Telnet)
 $IPT -N LOGDROP
-# $IPT -I LOGDROP -m limit --limit 10/min -j LOG --log-prefix "IPTables-Dropped: " --log-level 4
+# $IPT -I LOGDROP -m limit --limit 10/min -j LOG --log-prefix "IPTables-FILTER-Dropped: " --log-level 4
 $IPT -I LOGDROP -j LOG --log-prefix "IPTables-Dropped: " --log-level 4
 $IPT -A LOGDROP -j DROP
 
 ### Jump point to LOG and REJECT with TCP RST packet to appear closed
 $IPT -N LOGREJECT
-# $IPT -I LOGREJECT -m limit --limit 10/min -j LOG --log-prefix "IPTables-Rejected: " --log-level 4
+# $IPT -I LOGREJECT -m limit --limit 10/min -j LOG --log-prefix "IPTables-FILTER-Rejected: " --log-level 4
 $IPT -I LOGREJECT -j LOG --log-prefix "IPTables-Rejected: " --log-level 4
 $IPT -A LOGREJECT -j REJECT --reject-with tcp-reset
 
 ### Jump point to LOG and MASQUERADE
-$IPT -t nat -N LOGMASQUERADE
-# $IPT -t nat -I LOGMASQUERADE -m limit --limit 10/min -j LOG --log-prefix "IPTables-Masqueraded: " --log-level 4
-$IPT -t nat -I LOGMASQUERADE -j LOG --log-prefix "IPTables-Masqueraded: " --log-level 4
-$IPT -t nat -A LOGMASQUERADE -j MASQUERADE
+$IPT -N LOGMASQUERADE
+# $IPT -I LOGMASQUERADE -m limit --limit 10/min -j LOG --log-prefix "IPTables-FILTER-Masqueraded: " --log-level 4
+$IPT -I LOGMASQUERADE -j LOG --log-prefix "IPTables-FILTER-Masqueraded: " --log-level 4
+$IPT -A LOGMASQUERADE -j MASQUERADE
+
+### NAT-specific LOG versions
+### Jump point to LOG and ACCEPT, make a note of request (SSH, VPN)
+$IPT -t nat -N LOGACCEPT-NAT
+# $IPT -t nat -I LOGACCEPT-NAT -m limit --limit 10/min -j LOG --log-prefix "IPTables-NAT-Accepted: " --log-level 4
+$IPT -t nat -I LOGACCEPT-NAT -j LOG --log-prefix "IPTables-Accepted: " --log-level 4
+$IPT -t nat -A LOGACCEPT-NAT -j ACCEPT
+
+### Jump point to LOG and DROP to blackhole connection (FTP, Telnet)
+$IPT -t nat -N LOGDROP-NAT
+# $IPT -t nat -I LOGDROP-NAT -m limit --limit 10/min -j LOG --log-prefix "IPTables-NAT-Dropped: " --log-level 4
+$IPT -t nat -I LOGDROP-NAT -j LOG --log-prefix "IPTables-Dropped: " --log-level 4
+$IPT -t nat -A LOGDROP-NAT -j DROP
+
+### Jump point to LOG and REJECT with TCP RST packet to appear closed
+$IPT -t nat -N LOGREJECT-NAT
+# $IPT -t nat -I LOGREJECT-NAT -m limit --limit 10/min -j LOG --log-prefix "IPTables-NAT-Rejected: " --log-level 4
+$IPT -t nat -I LOGREJECT-NAT -j LOG --log-prefix "IPTables-Rejected: " --log-level 4
+$IPT -t nat -A LOGREJECT-NAT -j REJECT --reject-with tcp-reset
+
+
+### Jump point to LOG and MASQUERADE
+$IPT -t nat -N LOGMASQUERADE-NAT
+# $IPT -t nat -I LOGMASQUERADE-NAT -m limit --limit 10/min -j LOG --log-prefix "IPTables-NAT-Masqueraded: " --log-level 4
+$IPT -t nat -I LOGMASQUERADE-NAT -j LOG --log-prefix "IPTables-Masqueraded: " --log-level 4
+$IPT -t nat -A LOGMASQUERADE-NAT -j MASQUERADE
 
 ### *filter table
 $IPT -P INPUT DROP
@@ -186,18 +212,18 @@ $IPT -A FORWARD -j LOGREJECT
 
 ### *nat table
 $IPT -t nat -P PREROUTING ACCEPT
-$IPT -t nat -A OUTPUT -j LOGACCEPT
+$IPT -t nat -I PREROUTING -j LOGACCEPT-NAT
 
 $IPT -t nat -P INPUT ACCEPT
-$IPT -t nat -A OUTPUT -j LOGACCEPT
+$IPT -t nat -I INPUT -j LOGACCEPT-NAT
 
 $IPT -t nat -P OUTPUT ACCEPT
-$IPT -t nat -A OUTPUT -j LOGACCEPT
+$IPT -t nat -I OUTPUT -j LOGACCEPT-NAT
 
 $IPT -t nat -P POSTROUTING ACCEPT
-$IPT -t nat -A POSTROUTING -o $VPN_NIC -j LOGMASQUERADE
-$IPT -t nat -A POSTROUTING -o $WAN_NIC -j LOGMASQUERADE
-$IPT -t nat -A POSTROUTING -j LOGMASQUERADE
+$IPT -t nat -A POSTROUTING -o $VPN_NIC -j LOGMASQUERADE-NAT
+$IPT -t nat -A POSTROUTING -o $WAN_NIC -j LOGMASQUERADE-NAT
+$IPT -t nat -A POSTROUTING -j LOGMASQUERADE-NAT
 
 
 ### Input - It's most secure to only allow inbound traffic from established or related connections. Set that up next.
