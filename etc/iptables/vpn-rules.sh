@@ -56,6 +56,10 @@ nmcli device set $WAN_NIC autoconnect yes
 #####################
 ### https://linuxconfig.org/how-to-create-a-vpn-killswitch-using-iptables-on-linux
 
+
+### make sysctl settings persistent; commit to file
+$KERNCONF -p
+
 ### Kill IPv6
 $KERNCONF -w net.ipv6.conf.all.disable_ipv6=1
 $KERNCONF -w net.ipv6.conf.default.disable_ipv6=1
@@ -80,8 +84,14 @@ $KERNCONF -w net.ipv6.conf.tun.forwarding=0
 $KERNCONF -w net.ipv6.conf.wlan0.forwarding=0
 $KERNCONF -w net.ipv6.conf.wlan1.forwarding=0
 
-### make sysctl settings persistent; commit to file
-$KERNCONF -p
+# $KERNCONF -w net.ipv4.conf.default.rp_filter = 1
+# $KERNCONF -w net.ipv4.conf.all.rp_filter = 1
+# $KERNCONF -w net.ipv4.tcp_syncookies = 1
+# $KERNCONF -w net.ipv6.conf.all.forwarding = 0
+# $KERNCONF -w net.ipv4.conf.all.send_redirects = 1
+# $KERNCONF -w net.ipv4.conf.all.accept_source_route = 1
+# $KERNCONF -w net.ipv6.conf.all.accept_source_route = 1
+# $KERNCONF -w net.ipv4.conf.all.log_martians = 1
 
 ##### Reset iptables rules
 ### Flush all rules: -F
@@ -120,8 +130,6 @@ $IPT -t nat -P OUTPUT ACCEPT
 $IPT -t nat -P POSTROUTING ACCEPT
 $IPT -t nat -A POSTROUTING -o $VPN_NIC -j MASQUERADE
 $IPT -t nat -A POSTROUTING -o $WAN_NIC -j MASQUERADE
-
-
 
 ### Input - It's most secure to only allow inbound traffic from established or related connections. Set that up next.
 $IPT -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
