@@ -167,12 +167,6 @@ $IPT -N LOGREJECT
 $IPT -I LOGREJECT -j LOG --log-prefix "IPTables-Rejected: " --log-level 4
 $IPT -A LOGREJECT -j REJECT --reject-with tcp-reset
 
-### Jump point to LOG and MASQUERADE
-$IPT -N LOGMASQUERADE
-# $IPT -I LOGMASQUERADE -m limit --limit 10/min -j LOG --log-prefix "IPTables-FILTER-Masqueraded: " --log-level 4
-$IPT -I LOGMASQUERADE -j LOG --log-prefix "IPTables-FILTER-Masqueraded: " --log-level 4
-$IPT -A LOGMASQUERADE -j MASQUERADE
-
 ### NAT-specific LOG versions
 ### Jump point to LOG and ACCEPT, make a note of request (SSH, VPN)
 $IPT -t nat -N LOGACCEPT-NAT
@@ -185,13 +179,6 @@ $IPT -t nat -N LOGDROP-NAT
 # $IPT -t nat -I LOGDROP-NAT -m limit --limit 10/min -j LOG --log-prefix "IPTables-NAT-Dropped: " --log-level 4
 $IPT -t nat -I LOGDROP-NAT -j LOG --log-prefix "IPTables-Dropped: " --log-level 4
 $IPT -t nat -A LOGDROP-NAT -j DROP
-
-### Jump point to LOG and REJECT with TCP RST packet to appear closed
-$IPT -t nat -N LOGREJECT-NAT
-# $IPT -t nat -I LOGREJECT-NAT -m limit --limit 10/min -j LOG --log-prefix "IPTables-NAT-Rejected: " --log-level 4
-$IPT -t nat -I LOGREJECT-NAT -j LOG --log-prefix "IPTables-Rejected: " --log-level 4
-$IPT -t nat -A LOGREJECT-NAT -j REJECT --reject-with tcp-reset
-
 
 ### Jump point to LOG and MASQUERADE
 $IPT -t nat -N LOGMASQUERADE-NAT
