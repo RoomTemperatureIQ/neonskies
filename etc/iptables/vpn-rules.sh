@@ -115,7 +115,6 @@ $IPT -A OUTPUT -d 209.222.18.218,209.222.18.222 -j ACCEPT
 $IPT -A OUTPUT -p udp -m udp --dport 1197 -j ACCEPT
 $IPT -A OUTPUT -p udp -m udp --dport 1194 -j ACCEPT
 $IPT -A OUTPUT -o $VPN_NIC -j ACCEPT
-$IPT -A OUTPUT -o $WAN_NIC -j ACCEPT
 
 # $IPT -A OUTPUT -p udp -m multiport --dports 53,80,110,443,501,502,1194,1197,1198,8080,9201 -j ACCEPT
 # $IPT -A OUTPUT -p tcp -m multiport --dports 53,80,110,443,501,502,1194,1197,1198,8080,9201 -j ACCEPT
