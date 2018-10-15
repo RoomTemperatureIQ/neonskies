@@ -149,10 +149,29 @@ $IPT -F
 $IPT -X
 $IPT -Z
 
-### LOGGING chain - we use to debug DROPPED packets
-$IPT -N LOGGING
-$IPT -A LOGGING -m limit --limit 10/min -j LOG --log-prefix "IPTables-Dropped: " --log-level 4
-$IPT -A LOGGING -j DROP
+### Jump point to LOG and ACCEPT, make a note of request (SSH, VPN)
+$IPT -N LOGACCEPT
+# $IPT -I LOGACCEPT -m limit --limit 10/min -j LOG --log-prefix "IPTables-Accepted: " --log-level 4
+$IPT -I LOGACCEPT -j LOG --log-prefix "IPTables-Accepted: " --log-level 4
+$IPT -A LOGACCEPT -j ACCEPT
+
+### Jump point to LOG and DROP to blackhole connection (FTP, Telnet)
+$IPT -N LOGDROP
+# $IPT -I LOGDROP -m limit --limit 10/min -j LOG --log-prefix "IPTables-Dropped: " --log-level 4
+$IPT -I LOGDROP -j LOG --log-prefix "IPTables-Dropped: " --log-level 4
+$IPT -A LOGDROP -j DROP
+
+### Jump point to LOG and REJECT with TCP RST packet to appear closed
+$IPT -N LOGREJECT
+# $IPT -I LOGREJECT -m limit --limit 10/min -j LOG --log-prefix "IPTables-Rejected: " --log-level 4
+$IPT -I LOGREJECT -j LOG --log-prefix "IPTables-Rejected: " --log-level 4
+$IPT -A LOGREJECT -j REJECT --reject-with tcp-reset
+
+### Jump point to LOG and MASQUERADE
+$IPT -N LOGMASQUERADE
+# $IPT -I LOGMASQUERADE -m limit --limit 10/min -j LOG --log-prefix "IPTables-Masqueraded: " --log-level 4
+$IPT -I LOGMASQUERADE -j LOG --log-prefix "IPTables-Masqueraded: " --log-level 4
+$IPT -A LOGMASQUERADE -j MASQUERADE
 
 ### *filter table
 $IPT -P INPUT DROP
@@ -162,16 +181,24 @@ $IPT -P OUTPUT DROP
 ### Forwarding
 $IPT -A FORWARD -o $VPN_NIC -j ACCEPT
 # $IPT -A FORWARD -o $WAN_NIC -j ACCEPT
-### jump to LOGGING table for debugging
-$IPT -A FORWARD -j LOGGING
+### jump to LOGREJECT table for debugging
+$IPT -A FORWARD -j LOGREJECT
 
 ### *nat table
 $IPT -t nat -P PREROUTING ACCEPT
+$IPT -t nat -A OUTPUT -j LOGACCEPT
+
 $IPT -t nat -P INPUT ACCEPT
+$IPT -t nat -A OUTPUT -j LOGACCEPT
+
 $IPT -t nat -P OUTPUT ACCEPT
+$IPT -t nat -A OUTPUT -j LOGACCEPT
+
 $IPT -t nat -P POSTROUTING ACCEPT
-$IPT -t nat -A POSTROUTING -o $VPN_NIC -j MASQUERADE
-$IPT -t nat -A POSTROUTING -o $WAN_NIC -j MASQUERADE
+$IPT -t nat -A POSTROUTING -o $VPN_NIC -j LOGMASQUERADE
+$IPT -t nat -A POSTROUTING -o $WAN_NIC -j LOGMASQUERADE
+$IPT -t nat -A POSTROUTING -j LOGMASQUERADE
+
 
 ### Input - It's most secure to only allow inbound traffic from established or related connections. Set that up next.
 $IPT -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
@@ -193,7 +220,7 @@ $IPT -A INPUT -i $WAN_NIC -p tcp -m multiport --dports $DHCP_PORT,$DHCPC_PORT -j
 $IPT -A INPUT -i $WAN_NIC -p icmp -j ACCEPT
 
 ### jump to LOGGING table for debugging
-$IPT -A INPUT -j LOGGING
+$IPT -A INPUT -j LOGREJECT
 
 ### Loopback and Ping - allow the loopback interface and ping.
 $IPT -A OUTPUT -o lo -j ACCEPT
@@ -227,7 +254,7 @@ $IPT -A OUTPUT -p udp -m udp --dport 1194 -j ACCEPT
 $IPT -A OUTPUT -o $VPN_NIC -j ACCEPT
 
 ### jump to LOGGING table for debugging
-$IPT -A OUTPUT -j LOGGING
+$IPT -A OUTPUT -j LOGREJECT
 
 
 
