@@ -100,7 +100,7 @@ $IPT -P INPUT DROP
 $IPT -P OUTPUT DROP
 
 ### Forwarding
-$IPT -P FORWARD ACCEPT
+$IPT -P FORWARD DROP
 $IPT -A FORWARD -o $VPN_NIC -j ACCEPT
 # $IPT -A FORWARD -o $WAN_NIC -j ACCEPT
 
@@ -124,11 +124,11 @@ $IPT -A INPUT -i $LAN_NIC -j ACCEPT
 ### WLAN - allow the WLAN interface (hostapd)
 $IPT -A INPUT -i $WLAN_NIC -j ACCEPT
 
-### allow the WAN_NIC to be issued a DHCP lease
+### WAN - allow the WAN_NIC to be issued a DHCP lease
 $IPT -A INPUT -i $WAN_NIC -p udp -m multiport --dports $DHCP_PORT,$DHCPC_PORT -j ACCEPT
 $IPT -A INPUT -i $WAN_NIC -p tcp -m multiport --dports $DHCP_PORT,$DHCPC_PORT -j ACCEPT
 
-### allow the WAN_NIC to accept ICMP for ping requests
+### WAN - allow the WAN_NIC to accept ICMP for ping requests
 $IPT -A INPUT -i $WAN_NIC -p icmp -j ACCEPT
 
 ### Loopback and Ping - allow the loopback interface and ping.
@@ -142,7 +142,7 @@ $IPT -A OUTPUT -o lo -j ACCEPT
 $IPT -A OUTPUT -o $LAN_NIC -j ACCEPT
 $IPT -A OUTPUT -o $WLAN_NIC -j ACCEPT
 
-### allow the WAN_NIC to be issued a DHCP lease
+### WAN - allow the WAN_NIC to be issued a DHCP lease
 $IPT -A OUTPUT -o $WAN_NIC -p udp -m multiport --dports $DHCP_PORT,$DHCPC_PORT -j ACCEPT
 $IPT -A OUTPUT -o $WAN_NIC -p tcp -m multiport --dports $DHCP_PORT,$DHCPC_PORT -j ACCEPT
 
