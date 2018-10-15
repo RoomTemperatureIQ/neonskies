@@ -211,7 +211,7 @@ $IPT -t nat -A POSTROUTING -j LOGMASQUERADE-NAT
 
 
 ### Input - It's most secure to only allow inbound traffic from established or related connections. Set that up next.
-$IPT -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+$IPT -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j LOGACCEPT
 
 ### Loopback - allow the loopback interface
 $IPT -A INPUT -i lo -j LOGACCEPT
