@@ -39,6 +39,9 @@ SSH_PORT="22"
 # DNS port
 DNS_PORT="53"
 
+# set the WAN to autoconnect
+nmcli device set $WAN_NIC autoconnect yes
+
 ####################
 ## VPN Killswitch ##
 ####################
