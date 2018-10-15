@@ -168,10 +168,10 @@ $IPT -I LOGREJECT -j LOG --log-prefix "IPTables-Rejected: " --log-level 4
 $IPT -A LOGREJECT -j REJECT --reject-with tcp-reset
 
 ### Jump point to LOG and MASQUERADE
-$IPT -N LOGMASQUERADE
-# $IPT -I LOGMASQUERADE -m limit --limit 10/min -j LOG --log-prefix "IPTables-Masqueraded: " --log-level 4
-$IPT -I LOGMASQUERADE -j LOG --log-prefix "IPTables-Masqueraded: " --log-level 4
-$IPT -A LOGMASQUERADE -j MASQUERADE
+$IPT -t nat -N LOGMASQUERADE
+# $IPT -t nat -I LOGMASQUERADE -m limit --limit 10/min -j LOG --log-prefix "IPTables-Masqueraded: " --log-level 4
+$IPT -t nat -I LOGMASQUERADE -j LOG --log-prefix "IPTables-Masqueraded: " --log-level 4
+$IPT -t nat -A LOGMASQUERADE -j MASQUERADE
 
 ### *filter table
 $IPT -P INPUT DROP
