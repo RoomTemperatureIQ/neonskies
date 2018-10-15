@@ -161,11 +161,14 @@ $IPT -N LOGDROP
 $IPT -I LOGDROP -j LOG --log-prefix "IPTables-FILTER-Dropped: " --log-level 4
 $IPT -A LOGDROP -j DROP
 
-### Jump point to LOG and REJECT with TCP RST packet to appear closed
+### Jump point to LOG and REJECT
+### use `--reject-with tcp-reset` for TCP RST packet to appear closed
 $IPT -N LOGREJECT
 # $IPT -I LOGREJECT -m limit --limit 10/min -j LOG --log-prefix "IPTables-FILTER-Rejected: " --log-level 4
 $IPT -I LOGREJECT -j LOG --log-prefix "IPTables-FILTER-Rejected: " --log-level 4
-$IPT -A LOGREJECT -j REJECT --reject-with tcp-reset
+# $IPT -A LOGREJECT -j REJECT --reject-with tcp-reset
+### not all connections use TCP
+$IPT -A LOGREJECT -j REJECT
 
 ### NAT-specific LOG versions
 ### Jump point to LOG and ACCEPT, make a note of request (SSH, VPN)
