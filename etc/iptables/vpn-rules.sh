@@ -189,10 +189,10 @@ $IPT -P FORWARD DROP
 $IPT -P OUTPUT DROP
 
 ### Forwarding
-$IPT -A FORWARD -o $VPN_NIC -j ACCEPT
-# $IPT -A FORWARD -o $WAN_NIC -j ACCEPT
+$IPT -A FORWARD -o $VPN_NIC -j LOGACCEPT
+# $IPT -A FORWARD -o $WAN_NIC -j LOGACCEPT
 ### jump to LOGREJECT table for debugging
-$IPT -A FORWARD -j LOGREJECT
+$IPT -A FORWARD -j LOGACCEPT
 
 ### *nat table
 $IPT -t nat -P PREROUTING ACCEPT
@@ -214,38 +214,38 @@ $IPT -t nat -A POSTROUTING -j LOGMASQUERADE-NAT
 $IPT -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
 
 ### Loopback - allow the loopback interface
-$IPT -A INPUT -i lo -j ACCEPT
+$IPT -A INPUT -i lo -j LOGACCEPT
 
 ### LAN - allow the LAN interface
-$IPT -A INPUT -i $LAN_NIC -j ACCEPT
+$IPT -A INPUT -i $LAN_NIC -j LOGACCEPT
 
 ### WLAN - allow the WLAN interface (hostapd)
-$IPT -A INPUT -i $WLAN_NIC -j ACCEPT
+$IPT -A INPUT -i $WLAN_NIC -j LOGACCEPT
 
 ### WAN - allow the WAN_NIC to be issued a DHCP lease
-$IPT -A INPUT -i $WAN_NIC -p udp -m multiport --dports $DHCP_PORT,$DHCPC_PORT -j ACCEPT
-$IPT -A INPUT -i $WAN_NIC -p tcp -m multiport --dports $DHCP_PORT,$DHCPC_PORT -j ACCEPT
+$IPT -A INPUT -i $WAN_NIC -p udp -m multiport --dports $DHCP_PORT,$DHCPC_PORT -j LOGACCEPT
+$IPT -A INPUT -i $WAN_NIC -p tcp -m multiport --dports $DHCP_PORT,$DHCPC_PORT -j LOGACCEPT
 
 ### WAN - allow the WAN_NIC to accept ICMP for ping requests
-$IPT -A INPUT -i $WAN_NIC -p icmp -j ACCEPT
+$IPT -A INPUT -i $WAN_NIC -p icmp -j LOGACCEPT
 
 ### jump to LOGGING table for debugging
 $IPT -A INPUT -j LOGREJECT
 
 ### Loopback and Ping - allow the loopback interface and ping.
-$IPT -A OUTPUT -o lo -j ACCEPT
-### the `$IPT -A OUTPUT -o $VPN_NIC -j ACCEPT` covers this case, uncomment if not using that rule (explicit port ACCEPT)
-# $IPT -A OUTPUT -o $VPN_NIC -p icmp -j ACCEPT
+$IPT -A OUTPUT -o lo -j LOGACCEPT
+### the `$IPT -A OUTPUT -o $VPN_NIC -j LOGACCEPT` covers this case, uncomment if not using that rule (explicit port ACCEPT)
+# $IPT -A OUTPUT -o $VPN_NIC -p icmp -j LOGACCEPT
 
 ### LAN - It doesn't make much sense to shut down or block your LAN traffic, especially on a home network, so allow that too.
 ### commented out $WAN_RANGE to prevent leaks
-# $IPT -A OUTPUT -d $WAN_RANGE -j ACCEPT
-$IPT -A OUTPUT -o $LAN_NIC -j ACCEPT
-$IPT -A OUTPUT -o $WLAN_NIC -j ACCEPT
+# $IPT -A OUTPUT -d $WAN_RANGE -j LOGACCEPT
+$IPT -A OUTPUT -o $LAN_NIC -j LOGACCEPT
+$IPT -A OUTPUT -o $WLAN_NIC -j LOGACCEPT
 
 ### WAN - allow the WAN_NIC to be issued a DHCP lease
-$IPT -A OUTPUT -o $WAN_NIC -p udp -m multiport --dports $DHCP_PORT,$DHCPC_PORT -j ACCEPT
-$IPT -A OUTPUT -o $WAN_NIC -p tcp -m multiport --dports $DHCP_PORT,$DHCPC_PORT -j ACCEPT
+$IPT -A OUTPUT -o $WAN_NIC -p udp -m multiport --dports $DHCP_PORT,$DHCPC_PORT -j LOGACCEPT
+$IPT -A OUTPUT -o $WAN_NIC -p tcp -m multiport --dports $DHCP_PORT,$DHCPC_PORT -j LOGACCEPT
 
 ### DNS - For this next part, you're going to need to know the IP address of your VPN's DNS server(s).
 ###       If your VPN has access or your resolv.conf, you'll probably find them i there.
@@ -254,14 +254,14 @@ $IPT -A OUTPUT -o $WAN_NIC -p tcp -m multiport --dports $DHCP_PORT,$DHCPC_PORT -
 ###   resolver2.privateinternetaccess.com @ 209.222.18.218
 ### multiple IP matching: https://www.cyberciti.biz/faq/how-to-use-iptables-with-multiple-source-destination-ips-addresses/
 ### port 53 UDP/TCP, unsure for DNSSEC (explicit IP covers both cases)
-$IPT -A OUTPUT -d 209.222.18.218,209.222.18.222 -j ACCEPT
+$IPT -A OUTPUT -d 209.222.18.218,209.222.18.222 -j LOGACCEPT
 
 ### Allow the VPN - Of course, you need to allow the VPN itself. There are two parts to this.
 ### You need to allow both the service port and the interface.
 ### OpenVPN uses default port 1194, PIA uses port 1197
-$IPT -A OUTPUT -p udp -m udp --dport 1197 -j ACCEPT
-$IPT -A OUTPUT -p udp -m udp --dport 1194 -j ACCEPT
-$IPT -A OUTPUT -o $VPN_NIC -j ACCEPT
+$IPT -A OUTPUT -p udp -m udp --dport 1197 -j LOGACCEPT
+$IPT -A OUTPUT -p udp -m udp --dport 1194 -j LOGACCEPT
+$IPT -A OUTPUT -o $VPN_NIC -j LOGACCEPT
 
 ### jump to LOGGING table for debugging
 $IPT -A OUTPUT -j LOGREJECT
@@ -270,11 +270,11 @@ $IPT -A OUTPUT -j LOGREJECT
 
 
 ### Example
-# $IPT -A OUTPUT -o $VPN_NIC -p tcp --dport 443 -j ACCEPT
-# $IPT -A OUTPUT -o $VPN_NIC -p tcp --dport 80 -j ACCEPT
+# $IPT -A OUTPUT -o $VPN_NIC -p tcp --dport 443 -j LOGACCEPT
+# $IPT -A OUTPUT -o $VPN_NIC -p tcp --dport 80 -j LOGACCEPT
 
-# $IPT -A OUTPUT -o $VPN_NIC -p tcp --dport 993 -j ACCEPT
-# $IPT -A OUTPUT -o $VPN_NIC -p tcp --dport 465 -j ACCEPT
+# $IPT -A OUTPUT -o $VPN_NIC -p tcp --dport 993 -j LOGACCEPT
+# $IPT -A OUTPUT -o $VPN_NIC -p tcp --dport 465 -j LOGACCEPT
 
-# $IPT -A OUTPUT -p udp -m multiport --dports 53,80,110,443,501,502,1194,1197,1198,8080,9201 -j ACCEPT
-# $IPT -A OUTPUT -p tcp -m multiport --dports 53,80,110,443,501,502,1194,1197,1198,8080,9201 -j ACCEPT
+# $IPT -A OUTPUT -p udp -m multiport --dports 53,80,110,443,501,502,1194,1197,1198,8080,9201 -j LOGACCEPT
+# $IPT -A OUTPUT -p tcp -m multiport --dports 53,80,110,443,501,502,1194,1197,1198,8080,9201 -j LOGACCEPT
