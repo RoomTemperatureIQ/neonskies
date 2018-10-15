@@ -93,7 +93,7 @@ $IPT -P OUTPUT DROP
 # Forwarding
 $IPT -P FORWARD ACCEPT
 $IPT -A FORWARD -o $VPN_NIC -j ACCEPT
-$IPT -A FORWARD -o $WAN_NIC -j ACCEPT
+# $IPT -A FORWARD -o $WAN_NIC -j ACCEPT
 
 # *nat table
 $IPT -t nat -P PREROUTING ACCEPT
@@ -106,8 +106,8 @@ $IPT -t nat -A POSTROUTING -o $WAN_NIC -j MASQUERADE
 # Input - It's most secure to only allow inbound traffic from established or related connections. Set that up next.
 $IPT -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
 $IPT -A INPUT -i lo -j ACCEPT
-$IPT -A INPUT -p tcp -m tcp --dport $DNS_PORT -j ACCEPT
-$IPT -A INPUT -p tcp -m tcp --dport $SSH_PORT -j ACCEPT
+#  $IPT -A INPUT -p tcp -m tcp --dport $DNS_PORT -j ACCEPT
+#  $IPT -A INPUT -p tcp -m tcp --dport $SSH_PORT -j ACCEPT
 $IPT -A INPUT -i $LAN_NIC -j ACCEPT
 $IPT -A INPUT -i $WLAN_NIC -j ACCEPT
 
