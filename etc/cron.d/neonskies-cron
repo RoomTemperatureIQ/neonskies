@@ -32,7 +32,7 @@
 0 0 1 * * root /usr/bin/curl -o /etc/unbound/root.hints https://www.internic.net/domain/named.cache && sleep 2 && chown unbound:unbound /etc/unbound/root.hints
 
 # every day at 00:00 update unbound_ad_servers file
-0 0 * * * root /usr/bin/curl -o /etc/unbound/unbound_ad_servers "https://pgl.yoyo.org/adservers/serverlist.php?hostformat=unbound&showintro=0&startdate%5Bday%5D=&startdate%5Bmonth%5D=&startdate%5Byear%5D=&mimetype=plaintext" && sleep 2 && chown unbound:unbound /etc/unbound/unbounds_ad_servers
+0 0 * * * root /usr/bin/curl -o /etc/unbound/unbound_ad_servers "https://pgl.yoyo.org/adservers/serverlist.php?hostformat=unbound&showintro=0&startdate%5Bday%5D=&startdate%5Bmonth%5D=&startdate%5Byear%5D=&mimetype=plaintext" && sleep 2 && chown unbound:unbound /etc/unbound/unbound_ad_servers
 
 # Let's Encrypt certificate renewal
 # 0 0 1 * * root /opt/letsencrypt/letsencrypt-auto renew
