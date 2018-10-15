@@ -21,11 +21,17 @@ WAN_NIC="wlan1"
 # LAN NIC
 LAN_NIC="eth0"
 
+# WLAN NIC
+WLAN_NIC="wlan0"
+
 # server IP
 HOST_IP="192.168.50.254"
 
 # your LAN IP range
-LAN_RANGE="192.168.50.0/24"
+LAN_RANGE="192.168.232.0/24"
+
+# your WLAN IP range
+WLAN_RANGE="192.168.2.0/24"
 
 # SSH port
 SSH_PORT="22"
@@ -90,6 +96,7 @@ $IPT -A POSTROUTING -o $WAN_NIC -j MASQUERADE
 # Input - It's most secure to only allow inbound traffic from established or related connections. Set that up next.
 $IPT -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
 $IPT -A INPUT -i $LAN_NIC -j ACCEPT
+$IPT -A INPUT -i $WLAN_NIC -j ACCEPT
 $IPT -A INPUT -p tcp -m tcp --dport $SSH_PORT -j ACCEPT
 
 # Loopback and Ping - allow the loopback interface and ping.
@@ -98,8 +105,8 @@ $IPT -A OUTPUT -o $VPN_NIC -p icmp -j ACCEPT
 
 # LAN - It doesn't make much sense to shut down or block your LAN traffic, especially on a home network, so allow that too.
 # $IPT -A OUTPUT -d 192.168.1.0/24 -j ACCEPT
-$IPT -A OUTPUT -d 192.168.2.0/24 -j ACCEPT
-$IPT -A OUTPUT -d 192.168.232.0/24 -j ACCEPT
+$IPT -A OUTPUT -d $LAN_RANGE -j ACCEPT
+$IPT -A OUTPUT -d $WLAN_RANGE -j ACCEPT
 
 # DNS - For this next part, you're going to need to know the IP address of your VPN's DNS server(s).
 #       If your VPN has access or your resolv.conf, you'll probably find them i there.
