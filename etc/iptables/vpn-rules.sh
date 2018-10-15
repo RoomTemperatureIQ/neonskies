@@ -10,7 +10,7 @@
 IPT="/usr/sbin/iptables"
 
 #location of sysctl
-KERNCONF='`which sysctl`'
+KERNCONF=`which sysctl`
 
 # VPN NIC
 VPN_NIC="tun0"
@@ -50,7 +50,6 @@ $KERNCONF -w net.ipv4.icmp_echo_ignore_all=0
 
 # toggle allow forwarding
 $KERNCONF -w net.ipv4.ip_forward=1
-$KERNCONF -w net.ipv6.ip_forward=0
 $KERNCONF -w net.ipv6.conf.all.forwarding=0
 $KERNCONF -w net.ipv6.conf.default.forwarding=0
 $KERNCONF -w net.ipv6.conf.eth0.forwarding=0
@@ -85,12 +84,13 @@ $IPT -t nat -P PREROUTING ACCEPT
 $IPT -t nat -P INPUT ACCEPT
 $IPT -t nat -P OUTPUT ACCEPT
 $IPT -t nat -P POSTROUTING ACCEPT
-$IPT -A POSTROUTING -o $WAN_NIC -j MASQUERADE
 $IPT -A POSTROUTING -o $VPN_NIC -j MASQUERADE
+$IPT -A POSTROUTING -o $WAN_NIC -j MASQUERADE
 
 # Input - It's most secure to only allow inbound traffic from established or related connections. Set that up next.
 $IPT -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
 $IPT -A INPUT -i $LAN_NIC -j ACCEPT
+$IPT -A INPUT -p tcp -m tcp --dport $SSH_PORT -j ACCEPT
 
 # Loopback and Ping - allow the loopback interface and ping.
 $IPT -A OUTPUT -o lo -j ACCEPT
