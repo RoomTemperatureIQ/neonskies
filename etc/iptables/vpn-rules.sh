@@ -152,38 +152,38 @@ $IPT -Z
 ### Jump point to LOG and ACCEPT, make a note of request (SSH, VPN)
 $IPT -N LOGACCEPT
 # $IPT -I LOGACCEPT -m limit --limit 10/min -j LOG --log-prefix "IPTables-FILTER-Accepted: " --log-level 4
-$IPT -I LOGACCEPT -j LOG --log-prefix "IPTables-Accepted: " --log-level 4
+$IPT -I LOGACCEPT -j LOG --log-prefix "IPTables-FILTER-Accepted: " --log-level 4
 $IPT -A LOGACCEPT -j ACCEPT
 
 ### Jump point to LOG and DROP to blackhole connection (FTP, Telnet)
 $IPT -N LOGDROP
 # $IPT -I LOGDROP -m limit --limit 10/min -j LOG --log-prefix "IPTables-FILTER-Dropped: " --log-level 4
-$IPT -I LOGDROP -j LOG --log-prefix "IPTables-Dropped: " --log-level 4
+$IPT -I LOGDROP -j LOG --log-prefix "IPTables-FILTER-Dropped: " --log-level 4
 $IPT -A LOGDROP -j DROP
 
 ### Jump point to LOG and REJECT with TCP RST packet to appear closed
 $IPT -N LOGREJECT
 # $IPT -I LOGREJECT -m limit --limit 10/min -j LOG --log-prefix "IPTables-FILTER-Rejected: " --log-level 4
-$IPT -I LOGREJECT -j LOG --log-prefix "IPTables-Rejected: " --log-level 4
+$IPT -I LOGREJECT -j LOG --log-prefix "IPTables-FILTER-Rejected: " --log-level 4
 $IPT -A LOGREJECT -j REJECT --reject-with tcp-reset
 
 ### NAT-specific LOG versions
 ### Jump point to LOG and ACCEPT, make a note of request (SSH, VPN)
 $IPT -t nat -N LOGACCEPT-NAT
 # $IPT -t nat -I LOGACCEPT-NAT -m limit --limit 10/min -j LOG --log-prefix "IPTables-NAT-Accepted: " --log-level 4
-$IPT -t nat -I LOGACCEPT-NAT -j LOG --log-prefix "IPTables-Accepted: " --log-level 4
+$IPT -t nat -I LOGACCEPT-NAT -j LOG --log-prefix "IPTables-NAT-Accepted: " --log-level 4
 $IPT -t nat -A LOGACCEPT-NAT -j ACCEPT
 
 ### Jump point to LOG and DROP to blackhole connection (FTP, Telnet)
 $IPT -t nat -N LOGDROP-NAT
 # $IPT -t nat -I LOGDROP-NAT -m limit --limit 10/min -j LOG --log-prefix "IPTables-NAT-Dropped: " --log-level 4
-$IPT -t nat -I LOGDROP-NAT -j LOG --log-prefix "IPTables-Dropped: " --log-level 4
+$IPT -t nat -I LOGDROP-NAT -j LOG --log-prefix "IPTables-NAT-Dropped: " --log-level 4
 $IPT -t nat -A LOGDROP-NAT -j DROP
 
 ### Jump point to LOG and MASQUERADE
 $IPT -t nat -N LOGMASQUERADE-NAT
 # $IPT -t nat -I LOGMASQUERADE-NAT -m limit --limit 10/min -j LOG --log-prefix "IPTables-NAT-Masqueraded: " --log-level 4
-$IPT -t nat -I LOGMASQUERADE-NAT -j LOG --log-prefix "IPTables-Masqueraded: " --log-level 4
+$IPT -t nat -I LOGMASQUERADE-NAT -j LOG --log-prefix "IPTables-NAT-Masqueraded: " --log-level 4
 $IPT -t nat -A LOGMASQUERADE-NAT -j MASQUERADE
 
 ### *filter table
