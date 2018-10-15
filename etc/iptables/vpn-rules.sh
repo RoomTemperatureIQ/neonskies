@@ -151,21 +151,21 @@ $IPT -Z
 
 ### Jump point to LOG and ACCEPT, make a note of request (SSH, VPN)
 $IPT -N LOGACCEPT
-# $IPT -I LOGACCEPT -m limit --limit 10/min -j LOG --log-prefix "IPTables-FILTER-Accepted: " --log-level 4
-$IPT -I LOGACCEPT -j LOG --log-prefix "IPTables-FILTER-Accepted: " --log-level 4
+$IPT -I LOGACCEPT -m limit --limit 2/min -j LOG --log-prefix "IPTables-FILTER-Accepted: " --log-level 4
+# $IPT -I LOGACCEPT -j LOG --log-prefix "IPTables-FILTER-Accepted: " --log-level 4
 $IPT -A LOGACCEPT -j ACCEPT
 
 ### Jump point to LOG and DROP to blackhole connection (FTP, Telnet)
 $IPT -N LOGDROP
-# $IPT -I LOGDROP -m limit --limit 10/min -j LOG --log-prefix "IPTables-FILTER-Dropped: " --log-level 4
-$IPT -I LOGDROP -j LOG --log-prefix "IPTables-FILTER-Dropped: " --log-level 4
+$IPT -I LOGDROP -m limit --limit 2/min -j LOG --log-prefix "IPTables-FILTER-Dropped: " --log-level 4
+# $IPT -I LOGDROP -j LOG --log-prefix "IPTables-FILTER-Dropped: " --log-level 4
 $IPT -A LOGDROP -j DROP
 
 ### Jump point to LOG and REJECT
 ### use `--reject-with tcp-reset` for TCP RST packet to appear closed
 $IPT -N LOGREJECT
-# $IPT -I LOGREJECT -m limit --limit 10/min -j LOG --log-prefix "IPTables-FILTER-Rejected: " --log-level 4
-$IPT -I LOGREJECT -j LOG --log-prefix "IPTables-FILTER-Rejected: " --log-level 4
+$IPT -I LOGREJECT -m limit --limit 2/min -j LOG --log-prefix "IPTables-FILTER-Rejected: " --log-level 4
+# $IPT -I LOGREJECT -j LOG --log-prefix "IPTables-FILTER-Rejected: " --log-level 4
 # $IPT -A LOGREJECT -j REJECT --reject-with tcp-reset
 ### not all connections use TCP
 $IPT -A LOGREJECT -j REJECT
@@ -173,14 +173,14 @@ $IPT -A LOGREJECT -j REJECT
 ### NAT-specific LOG versions
 ### Jump point to LOG and ACCEPT, make a note of request (SSH, VPN)
 $IPT -t nat -N LOGACCEPT-NAT
-# $IPT -t nat -I LOGACCEPT-NAT -m limit --limit 10/min -j LOG --log-prefix "IPTables-NAT-Accepted: " --log-level 4
-$IPT -t nat -I LOGACCEPT-NAT -j LOG --log-prefix "IPTables-NAT-Accepted: " --log-level 4
+$IPT -t nat -I LOGACCEPT-NAT -m limit --limit 2/min -j LOG --log-prefix "IPTables-NAT-Accepted: " --log-level 4
+# $IPT -t nat -I LOGACCEPT-NAT -j LOG --log-prefix "IPTables-NAT-Accepted: " --log-level 4
 $IPT -t nat -A LOGACCEPT-NAT -j ACCEPT
 
 ### Jump point to LOG and MASQUERADE
 $IPT -t nat -N LOGMASQUERADE-NAT
-# $IPT -t nat -I LOGMASQUERADE-NAT -m limit --limit 10/min -j LOG --log-prefix "IPTables-NAT-Masqueraded: " --log-level 4
-$IPT -t nat -I LOGMASQUERADE-NAT -j LOG --log-prefix "IPTables-NAT-Masqueraded: " --log-level 4
+$IPT -t nat -I LOGMASQUERADE-NAT -m limit --limit 2/min -j LOG --log-prefix "IPTables-NAT-Masqueraded: " --log-level 4
+# $IPT -t nat -I LOGMASQUERADE-NAT -j LOG --log-prefix "IPTables-NAT-Masqueraded: " --log-level 4
 $IPT -t nat -A LOGMASQUERADE-NAT -j MASQUERADE
 
 ### *filter table
@@ -190,7 +190,7 @@ $IPT -P OUTPUT DROP
 
 ### Forwarding
 $IPT -A FORWARD -o $VPN_NIC -j LOGACCEPT
-# $IPT -A FORWARD -o $WAN_NIC -j LOGACCEPT
+$IPT -A FORWARD -o $WAN_NIC -j LOGACCEPT
 ### jump to LOGREJECT table for debugging
 $IPT -A FORWARD -j LOGACCEPT
 
@@ -209,18 +209,17 @@ $IPT -t nat -A POSTROUTING -o $VPN_NIC -j LOGMASQUERADE-NAT
 $IPT -t nat -A POSTROUTING -o $WAN_NIC -j LOGMASQUERADE-NAT
 $IPT -t nat -A POSTROUTING -j LOGMASQUERADE-NAT
 
-
 ### Input - It's most secure to only allow inbound traffic from established or related connections. Set that up next.
-$IPT -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j LOGACCEPT
+$IPT -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
 
 ### Loopback - allow the loopback interface
-$IPT -A INPUT -i lo -j LOGACCEPT
+$IPT -A INPUT -i lo -j ACCEPT
 
 ### LAN - allow the LAN interface
-$IPT -A INPUT -i $LAN_NIC -j LOGACCEPT
+$IPT -A INPUT -i $LAN_NIC -j ACCEPT
 
 ### WLAN - allow the WLAN interface (hostapd)
-$IPT -A INPUT -i $WLAN_NIC -j LOGACCEPT
+$IPT -A INPUT -i $WLAN_NIC -j ACCEPT
 
 ### WAN - allow the WAN_NIC to be issued a DHCP lease
 $IPT -A INPUT -i $WAN_NIC -p udp -m multiport --dports $DHCP_PORT,$DHCPC_PORT -j LOGACCEPT
@@ -233,15 +232,15 @@ $IPT -A INPUT -i $WAN_NIC -p icmp -j LOGACCEPT
 $IPT -A INPUT -j LOGREJECT
 
 ### Loopback and Ping - allow the loopback interface and ping.
-$IPT -A OUTPUT -o lo -j LOGACCEPT
+$IPT -A OUTPUT -o lo -j ACCEPT
 ### the `$IPT -A OUTPUT -o $VPN_NIC -j LOGACCEPT` covers this case, uncomment if not using that rule (explicit port ACCEPT)
 # $IPT -A OUTPUT -o $VPN_NIC -p icmp -j LOGACCEPT
 
 ### LAN - It doesn't make much sense to shut down or block your LAN traffic, especially on a home network, so allow that too.
 ### commented out $WAN_RANGE to prevent leaks
 # $IPT -A OUTPUT -d $WAN_RANGE -j LOGACCEPT
-$IPT -A OUTPUT -o $LAN_NIC -j LOGACCEPT
-$IPT -A OUTPUT -o $WLAN_NIC -j LOGACCEPT
+$IPT -A OUTPUT -o $LAN_NIC -j ACCEPT
+$IPT -A OUTPUT -o $WLAN_NIC -j ACCEPT
 
 ### WAN - allow the WAN_NIC to be issued a DHCP lease
 $IPT -A OUTPUT -o $WAN_NIC -p udp -m multiport --dports $DHCP_PORT,$DHCPC_PORT -j LOGACCEPT
@@ -261,7 +260,7 @@ $IPT -A OUTPUT -d 209.222.18.218,209.222.18.222 -j LOGACCEPT
 ### OpenVPN uses default port 1194, PIA uses port 1197
 $IPT -A OUTPUT -p udp -m udp --dport 1197 -j LOGACCEPT
 $IPT -A OUTPUT -p udp -m udp --dport 1194 -j LOGACCEPT
-$IPT -A OUTPUT -o $VPN_NIC -j LOGACCEPT
+$IPT -A OUTPUT -o $VPN_NIC -j ACCEPT
 
 ### jump to LOGGING table for debugging
 $IPT -A OUTPUT -j LOGREJECT
