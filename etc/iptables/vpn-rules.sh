@@ -343,4 +343,4 @@ $IPT -A OUTPUT -j LOGREJECT
 
 
 
-netfilter-persistent save
+$(command -v netfilter-persistent) save
