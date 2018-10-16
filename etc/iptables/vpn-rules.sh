@@ -219,21 +219,21 @@ $IPT -Z
 
 ### Jump point to LOG and ACCEPT, make a note of request (SSH, VPN)
 $IPT -N LOGACCEPT
-$IPT -I LOGACCEPT -m limit --limit 2/min -j LOG --log-prefix "IPTables-FILTER-Accepted: " --log-level 4
-# $IPT -I LOGACCEPT -j LOG --log-prefix "IPTables-FILTER-Accepted: " --log-level 4
+# $IPT -I LOGACCEPT -m limit --limit 2/min -j LOG --log-prefix "IPTables-FILTER-Accepted: " --log-level 4
+$IPT -I LOGACCEPT -j LOG --log-prefix "IPTables-FILTER-Accepted: " --log-level 4
 $IPT -A LOGACCEPT -j ACCEPT
 
 ### Jump point to LOG and DROP to blackhole connection (FTP, Telnet)
 $IPT -N LOGDROP
-$IPT -I LOGDROP -m limit --limit 2/min -j LOG --log-prefix "IPTables-FILTER-Dropped: " --log-level 4
-# $IPT -I LOGDROP -j LOG --log-prefix "IPTables-FILTER-Dropped: " --log-level 4
+# $IPT -I LOGDROP -m limit --limit 2/min -j LOG --log-prefix "IPTables-FILTER-Dropped: " --log-level 4
+$IPT -I LOGDROP -j LOG --log-prefix "IPTables-FILTER-Dropped: " --log-level 4
 $IPT -A LOGDROP -j DROP
 
 ### Jump point to LOG and REJECT
 ### use `--reject-with tcp-reset` for TCP RST packet to appear closed
 $IPT -N LOGREJECT
-$IPT -I LOGREJECT -m limit --limit 2/min -j LOG --log-prefix "IPTables-FILTER-Rejected: " --log-level 4
-# $IPT -I LOGREJECT -j LOG --log-prefix "IPTables-FILTER-Rejected: " --log-level 4
+# $IPT -I LOGREJECT -m limit --limit 2/min -j LOG --log-prefix "IPTables-FILTER-Rejected: " --log-level 4
+$IPT -I LOGREJECT -j LOG --log-prefix "IPTables-FILTER-Rejected: " --log-level 4
 # $IPT -A LOGREJECT -j REJECT --reject-with tcp-reset
 ### not all connections use TCP
 $IPT -A LOGREJECT -j REJECT
@@ -241,14 +241,14 @@ $IPT -A LOGREJECT -j REJECT
 ### NAT-specific LOG versions
 ### Jump point to LOG and ACCEPT, make a note of request (SSH, VPN)
 $IPT -t nat -N LOGACCEPT-NAT
-$IPT -t nat -I LOGACCEPT-NAT -m limit --limit 2/min -j LOG --log-prefix "IPTables-NAT-Accepted: " --log-level 4
-# $IPT -t nat -I LOGACCEPT-NAT -j LOG --log-prefix "IPTables-NAT-Accepted: " --log-level 4
+# $IPT -t nat -I LOGACCEPT-NAT -m limit --limit 2/min -j LOG --log-prefix "IPTables-NAT-Accepted: " --log-level 4
+$IPT -t nat -I LOGACCEPT-NAT -j LOG --log-prefix "IPTables-NAT-Accepted: " --log-level 4
 $IPT -t nat -A LOGACCEPT-NAT -j ACCEPT
 
 ### Jump point to LOG and MASQUERADE
 $IPT -t nat -N LOGMASQUERADE-NAT
-$IPT -t nat -I LOGMASQUERADE-NAT -m limit --limit 2/min -j LOG --log-prefix "IPTables-NAT-Masqueraded: " --log-level 4
-# $IPT -t nat -I LOGMASQUERADE-NAT -j LOG --log-prefix "IPTables-NAT-Masqueraded: " --log-level 4
+# $IPT -t nat -I LOGMASQUERADE-NAT -m limit --limit 2/min -j LOG --log-prefix "IPTables-NAT-Masqueraded: " --log-level 4
+$IPT -t nat -I LOGMASQUERADE-NAT -j LOG --log-prefix "IPTables-NAT-Masqueraded: " --log-level 4
 $IPT -t nat -A LOGMASQUERADE-NAT -j MASQUERADE
 
 ### *filter table
@@ -281,7 +281,7 @@ $IPT -t nat -A POSTROUTING -o $VPN_NIC -j MASQUERADE
 $IPT -t nat -A POSTROUTING -o $WAN_NIC -j LOGMASQUERADE-NAT
 # $IPT -t nat -A POSTROUTING -o $WLAN_NIC -j LOGMASQUERADE-NAT
 # $IPT -t nat -A POSTROUTING -o lo -j LOGMASQUERADE-NAT
-$IPT -t nat -A POSTROUTING -j LOGACCEPT-NAT
+# $IPT -t nat -A POSTROUTING -j LOGACCEPT-NAT
 
 ### Input - It's most secure to only allow inbound traffic from established or related connections. Set that up next.
 $IPT -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
@@ -354,6 +354,5 @@ $IPT -A OUTPUT -j LOGREJECT
 # $IPT -A OUTPUT -p udp -m multiport --dports 53,80,110,443,501,502,1194,1197,1198,8080,9201 -j LOGACCEPT
 # $IPT -A OUTPUT -p tcp -m multiport --dports 53,80,110,443,501,502,1194,1197,1198,8080,9201 -j LOGACCEPT
 
-
-
+echo "saving new rules..."
 $(command -v netfilter-persistent) save
