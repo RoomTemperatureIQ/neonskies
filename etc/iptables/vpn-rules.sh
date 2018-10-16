@@ -467,13 +467,16 @@ echo "let's optimize the new iptables rules..."
 $(command -v iptables-optimizer) -c > /dev/null 2>&1
 $(command -v ip6tables-optimizer) -c > /dev/null 2>&1
 
-echo "saving new rules..."
+echo "let's save the new rules..."
 $(command -v netfilter-persistent) save > /dev/null 2>&1
 
 ### let's make a snapshot of the current sysctl settings and load at boot
-echo "saving current sysctl snapshot to /etc/sysctl.d/99-$HOSTNAME.conf"
-sysctl -a > "/etc/sysctl.d/99-$HOSTNAME.conf" > /dev/null 2>&1
+echo "saving current sysctl snapshot to /etc/sysctl.d/99-$(hostname).conf"
+sysctl -a > "/etc/sysctl.d/99-$(hostname).conf" > /dev/null 2>&1
 
 echo "updating local system layout database..."
 updatedb > /dev/null 2>&1
+
+echo "second pass for speedtest..."
+$(command -v speedtest-cli)
 
