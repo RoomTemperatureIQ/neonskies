@@ -382,3 +382,9 @@ $IPT -A OUTPUT -j LOGREJECT
 
 echo "saving new rules..."
 $(command -v netfilter-persistent) save
+
+### let's make a snapshot of the current sysctl settings and load at boot
+echo "saving current sysctl snapshot to /etc/sysctl.d/99-$HOSTNAME.conf"
+sysctl -a > "/etc/sysctl.d/99-$HOSTNAME.conf"
+
+updatedb
