@@ -35,7 +35,7 @@ HTTP Domain Filtering | squid | [❌] | very low | https://www.cyberciti.biz/faq
 IPv6 Network Settings | | [❌] | very low | https://www.privateinternetaccess.com/helpdesk/kb/articles/why-do-you-block-ipv6  
 
 
-Script Task | Program | Implemented | Priority | Task Description | Command to be run |  
+Script Task | Program | Implemented | Priority | Task Description | Command to be run
 ------------- | ------------- | ------------- | ------------- | ------------- | -------------  
 install cron job | iptables-optimizer | [❌] | high | optimize iptables rules | $(command -v iptables-optimizer) -c  
 install cron job | netfilter-persistent | [❌] | high | save current loaded iptables rules to file | $(command -v netfilter-persistent) save  
