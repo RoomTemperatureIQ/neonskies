@@ -108,11 +108,6 @@ $KERNCONF -w net.ipv4.tcp_mtu_probing=1
 # $KERNCONF -w net.ipv4.tcp_timestamps=0
 $KERNCONF -w net.ipv4.tcp_timestamps=1
 $KERNCONF -w net.ipv4.tcp_rfc1337=1
-$KERNCONF -w net.ipv4.conf.default.rp_filter=1
-$KERNCONF -w net.ipv4.conf.all.rp_filter=1
-$KERNCONF -w net.ipv4.conf.default.log_martians=1
-### packet debugging
-$KERNCONF -w net.ipv4.conf.all.log_martians=1
 
 ### set all these redirect settings to '0' for security
 $KERNCONF -w net.ipv4.conf.all.accept_redirects=1
@@ -133,9 +128,59 @@ $KERNCONF -w vm.dirty_background_ratio=5
 ### Kali RPi `vm.vfs_cache_pressure` default is '100'
 $KERNCONF -w vm.vfs_cache_pressure=50
 
-# Accept IP source route packets (we are a router)
+### Accept IP source route packets (we are a router)
 $KERNCONF -w net.ipv4.conf.all.accept_source_route=1
 $KERNCONF -w net.ipv6.conf.all.accept_source_route=1
+
+
+################################################################
+### Functions previously found in netbase
+###
+
+### Uncomment the next two lines to enable Spoof protection (reverse-path filter)
+### Turn on Source Address Verification in all interfaces to
+### prevent some spoofing attacks
+$KERNCONF -w net.ipv4.conf.default.rp_filter=1
+$KERNCONF -w net.ipv4.conf.all.rp_filter=1
+
+### Uncomment the next line to enable packet forwarding for IPv6
+###  Enabling this option disables Stateless Address Autoconfiguration
+###  based on Router Advertisements for this host
+$KERNCONF -w net.ipv6.conf.all.forwarding=0
+
+
+#####################################################################
+### Additional settings - these settings can improve the network
+### security of the host and prevent against some network attacks
+### including spoofing attacks and man in the middle attacks through
+### redirection. Some network environments, however, require that these
+### settings are disabled so review and enable them as needed.
+###
+### Accept ICMP redirects (allow MITM attacks)
+$KERNCONF -w net.ipv4.conf.all.accept_redirects=1
+$KERNCONF -w net.ipv6.conf.all.accept_redirects=1
+### _or_
+### Accept ICMP redirects only for gateways listed in our default
+### gateway list (enabled by default)
+$KERNCONF -w net.ipv4.conf.all.secure_redirects=1
+###
+### Send ICMP redirects (we are a router)
+$KERNCONF -w net.ipv4.conf.all.send_redirects=0
+##
+### Log Martian Packets
+### packet debugging
+$KERNCONF -w net.ipv4.conf.default.log_martians=1
+$KERNCONF -w net.ipv4.conf.all.log_martians=1
+###
+
+#####################################################################
+### Magic system request Key
+### 0=disable, 1=enable all, >1 bitmask of sysrq functions
+### See https://www.kernel.org/doc/html/latest/admin-guide/sysrq.html
+### for what other values do
+# $KERNCONF -w kernel.sysrq=438
+
+
 
 ##### Reset iptables rules
 ### Flush all rules: -F
