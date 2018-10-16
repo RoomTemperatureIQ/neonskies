@@ -281,7 +281,7 @@ $IPT -P FORWARD ACCEPT
 $IPT -P OUTPUT DROP
 
 ### Forwarding
-### jump to LOGACCEPT table for debugging
+### jump to LOGACCEPT chain for debugging
 # $IPT -A FORWARD -o $VPN_NIC -j LOGACCEPT
 # $IPT -A FORWARD -o $LAN_NIC -j LOGACCEPT
 # $IPT -A FORWARD -o $WAN_NIC -j LOGACCEPT
@@ -355,8 +355,8 @@ $IPT -A INPUT -i $WAN_NIC -p tcp -m tcp --sport $NETBIOS_PORT -j REJECT
 ### WAN - allow the WAN_NIC to accept ICMP for ping requests
 $IPT -A INPUT -i $WAN_NIC -p icmp -j LOGACCEPT
 
-### jump to LOGREJECT table for debugging
-$IPT -A INPUT -j LOGREJECT
+### jump to LOGDROP chain for debugging
+$IPT -A INPUT -j LOGDROP
 
 ### Loopback and Ping - allow the loopback interface and ping.
 $IPT -A OUTPUT -o lo -j ACCEPT
@@ -423,8 +423,8 @@ $IPT -A OUTPUT -d 209.222.18.222,209.222.18.218 -j ACCEPT
 # $IPT -A OUTPUT -p udp -m multiport --dport 1197,1194 -j ACCEPT
 $IPT -A OUTPUT -o $VPN_NIC -j ACCEPT
 
-### jump to LOGREJECT table for debugging
-$IPT -A OUTPUT -j LOGREJECT
+### jump to LOGDROP chain for debugging
+$IPT -A OUTPUT -j LOGDROP
 
 
 
