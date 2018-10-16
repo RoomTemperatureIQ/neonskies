@@ -16,17 +16,17 @@ if [ -e "/etc/iptables/rules.v4.bak" ] && [ -e "/etc/iptables/rules.v4" ]; then
     echo "iptables backup file exists, not adding cronjob (assume already installed)..."
 elif [ -e "$(command -v netfilter-persistent)" ] && [ -e "$(command -v iptables-optimizer)" ]; then
     echo "/etc/iptables/rule.v4 file not found, saving current iptables rules..."
-    $(command -v netfilter-persistent) save
+    $(command -v netfilter-persistent) save > /dev/null 2>&1
 
     echo "creating iptables backup file: /etc/iptables/rule.v4.bak"
-    cp /etc/iptables/rules.v4 /etc/iptables/rules.v4.bak
+    cp /etc/iptables/rules.v4 /etc/iptables/rules.v4.bak > /dev/null 2>&1
 
     echo "optimizing iptables rules..."
-    $(command -v iptables-optimizer) -c
-    $(command -v ip6tables-optimizer) -c
+    $(command -v iptables-optimizer) -c > /dev/null 2>&1
+    $(command -v ip6tables-optimizer) -c > /dev/null 2>&1
 
     echo "saving iptables rules..."
-    $(command -v netfilter-persistent) save
+    $(command -v netfilter-persistent) save > /dev/null 2>&1
 
     echo "creating iptables-optimizer + netfilter-persistent cron job..."
     echo "0 * * * * root $(command -v iptables-optimizer) -c && sleep 2 && $(command -v ip6tables-optimizer) -c && sleep 2 && $(command -v netfilter-persistent) save" >> /etc/crontab
@@ -73,6 +73,9 @@ DHCPC_PORT="68"
 
 ### NTP port - UDP
 NTP_PORT="123"
+
+### NETBIOS port
+NETBIOS_PORT="138"
 
 ### VPN port
 VPN_PORT="1197"
@@ -320,18 +323,34 @@ $IPT -A INPUT -i $WLAN_NIC -j ACCEPT
 ###### Let's see which ports get used the most for MULTIPORT order...
 ### WAN - allow the WAN_NIC to be issued a DHCP lease
 # $IPT -A INPUT -i $WAN_NIC -p udp -m multiport --dports $VPN_PORT,1194,$DHCP_PORT,$DHCPC_PORT,$NTP_PORT -j LOGACCEPT
-$IPT -A INPUT -i $WAN_NIC -p udp -m udp --dports $VPN_PORT -j LOGACCEPT
-$IPT -A INPUT -i $WAN_NIC -p udp -m udp --dports 1194 -j LOGACCEPT
-$IPT -A INPUT -i $WAN_NIC -p udp -m udp --dports $DHCP_PORT -j LOGACCEPT
-$IPT -A INPUT -i $WAN_NIC -p udp -m udp --dports $DHCPC_PORT -j LOGACCEPT
-$IPT -A INPUT -i $WAN_NIC -p udp -m udp --dports $NTP_PORT -j LOGACCEPT
+$IPT -A INPUT -i $WAN_NIC -p udp -m udp --dport $VPN_PORT -j ACCEPT
+$IPT -A INPUT -i $WAN_NIC -p udp -m udp --dport 1194 -j ACCEPT
+$IPT -A INPUT -i $WAN_NIC -p udp -m udp --dport $DHCP_PORT -j ACCEPT
+$IPT -A INPUT -i $WAN_NIC -p udp -m udp --dport $DHCPC_PORT -j ACCEPT
+$IPT -A INPUT -i $WAN_NIC -p udp -m udp --dport $NTP_PORT -j ACCEPT
+$IPT -A INPUT -i $WAN_NIC -p udp -m udp --dport $NETBIOS_PORT -j REJECT
+
+$IPT -A INPUT -i $WAN_NIC -p udp -m udp --sport $VPN_PORT -j ACCEPT
+$IPT -A INPUT -i $WAN_NIC -p udp -m udp --sport 1194 -j ACCEPT
+$IPT -A INPUT -i $WAN_NIC -p udp -m udp --sport $DHCP_PORT -j ACCEPT
+$IPT -A INPUT -i $WAN_NIC -p udp -m udp --sport $DHCPC_PORT -j ACCEPT
+$IPT -A INPUT -i $WAN_NIC -p udp -m udp --sport $NTP_PORT -j ACCEPT
+$IPT -A INPUT -i $WAN_NIC -p udp -m udp --sport $NETBIOS_PORT -j REJECT
 
 # $IPT -A INPUT -i $WAN_NIC -p tcp -m multiport --dports $VPN_PORT,1194,$DHCP_PORT,$DHCPC_PORT,$NTP_PORT -j LOGACCEPT
-$IPT -A INPUT -i $WAN_NIC -p tcp -m tcp --dports $VPN_PORT -j LOGACCEPT
-$IPT -A INPUT -i $WAN_NIC -p tcp -m tcp --dports 1194 -j LOGACCEPT
-$IPT -A INPUT -i $WAN_NIC -p tcp -m tcp --dports $DHCP_PORT -j LOGACCEPT
-$IPT -A INPUT -i $WAN_NIC -p tcp -m tcp --dports $DHCPC_PORT -j LOGACCEPT
-$IPT -A INPUT -i $WAN_NIC -p tcp -m tcp --dports $NTP_PORT -j LOGACCEPT
+$IPT -A INPUT -i $WAN_NIC -p tcp -m tcp --dport $VPN_PORT -j ACCEPT
+$IPT -A INPUT -i $WAN_NIC -p tcp -m tcp --dport 1194 -j ACCEPT
+$IPT -A INPUT -i $WAN_NIC -p tcp -m tcp --dport $DHCP_PORT -j ACCEPT
+$IPT -A INPUT -i $WAN_NIC -p tcp -m tcp --dport $DHCPC_PORT -j ACCEPT
+$IPT -A INPUT -i $WAN_NIC -p tcp -m tcp --dport $NTP_PORT -j ACCEPT
+$IPT -A INPUT -i $WAN_NIC -p tcp -m tcp --dport $NETBIOS_PORT -j REJECT
+
+$IPT -A INPUT -i $WAN_NIC -p tcp -m tcp --sport $VPN_PORT -j ACCEPT
+$IPT -A INPUT -i $WAN_NIC -p tcp -m tcp --sport 1194 -j ACCEPT
+$IPT -A INPUT -i $WAN_NIC -p tcp -m tcp --sport $DHCP_PORT -j ACCEPT
+$IPT -A INPUT -i $WAN_NIC -p tcp -m tcp --sport $DHCPC_PORT -j ACCEPT
+$IPT -A INPUT -i $WAN_NIC -p tcp -m tcp --sport $NTP_PORT -j ACCEPT
+$IPT -A INPUT -i $WAN_NIC -p tcp -m tcp --sport $NETBIOS_PORT -j REJECT
 
 ### WAN - allow the WAN_NIC to accept ICMP for ping requests
 $IPT -A INPUT -i $WAN_NIC -p icmp -j LOGACCEPT
@@ -425,16 +444,16 @@ $(command -v dig) di.fm > /dev/null 2>&1
 $(command -v dig)  > /dev/null 2>&1
 
 echo "let's optimize the new iptables rules..."
-$(command -v iptables-optimizer) -c
-$(command -v ip6tables-optimizer) -c
+$(command -v iptables-optimizer) -c > /dev/null 2>&1
+$(command -v ip6tables-optimizer) -c > /dev/null 2>&1
 
 echo "saving new rules..."
-$(command -v netfilter-persistent) save
+$(command -v netfilter-persistent) save > /dev/null 2>&1
 
 ### let's make a snapshot of the current sysctl settings and load at boot
 echo "saving current sysctl snapshot to /etc/sysctl.d/99-$HOSTNAME.conf"
-sysctl -a > "/etc/sysctl.d/99-$HOSTNAME.conf"
+sysctl -a > "/etc/sysctl.d/99-$HOSTNAME.conf" > /dev/null 2>&1
 
 echo "updating local system layout database..."
-updatedb
+updatedb > /dev/null 2>&1
 
