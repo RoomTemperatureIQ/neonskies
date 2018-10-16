@@ -323,33 +323,33 @@ $IPT -A INPUT -i $WLAN_NIC -j ACCEPT
 ###### Let's see which ports get used the most for MULTIPORT order...
 ### WAN - allow the WAN_NIC to be issued a DHCP lease
 # $IPT -A INPUT -i $WAN_NIC -p udp -m multiport --dports $VPN_PORT,1194,$DHCP_PORT,$DHCPC_PORT,$NTP_PORT -j LOGACCEPT
-$IPT -A INPUT -i $WAN_NIC -p udp -m udp --dport $VPN_PORT -j ACCEPT
-$IPT -A INPUT -i $WAN_NIC -p udp -m udp --dport 1194 -j ACCEPT
-$IPT -A INPUT -i $WAN_NIC -p udp -m udp --dport $DHCP_PORT -j ACCEPT
-$IPT -A INPUT -i $WAN_NIC -p udp -m udp --dport $DHCPC_PORT -j ACCEPT
-$IPT -A INPUT -i $WAN_NIC -p udp -m udp --dport $NTP_PORT -j ACCEPT
+$IPT -A INPUT -i $WAN_NIC -p udp -m udp --dport $VPN_PORT -j LOGACCEPT
+$IPT -A INPUT -i $WAN_NIC -p udp -m udp --dport 1194 -j LOGACCEPT
+$IPT -A INPUT -i $WAN_NIC -p udp -m udp --dport $DHCP_PORT -j LOGACCEPT
+$IPT -A INPUT -i $WAN_NIC -p udp -m udp --dport $DHCPC_PORT -j LOGACCEPT
+$IPT -A INPUT -i $WAN_NIC -p udp -m udp --dport $NTP_PORT -j LOGACCEPT
 $IPT -A INPUT -i $WAN_NIC -p udp -m udp --dport $NETBIOS_PORT -j REJECT
 
-$IPT -A INPUT -i $WAN_NIC -p udp -m udp --sport $VPN_PORT -j ACCEPT
-$IPT -A INPUT -i $WAN_NIC -p udp -m udp --sport 1194 -j ACCEPT
-$IPT -A INPUT -i $WAN_NIC -p udp -m udp --sport $DHCP_PORT -j ACCEPT
-$IPT -A INPUT -i $WAN_NIC -p udp -m udp --sport $DHCPC_PORT -j ACCEPT
-$IPT -A INPUT -i $WAN_NIC -p udp -m udp --sport $NTP_PORT -j ACCEPT
+$IPT -A INPUT -i $WAN_NIC -p udp -m udp --sport $VPN_PORT -j LOGACCEPT
+$IPT -A INPUT -i $WAN_NIC -p udp -m udp --sport 1194 -j LOGACCEPT
+$IPT -A INPUT -i $WAN_NIC -p udp -m udp --sport $DHCP_PORT -j LOGACCEPT
+$IPT -A INPUT -i $WAN_NIC -p udp -m udp --sport $DHCPC_PORT -j LOGACCEPT
+$IPT -A INPUT -i $WAN_NIC -p udp -m udp --sport $NTP_PORT -j LOGACCEPT
 $IPT -A INPUT -i $WAN_NIC -p udp -m udp --sport $NETBIOS_PORT -j REJECT
 
 # $IPT -A INPUT -i $WAN_NIC -p tcp -m multiport --dports $VPN_PORT,1194,$DHCP_PORT,$DHCPC_PORT,$NTP_PORT -j LOGACCEPT
-$IPT -A INPUT -i $WAN_NIC -p tcp -m tcp --dport $VPN_PORT -j ACCEPT
-$IPT -A INPUT -i $WAN_NIC -p tcp -m tcp --dport 1194 -j ACCEPT
-$IPT -A INPUT -i $WAN_NIC -p tcp -m tcp --dport $DHCP_PORT -j ACCEPT
-$IPT -A INPUT -i $WAN_NIC -p tcp -m tcp --dport $DHCPC_PORT -j ACCEPT
-$IPT -A INPUT -i $WAN_NIC -p tcp -m tcp --dport $NTP_PORT -j ACCEPT
+$IPT -A INPUT -i $WAN_NIC -p tcp -m tcp --dport $VPN_PORT -j LOGACCEPT
+$IPT -A INPUT -i $WAN_NIC -p tcp -m tcp --dport 1194 -j LOGACCEPT
+$IPT -A INPUT -i $WAN_NIC -p tcp -m tcp --dport $DHCP_PORT -j LOGACCEPT
+$IPT -A INPUT -i $WAN_NIC -p tcp -m tcp --dport $DHCPC_PORT -j LOGACCEPT
+$IPT -A INPUT -i $WAN_NIC -p tcp -m tcp --dport $NTP_PORT -j LOGACCEPT
 $IPT -A INPUT -i $WAN_NIC -p tcp -m tcp --dport $NETBIOS_PORT -j REJECT
 
-$IPT -A INPUT -i $WAN_NIC -p tcp -m tcp --sport $VPN_PORT -j ACCEPT
-$IPT -A INPUT -i $WAN_NIC -p tcp -m tcp --sport 1194 -j ACCEPT
-$IPT -A INPUT -i $WAN_NIC -p tcp -m tcp --sport $DHCP_PORT -j ACCEPT
-$IPT -A INPUT -i $WAN_NIC -p tcp -m tcp --sport $DHCPC_PORT -j ACCEPT
-$IPT -A INPUT -i $WAN_NIC -p tcp -m tcp --sport $NTP_PORT -j ACCEPT
+$IPT -A INPUT -i $WAN_NIC -p tcp -m tcp --sport $VPN_PORT -j LOGACCEPT
+$IPT -A INPUT -i $WAN_NIC -p tcp -m tcp --sport 1194 -j LOGACCEPT
+$IPT -A INPUT -i $WAN_NIC -p tcp -m tcp --sport $DHCP_PORT -j LOGACCEPT
+$IPT -A INPUT -i $WAN_NIC -p tcp -m tcp --sport $DHCPC_PORT -j LOGACCEPT
+$IPT -A INPUT -i $WAN_NIC -p tcp -m tcp --sport $NTP_PORT -j LOGACCEPT
 $IPT -A INPUT -i $WAN_NIC -p tcp -m tcp --sport $NETBIOS_PORT -j REJECT
 
 ### WAN - allow the WAN_NIC to accept ICMP for ping requests
@@ -374,34 +374,34 @@ $IPT -A OUTPUT -o $WLAN_NIC -j ACCEPT
 # $IPT -A OUTPUT -p udp -m multiport --dports $VPN_PORT,1194,$DHCP_PORT,$DHCPC_PORT,$NTP_PORT -j ACCEPT
 $IPT -A OUTPUT -p udp -m udp --dport $VPN_PORT -j ACCEPT
 $IPT -A OUTPUT -p udp -m udp --dport 1194 -j ACCEPT
-$IPT -A OUTPUT -p udp -m udp --dport $DHCP_PORT -j ACCEPT
-$IPT -A OUTPUT -p udp -m udp --dport $DHCPC_PORT -j ACCEPT
-$IPT -A OUTPUT -p udp -m udp --dport $NTP_PORT -j ACCEPT
-$IPT -A OUTPUT -p udp -m udp --dport $NETBIOS_PORT -j ACCEPT
+$IPT -A OUTPUT -p udp -m udp --dport $DHCP_PORT -j LOGACCEPT
+$IPT -A OUTPUT -p udp -m udp --dport $DHCPC_PORT -j LOGACCEPT
+$IPT -A OUTPUT -p udp -m udp --dport $NTP_PORT -j LOGACCEPT
+$IPT -A OUTPUT -p udp -m udp --dport $NETBIOS_PORT -j LOGACCEPT
 
 $IPT -A OUTPUT -p udp -m udp --sport $VPN_PORT -j ACCEPT
 $IPT -A OUTPUT -p udp -m udp --sport 1194 -j ACCEPT
-$IPT -A OUTPUT -p udp -m udp --sport $DHCP_PORT -j ACCEPT
-$IPT -A OUTPUT -p udp -m udp --sport $DHCPC_PORT -j ACCEPT
-$IPT -A OUTPUT -p udp -m udp --sport $NTP_PORT -j ACCEPT
-$IPT -A OUTPUT -p udp -m udp --sport $NETBIOS_PORT -j ACCEPT
+$IPT -A OUTPUT -p udp -m udp --sport $DHCP_PORT -j LOGACCEPT
+$IPT -A OUTPUT -p udp -m udp --sport $DHCPC_PORT -j LOGACCEPT
+$IPT -A OUTPUT -p udp -m udp --sport $NTP_PORT -j LOGACCEPT
+$IPT -A OUTPUT -p udp -m udp --sport $NETBIOS_PORT -j LOGACCEPT
 
 
 # $IPT -A OUTPUT -o $WAN_NIC -p tcp -m multiport --dports $VPN_PORT,1194,$DHCP_PORT,$DHCPC_PORT,$NTP_PORT -j LOGACCEPT
 # $IPT -A OUTPUT -p tcp -m multiport --dports $VPN_PORT,1194,$DHCP_PORT,$DHCPC_PORT,$NTP_PORT -j ACCEPT
 $IPT -A OUTPUT -p tcp -m tcp --dport $VPN_PORT -j ACCEPT
 $IPT -A OUTPUT -p tcp -m tcp --dport 1194 -j ACCEPT
-$IPT -A OUTPUT -p tcp -m tcp --dport $DHCP_PORT -j ACCEPT
-$IPT -A OUTPUT -p tcp -m tcp --dport $DHCPC_PORT -j ACCEPT
-$IPT -A OUTPUT -p tcp -m tcp --dport $NTP_PORT -j ACCEPT
-$IPT -A OUTPUT -p tcp -m tcp --dport $NETBIOS_PORT -j ACCEPT
+$IPT -A OUTPUT -p tcp -m tcp --dport $DHCP_PORT -j LOGACCEPT
+$IPT -A OUTPUT -p tcp -m tcp --dport $DHCPC_PORT -j LOGACCEPT
+$IPT -A OUTPUT -p tcp -m tcp --dport $NTP_PORT -j LOGACCEPT
+$IPT -A OUTPUT -p tcp -m tcp --dport $NETBIOS_PORT -j LOGACCEPT
 
 $IPT -A OUTPUT -p tcp -m tcp --sport $VPN_PORT -j ACCEPT
 $IPT -A OUTPUT -p tcp -m tcp --sport 1194 -j ACCEPT
-$IPT -A OUTPUT -p tcp -m tcp --sport $DHCP_PORT -j ACCEPT
-$IPT -A OUTPUT -p tcp -m tcp --sport $DHCPC_PORT -j ACCEPT
-$IPT -A OUTPUT -p tcp -m tcp --sport $NTP_PORT -j ACCEPT
-$IPT -A OUTPUT -p tcp -m tcp --sport $NETBIOS_PORT -j ACCEPT
+$IPT -A OUTPUT -p tcp -m tcp --sport $DHCP_PORT -j LOGACCEPT
+$IPT -A OUTPUT -p tcp -m tcp --sport $DHCPC_PORT -j LOGACCEPT
+$IPT -A OUTPUT -p tcp -m tcp --sport $NTP_PORT -j LOGACCEPT
+$IPT -A OUTPUT -p tcp -m tcp --sport $NETBIOS_PORT -j LOGACCEPT
 
 ### WAN - allow the WAN_NIC to accept ICMP for ping requests
 $IPT -A OUTPUT -o $WAN_NIC -p icmp -j LOGACCEPT
@@ -441,24 +441,27 @@ $IPT -A OUTPUT -j LOGDROP
 
 echo "iptables rules imported..."
 
+echo "let's cache some DNS requests..."
+$(command -v dig) facebook.com > /dev/null 2>&1 &
+$(command -v dig) amazon.com > /dev/null 2>&1 &
+$(command -v dig) netflix.com > /dev/null 2>&1 &
+$(command -v dig) google.com > /dev/null 2>&1 &
+$(command -v dig) gmail.com > /dev/null 2>&1 &
+$(command -v dig) github.com > /dev/null 2>&1 &
+$(command -v dig) reddit.com > /dev/null 2>&1 &
+$(command -v dig) twitter.com > /dev/null 2>&1 &
+$(command -v dig) instagram.com > /dev/null 2>&1 &
+$(command -v dig) youtube.com > /dev/null 2>&1 &
+$(command -v dig) soundcloud.com > /dev/null 2>&1 &
+$(command -v dig) pandora.com > /dev/null 2>&1 &
+$(command -v dig) bandcamp.com > /dev/null 2>&1 &
+$(command -v dig) di.fm > /dev/null 2>&1 &
+
 echo "testing the network, priming packet counts (this may take some time)..."
 $(command -v speedtest-cli)
 
-echo "let's cache some DNS requests..."
-$(command -v dig) facebook.com > /dev/null 2>&1
-$(command -v dig) amazon.com > /dev/null 2>&1
-$(command -v dig) netflix.com > /dev/null 2>&1
-$(command -v dig) google.com > /dev/null 2>&1
-$(command -v dig) gmail.com > /dev/null 2>&1
-$(command -v dig) youtube.com > /dev/null 2>&1
-$(command -v dig) github.com > /dev/null 2>&1
-$(command -v dig) reddit.com > /dev/null 2>&1
-$(command -v dig) twitter.com > /dev/null 2>&1
-$(command -v dig) soundcloud.com > /dev/null 2>&1
-$(command -v dig) bandcamp.com > /dev/null 2>&1
-$(command -v dig) pandora.com > /dev/null 2>&1
-$(command -v dig) di.fm > /dev/null 2>&1
-$(command -v dig)  > /dev/null 2>&1
+### small pause to let DNS queries finish in background
+sleep 2
 
 echo "let's optimize the new iptables rules..."
 $(command -v iptables-optimizer) -c > /dev/null 2>&1
