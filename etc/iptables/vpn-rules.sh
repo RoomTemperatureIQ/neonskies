@@ -253,7 +253,7 @@ $IPT -t nat -A LOGMASQUERADE-NAT -j MASQUERADE
 
 ### *filter table
 $IPT -P INPUT DROP
-$IPT -P FORWARD DROP
+$IPT -P FORWARD ACCEPT
 $IPT -P OUTPUT DROP
 
 ### Forwarding
@@ -263,7 +263,7 @@ $IPT -P OUTPUT DROP
 # $IPT -A FORWARD -o $WAN_NIC -j LOGACCEPT
 # $IPT -A FORWARD -o $WLAN_NIC -j LOGACCEPT
 # $IPT -A FORWARD -o lo -j LOGACCEPT
-$IPT -A FORWARD -j LOGACCEPT
+# $IPT -A FORWARD -j ACCEPT
 
 ### *nat table
 $IPT -t nat -P PREROUTING ACCEPT
@@ -276,12 +276,12 @@ $IPT -t nat -P OUTPUT ACCEPT
 # $IPT -t nat -I OUTPUT -j LOGACCEPT-NAT
 
 $IPT -t nat -P POSTROUTING ACCEPT
-# $IPT -t nat -A POSTROUTING -o $VPN_NIC -j LOGMASQUERADE-NAT
+$IPT -t nat -A POSTROUTING -o $VPN_NIC -j MASQUERADE
 # $IPT -t nat -A POSTROUTING -o $LAN_NIC -j LOGMASQUERADE-NAT
-# $IPT -t nat -A POSTROUTING -o $WAN_NIC -j LOGMASQUERADE-NAT
+$IPT -t nat -A POSTROUTING -o $WAN_NIC -j LOGMASQUERADE-NAT
 # $IPT -t nat -A POSTROUTING -o $WLAN_NIC -j LOGMASQUERADE-NAT
 # $IPT -t nat -A POSTROUTING -o lo -j LOGMASQUERADE-NAT
-$IPT -t nat -A POSTROUTING -j LOGMASQUERADE-NAT
+$IPT -t nat -A POSTROUTING -j LOGACCEPT-NAT
 
 ### Input - It's most secure to only allow inbound traffic from established or related connections. Set that up next.
 $IPT -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
@@ -330,7 +330,7 @@ $IPT -A OUTPUT -o $WAN_NIC -p icmp -j LOGACCEPT
 ###   resolver2.privateinternetaccess.com @ 209.222.18.218
 ### multiple IP matching: https://www.cyberciti.biz/faq/how-to-use-iptables-with-multiple-source-destination-ips-addresses/
 ### port 53 UDP/TCP, unsure for DNSSEC (explicit IP covers both cases)
-$IPT -A OUTPUT -d 209.222.18.218,209.222.18.222 -j LOGACCEPT
+$IPT -A OUTPUT -d 209.222.18.218,209.222.18.222 -j ACCEPT
 
 ### Allow the VPN - Of course, you need to allow the VPN itself. There are two parts to this.
 ### You need to allow both the service port and the interface.
