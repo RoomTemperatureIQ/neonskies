@@ -405,7 +405,7 @@ $IPT -A OUTPUT -j LOGREJECT
 
 echo "iptables rules imported..."
 
-echo "testing the network, priming packet counts..."
+echo "testing the network, priming packet counts (this may take some time)..."
 $(command -v speedtest-cli)
 
 echo "let's cache some DNS requests..."
