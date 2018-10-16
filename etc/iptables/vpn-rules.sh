@@ -353,11 +353,11 @@ $IPT -A OUTPUT -o $WLAN_NIC -j ACCEPT
 ### WAN - allow the WAN_NIC to be issued a DHCP lease
 # $IPT -A OUTPUT -o $WAN_NIC -p udp -m multiport --dports $VPN_PORT,1194,$DHCP_PORT,$DHCPC_PORT,$NTP_PORT -j LOGACCEPT
 # $IPT -A OUTPUT -p udp -m multiport --dports $VPN_PORT,1194,$DHCP_PORT,$DHCPC_PORT,$NTP_PORT -j ACCEPT
-$IPT -A OUTPUT -p udp -m udp --dports $VPN_PORT,1194,$DHCP_PORT,$DHCPC_PORT,$NTP_PORT -j ACCEPT
-$IPT -A OUTPUT -p udp -m udp --dports $VPN_PORT,1194,$DHCP_PORT,$DHCPC_PORT,$NTP_PORT -j ACCEPT
-$IPT -A OUTPUT -p udp -m udp --dports $VPN_PORT,1194,$DHCP_PORT,$DHCPC_PORT,$NTP_PORT -j ACCEPT
-$IPT -A OUTPUT -p udp -m udp --dports $VPN_PORT,1194,$DHCP_PORT,$DHCPC_PORT,$NTP_PORT -j ACCEPT
-$IPT -A OUTPUT -p udp -m udp --dports $VPN_PORT,1194,$DHCP_PORT,$DHCPC_PORT,$NTP_PORT -j ACCEPT
+$IPT -A OUTPUT -p udp -m udp --dports $VPN_PORT -j ACCEPT
+$IPT -A OUTPUT -p udp -m udp --dports 1194 -j ACCEPT
+$IPT -A OUTPUT -p udp -m udp --dports $DHCP_PORT -j ACCEPT
+$IPT -A OUTPUT -p udp -m udp --dports $DHCPC_PORT -j ACCEPT
+$IPT -A OUTPUT -p udp -m udp --dports $NTP_PORT -j ACCEPT
 
 # $IPT -A OUTPUT -o $WAN_NIC -p tcp -m multiport --dports $VPN_PORT,1194,$DHCP_PORT,$DHCPC_PORT,$NTP_PORT -j LOGACCEPT
 # $IPT -A OUTPUT -p tcp -m multiport --dports $VPN_PORT,1194,$DHCP_PORT,$DHCPC_PORT,$NTP_PORT -j ACCEPT
