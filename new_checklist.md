@@ -36,7 +36,7 @@ IPv6 Network Settings | | [❌] | very low | https://www.privateinternetaccess.c
 
 
 Script Task | Program | Implemented | Priority | Task Description | Command to be run |  
-------------- | ------------- | ------------- | ------------- | -------------  
+------------- | ------------- | ------------- | ------------- | ------------- | -------------  
 install cron job | iptables-optimizer | [❌] | high | optimize iptables rules | $(command -v iptables-optimizer) -c  
 install cron job | netfilter-persistent | [❌] | high | save current loaded iptables rules to file | $(command -v netfilter-persistent) save  
 install cron job | netselect-apt | [❌] | high | update closest mirror for package repos | $(command -v netselect-apt) /path/to/dpkg/sources.list  
