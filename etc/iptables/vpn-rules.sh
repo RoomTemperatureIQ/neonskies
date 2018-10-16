@@ -12,10 +12,11 @@ IPT="/usr/sbin/iptables"
 ### UNTESTED ###
 ### add crontab job for iptables-optimizer and netfilter-persistent to save
 ### check if rules.v4 exists
-if [ -e "/etc/iptables/rules.v4.bak" ]; then
+if [ -e "/etc/iptables/rules.v4.bak" ] && [ -e "/etc/iptables/rules.v4" ]; then
     echo "iptables backup file exists, not adding cronjob (assume already installed)"
-elif [ -f "$(command -v netfilter-persistent)" ]; then
-    cp /etc/iptables/rules.v4 /etc/iptables/rules.bak
+elif [ -e "$(command -v netfilter-persistent)" ] && [ -e "$(command -v iptables-optimizer)" ]; then
+    $(command -v netfilter-persistent) save
+    cp /etc/iptables/rules.v4 /etc/iptables/rules.v4.bak
     echo "0 * * * * root $(command -v iptables-optimizer) -c && sleep 2 && $(command -v ip6tables-optimizer) -c && sleep 2 && $(command -v netfilter-persistent) save" >> /etc/crontab
 fi
 
