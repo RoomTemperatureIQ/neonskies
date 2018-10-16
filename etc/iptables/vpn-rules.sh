@@ -317,8 +317,8 @@ $IPT -A INPUT -i $LAN_NIC -j ACCEPT
 $IPT -A INPUT -i $WLAN_NIC -j ACCEPT
 
 ### WAN - allow the WAN_NIC to be issued a DHCP lease
-$IPT -A INPUT -i $WAN_NIC -p udp -m multiport --dports $DHCP_PORT,$DHCPC_PORT,$NTP_PORT -j LOGACCEPT
-$IPT -A INPUT -i $WAN_NIC -p tcp -m multiport --dports $DHCP_PORT,$DHCPC_PORT,$NTP_PORT -j LOGACCEPT
+$IPT -A INPUT -i $WAN_NIC -p udp -m multiport --dports $VPN_PORT,1194,$DHCP_PORT,$DHCPC_PORT,$NTP_PORT -j LOGACCEPT
+$IPT -A INPUT -i $WAN_NIC -p tcp -m multiport --dports $VPN_PORT,1194,$DHCP_PORT,$DHCPC_PORT,$NTP_PORT -j LOGACCEPT
 
 ### WAN - allow the WAN_NIC to accept ICMP for ping requests
 $IPT -A INPUT -i $WAN_NIC -p icmp -j LOGACCEPT
@@ -338,11 +338,11 @@ $IPT -A OUTPUT -o $LAN_NIC -j ACCEPT
 $IPT -A OUTPUT -o $WLAN_NIC -j ACCEPT
 
 ### WAN - allow the WAN_NIC to be issued a DHCP lease
-# $IPT -A OUTPUT -o $WAN_NIC -p udp -m multiport --dports $DHCP_PORT,$DHCPC_PORT,$NTP_PORT -j LOGACCEPT
-$IPT -A OUTPUT -p udp -m multiport --dports $DHCP_PORT,$DHCPC_PORT,$NTP_PORT,$VPN_PORT,1194 -j ACCEPT
+# $IPT -A OUTPUT -o $WAN_NIC -p udp -m multiport --dports $VPN_PORT,1194,$DHCP_PORT,$DHCPC_PORT,$NTP_PORT -j LOGACCEPT
+$IPT -A OUTPUT -p udp -m multiport --dports $VPN_PORT,1194,$DHCP_PORT,$DHCPC_PORT,$NTP_PORT -j ACCEPT
 
-# $IPT -A OUTPUT -o $WAN_NIC -p tcp -m multiport --dports $DHCP_PORT,$DHCPC_PORT,$NTP_PORT -j LOGACCEPT
-$IPT -A OUTPUT -p tcp -m multiport --dports $DHCP_PORT,$DHCPC_PORT,$NTP_PORT,$VPN_PORT,1194 -j ACCEPT
+# $IPT -A OUTPUT -o $WAN_NIC -p tcp -m multiport --dports $VPN_PORT,1194,$DHCP_PORT,$DHCPC_PORT,$NTP_PORT -j LOGACCEPT
+$IPT -A OUTPUT -p tcp -m multiport --dports $VPN_PORT,1194,$DHCP_PORT,$DHCPC_PORT,$NTP_PORT -j ACCEPT
 
 ### WAN - allow the WAN_NIC to accept ICMP for ping requests
 $IPT -A OUTPUT -o $WAN_NIC -p icmp -j LOGACCEPT
