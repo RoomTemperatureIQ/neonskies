@@ -37,19 +37,20 @@ IPv6 Network Settings | | [❌] | very low | https://www.privateinternetaccess.c
 
 Script Task | Program | Implemented | Priority | Task Description | Command to be run
 ------------- | ------------- | ------------- | ------------- | ------------- | -------------  
-install cron job | iptables-optimizer | [❌] | high | optimize iptables rules | $(command -v iptables-optimizer) -c  
-install cron job | netfilter-persistent | [❌] | high | save current loaded iptables rules to file | $(command -v netfilter-persistent) save  
-install cron job | netselect-apt | [❌] | high | update closest mirror for package repos | $(command -v netselect-apt) /path/to/dpkg/sources.list  
+install cron job | lynis | [❌] | critical | perform full system audit | $(command -v )  
+install cron job | netfilter-persistent | [❌] | critical | backup and save current loaded iptables rules to file | $(command -v netfilter-persistent) save  
+install cron job | iptables-optimizer | [❌] | critical | optimize iptables rules | $(command -v iptables-optimizer) -c  
+install cron job | pia-nm.sh | [❌] | very high | update PIA VPN server list | $(command -v sh) /root/scripts/pia-nm.sh  
+install cron job | unbound | [❌] | very high | update Unbound root.hints | $(command -v )  
+install cron job | letsencrypt-auto | [❌] | very high | update Lets Encrypt server certificates | $(command -v letsencrypt-auto) renew  
+install cron job | certbot | [❌] | very high | upgrade Lets Encrypt local program | $(command -v cd) /opt/letsencrypt && $(command -v git) pull  
 install cron job | unbound | [❌] | high | update Unbound ad servers for filtering | $(command -v curl) -o /etc/unbound/unbound_ad_servers "https://pgl.yoyo.org/adservers/serverlist.php?hostformat=unbound&showintro=0&startdate%5Bday%5D=&startdate%5Bmonth%5D=&startdate%5Byear%5D=&mimetype=plaintext" && sleep 2 && chown unbound:unbound /etc/unbound/unbound_ad_servers  
-install cron job | unbound | [❌] | high | update Unbound root.hints | $(command -v )  
-install cron job | letsencrypt-auto | [❌] | high | update Lets Encrypt server certificates | $(command -v letsencrypt-auto) renew  
-install cron job | certbot | [❌] | high | upgrade Lets Encrypt local program | $(command -v cd) /opt/letsencrypt && $(command -v git) pull  
-install cron job | pia-nm.sh | [❌] | high | update PIA VPN server list | $(command -v sh) /root/scripts/pia-nm.sh  
-install cron job |  | [❌] | high | $(command -v )  
-install cron job |  | [❌] | high | $(command -v )  
-install cron job |  | [❌] | high | $(command -v )  
-install cron job |  | [❌] | high | $(command -v )  
-install cron job |  | [❌] | high | $(command -v )  
+install cron job | tuned | [❌] | medium | evaluate performance report from tuned | $(command -v )  
+install cron job | netselect-apt | [❌] | medium | update closest mirror for package repos | $(command -v netselect-apt) /path/to/dpkg/sources.list  
+install cron job | make | [❌] | low | compile new kernel | $(command -v )  
+install cron job | tar | [❌] | low | rotate server logs | $(command -v tar)  
+install cron job | squid | [❌] | very low | update Squid ad servers for filtering | $(command -v curl) -o /etc/squid/squid_ad_servers "https://example.org/ad-servers.txt"
+install cron job |  | [❌] | high |  | $(command -v )  
 
 
 - - - -
