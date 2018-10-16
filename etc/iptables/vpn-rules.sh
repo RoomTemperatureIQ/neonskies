@@ -71,6 +71,12 @@ DHCP_PORT="67"
 ### DHCPC port
 DHCPC_PORT="68"
 
+### NTP port - UDP
+NTP_PORT="123"
+
+### VPN port
+VPN_PORT="1197"
+
 ### set the WAN to autoconnect
 nmcli device set $WAN_NIC autoconnect yes
 
@@ -296,8 +302,8 @@ $IPT -A INPUT -i $LAN_NIC -j ACCEPT
 $IPT -A INPUT -i $WLAN_NIC -j ACCEPT
 
 ### WAN - allow the WAN_NIC to be issued a DHCP lease
-$IPT -A INPUT -i $WAN_NIC -p udp -m multiport --dports $DHCP_PORT,$DHCPC_PORT -j LOGACCEPT
-$IPT -A INPUT -i $WAN_NIC -p tcp -m multiport --dports $DHCP_PORT,$DHCPC_PORT -j LOGACCEPT
+$IPT -A INPUT -i $WAN_NIC -p udp -m multiport --dports $DHCP_PORT,$DHCPC_PORT,$NTP_PORT -j LOGACCEPT
+$IPT -A INPUT -i $WAN_NIC -p tcp -m multiport --dports $DHCP_PORT,$DHCPC_PORT,$NTP_PORT -j LOGACCEPT
 
 ### WAN - allow the WAN_NIC to accept ICMP for ping requests
 $IPT -A INPUT -i $WAN_NIC -p icmp -j LOGACCEPT
@@ -317,8 +323,11 @@ $IPT -A OUTPUT -o $LAN_NIC -j ACCEPT
 $IPT -A OUTPUT -o $WLAN_NIC -j ACCEPT
 
 ### WAN - allow the WAN_NIC to be issued a DHCP lease
-$IPT -A OUTPUT -o $WAN_NIC -p udp -m multiport --dports $DHCP_PORT,$DHCPC_PORT -j LOGACCEPT
-$IPT -A OUTPUT -o $WAN_NIC -p tcp -m multiport --dports $DHCP_PORT,$DHCPC_PORT -j LOGACCEPT
+# $IPT -A OUTPUT -o $WAN_NIC -p udp -m multiport --dports $DHCP_PORT,$DHCPC_PORT,$NTP_PORT -j LOGACCEPT
+$IPT -A OUTPUT -p udp -m multiport --dports $DHCP_PORT,$DHCPC_PORT,$NTP_PORT,$VPN_PORT,1194 -j ACCEPT
+
+# $IPT -A OUTPUT -o $WAN_NIC -p tcp -m multiport --dports $DHCP_PORT,$DHCPC_PORT,$NTP_PORT -j LOGACCEPT
+$IPT -A OUTPUT -p tcp -m multiport --dports $DHCP_PORT,$DHCPC_PORT,$NTP_PORT,$VPN_PORT,1194 -j ACCEPT
 
 ### WAN - allow the WAN_NIC to accept ICMP for ping requests
 $IPT -A OUTPUT -o $WAN_NIC -p icmp -j LOGACCEPT
@@ -330,12 +339,14 @@ $IPT -A OUTPUT -o $WAN_NIC -p icmp -j LOGACCEPT
 ###   resolver2.privateinternetaccess.com @ 209.222.18.218
 ### multiple IP matching: https://www.cyberciti.biz/faq/how-to-use-iptables-with-multiple-source-destination-ips-addresses/
 ### port 53 UDP/TCP, unsure for DNSSEC (explicit IP covers both cases)
-$IPT -A OUTPUT -d 209.222.18.218,209.222.18.222 -j ACCEPT
+$IPT -A OUTPUT -d 209.222.18.222,209.222.18.218 -j ACCEPT
+### PIA DNS uses same subnet: use /24 to reduce rules 2 to 1
+# $IPT -A OUTPUT -d 209.222.18.0/24 -j ACCEPT
 
 ### Allow the VPN - Of course, you need to allow the VPN itself. There are two parts to this.
 ### You need to allow both the service port and the interface.
 ### OpenVPN uses default port 1194, PIA uses port 1197
-$IPT -A OUTPUT -p udp -m multiport --dport 1197,1194 -j ACCEPT
+# $IPT -A OUTPUT -p udp -m multiport --dport 1197,1194 -j ACCEPT
 $IPT -A OUTPUT -o $VPN_NIC -j ACCEPT
 
 ### jump to LOGREJECT table for debugging
