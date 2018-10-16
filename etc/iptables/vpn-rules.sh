@@ -190,29 +190,29 @@ $IPT -P OUTPUT DROP
 
 ### Forwarding
 ### jump to LOGACCEPT table for debugging
-$IPT -A FORWARD -o $VPN_NIC -j LOGACCEPT
-$IPT -A FORWARD -o $LAN_NIC -j LOGACCEPT
-$IPT -A FORWARD -o $WAN_NIC -j LOGACCEPT
-$IPT -A FORWARD -o $WLAN_NIC -j LOGACCEPT
-$IPT -A FORWARD -o lo -j LOGACCEPT
+# $IPT -A FORWARD -o $VPN_NIC -j LOGACCEPT
+# $IPT -A FORWARD -o $LAN_NIC -j LOGACCEPT
+# $IPT -A FORWARD -o $WAN_NIC -j LOGACCEPT
+# $IPT -A FORWARD -o $WLAN_NIC -j LOGACCEPT
+# $IPT -A FORWARD -o lo -j LOGACCEPT
 $IPT -A FORWARD -j LOGACCEPT
 
 ### *nat table
 $IPT -t nat -P PREROUTING ACCEPT
-$IPT -t nat -I PREROUTING -j LOGACCEPT-NAT
+# $IPT -t nat -I PREROUTING -j LOGACCEPT-NAT
 
 $IPT -t nat -P INPUT ACCEPT
-$IPT -t nat -I INPUT -j LOGACCEPT-NAT
+# $IPT -t nat -I INPUT -j LOGACCEPT-NAT
 
 $IPT -t nat -P OUTPUT ACCEPT
-$IPT -t nat -I OUTPUT -j LOGACCEPT-NAT
+# $IPT -t nat -I OUTPUT -j LOGACCEPT-NAT
 
 $IPT -t nat -P POSTROUTING ACCEPT
-$IPT -t nat -A POSTROUTING -o $VPN_NIC -j LOGMASQUERADE-NAT
-$IPT -t nat -A POSTROUTING -o $LAN_NIC -j LOGMASQUERADE-NAT
-$IPT -t nat -A POSTROUTING -o $WAN_NIC -j LOGMASQUERADE-NAT
-$IPT -t nat -A POSTROUTING -o $WLAN_NIC -j LOGMASQUERADE-NAT
-$IPT -t nat -A POSTROUTING -o lo -j LOGMASQUERADE-NAT
+# $IPT -t nat -A POSTROUTING -o $VPN_NIC -j LOGMASQUERADE-NAT
+# $IPT -t nat -A POSTROUTING -o $LAN_NIC -j LOGMASQUERADE-NAT
+# $IPT -t nat -A POSTROUTING -o $WAN_NIC -j LOGMASQUERADE-NAT
+# $IPT -t nat -A POSTROUTING -o $WLAN_NIC -j LOGMASQUERADE-NAT
+# $IPT -t nat -A POSTROUTING -o lo -j LOGMASQUERADE-NAT
 $IPT -t nat -A POSTROUTING -j LOGMASQUERADE-NAT
 
 ### Input - It's most secure to only allow inbound traffic from established or related connections. Set that up next.
@@ -234,7 +234,7 @@ $IPT -A INPUT -i $WAN_NIC -p tcp -m multiport --dports $DHCP_PORT,$DHCPC_PORT -j
 ### WAN - allow the WAN_NIC to accept ICMP for ping requests
 $IPT -A INPUT -i $WAN_NIC -p icmp -j LOGACCEPT
 
-### jump to LOGGING table for debugging
+### jump to LOGREJECT table for debugging
 $IPT -A INPUT -j LOGREJECT
 
 ### Loopback and Ping - allow the loopback interface and ping.
@@ -271,7 +271,7 @@ $IPT -A OUTPUT -p udp -m udp --dport 1197 -j LOGACCEPT
 $IPT -A OUTPUT -p udp -m udp --dport 1194 -j LOGACCEPT
 $IPT -A OUTPUT -o $VPN_NIC -j ACCEPT
 
-### jump to LOGGING table for debugging
+### jump to LOGREJECT table for debugging
 $IPT -A OUTPUT -j LOGREJECT
 
 
