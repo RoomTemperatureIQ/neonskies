@@ -12,7 +12,7 @@ Virtual RAM Encryption | dm-crypt + LUKS | [❌] | critical | https://wiki.archl
 Network Device MAC Address Spoofing | udev (hotplug) | [❌] | critical | https://wiki.archlinux.org/index.php/MAC_address_spoofing  
 Packet Filter "Firewall" / VPN Killswitch | iptables | [✔] | critical | https://wiki.archlinux.org/index.php/iptables  
 Optimized Firewall Rules | iptables-optimizer | [✔] | critical | http://manpages.ubuntu.com/manpages/xenial/man8/iptables-optimizer.8.html  
-Optimized Network Settings | sysctl | [❌] | critical | https://wiki.archlinux.org/index.php/sysctl  
+Optimized Network Settings | sysctl | [✔] | critical | https://wiki.archlinux.org/index.php/sysctl  
 Network Device Management | NetworkManager | [✔] | very high | https://wiki.archlinux.org/index.php/NetworkManager  
 DNS Resolver Management Framework | openresolv | [✔] | very high | https://wiki.archlinux.org/index.php/Openresolv  
 SSH Server | openssh-server | [✔] | very high | https://wiki.archlinux.org/index.php/Secure_Shell  
@@ -20,12 +20,12 @@ VPN Client/Server | openvpn  | [✔] | very high | https://docs.openvpn.net/
 Tor Support | tor  | [❌] | very high | https://wiki.archlinux.org/index.php/tor  
 Internet Tethering | AziLink | [❌] | very high | https://wiki.archlinux.org/index.php/Android_tethering  
 DHCP Server | isc-dhcp-server  | [✔] | high | https://wiki.debian.org/DHCP_Server  
-DNS Server | unbound  | [✔] | high | https://wiki.archlinux.org/index.php/Unbound https://calomel.org/unbound_dns.html  
+DNS Server | unbound  | [❌] | high | https://wiki.archlinux.org/index.php/Unbound https://calomel.org/unbound_dns.html  
 DNSSEC Support | dnscrypt-proxy  | [❌] | high | https://wiki.archlinux.org/index.php/Dnscrypt-proxy https://dnscrypt.info/faq/  
 DNS Domain Filtering (Adblocker) | unbound | [✔] | high | https://calomel.org/unbound_dns.html https://wiki.archlinux.org/index.php/unbound#Block_advertising  
-Wireless Access Point | hostapd  | [✔] | high | https://w1.fi/cgit/hostap/plain/hostapd/hostapd.conf  
-802.11 Authentication (WPA2/WPA/WEP) | wpa_supplicant  | [✔] | high | https://wiki.archlinux.org/index.php/WPA_supplicant  
-Network Statistics | ntopng | [✔] | high | https://www.ntop.org/guides/ntopng/index.html  
+Wireless Access Point | hostapd  | [❌] | high | https://w1.fi/cgit/hostap/plain/hostapd/hostapd.conf  
+802.11 Authentication (WPA2/WPA/WEP) | wpa_supplicant  | [❌] | high | https://wiki.archlinux.org/index.php/WPA_supplicant  
+Network Statistics | ntopng | [❌] | high | https://www.ntop.org/guides/ntopng/index.html  
 Web Server | nginx | [❌] | medium | https://docs.nginx.com/  
 Web Server Certificate Issuance (HTTPS) | certbot | [❌] | medium | https://certbot.eff.org/docs/  
 UPS Management | nut | [❌] | medium | https://wiki.archlinux.org/index.php/Network_UPS_Tools https://loganmarchione.com/2017/02/raspberry-pi-ups-monitor-with-nginx-web-monitoring/  
