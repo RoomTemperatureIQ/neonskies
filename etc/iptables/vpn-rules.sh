@@ -9,8 +9,17 @@
 ### location of iptables
 IPT="/usr/sbin/iptables"
 
+### UNTESTED ###
+### add crontab job for iptables-optimizer and netfilter-persistent to save
+### check if rules.v4 exists
+if [ -e /etc/iptables/rules.v4 ]; then
+    echo "file exists, not adding cronjob"
+elif [ -f "$(command -v netfilter-persistent)" ]; then
+    echo "0 * * * * root $(command -v iptables-optimizer) -c && sleep 2 && $(command -v ip6tables-optimizer) -c && sleep 2 && $(command -v netfilter-persistent) save" >> /etc/crontab
+fi
+
 ### location of sysctl
-KERNCONF=`which sysctl`
+KERNCONF=$(command -v sysctl)
 
 ### VPN NIC
 VPN_NIC="tun0"
@@ -312,8 +321,7 @@ $IPT -A OUTPUT -d 209.222.18.218,209.222.18.222 -j LOGACCEPT
 ### Allow the VPN - Of course, you need to allow the VPN itself. There are two parts to this.
 ### You need to allow both the service port and the interface.
 ### OpenVPN uses default port 1194, PIA uses port 1197
-$IPT -A OUTPUT -p udp -m udp --dport 1197 -j LOGACCEPT
-$IPT -A OUTPUT -p udp -m udp --dport 1194 -j LOGACCEPT
+$IPT -A OUTPUT -p udp -m multiport --dport 1197,1194 -j LOGACCEPT
 $IPT -A OUTPUT -o $VPN_NIC -j ACCEPT
 
 ### jump to LOGREJECT table for debugging
@@ -331,3 +339,7 @@ $IPT -A OUTPUT -j LOGREJECT
 
 # $IPT -A OUTPUT -p udp -m multiport --dports 53,80,110,443,501,502,1194,1197,1198,8080,9201 -j LOGACCEPT
 # $IPT -A OUTPUT -p tcp -m multiport --dports 53,80,110,443,501,502,1194,1197,1198,8080,9201 -j LOGACCEPT
+
+
+
+netfilter-persistent save
