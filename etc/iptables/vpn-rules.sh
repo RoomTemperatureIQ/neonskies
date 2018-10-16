@@ -323,7 +323,7 @@ $IPT -A OUTPUT -d 209.222.18.218,209.222.18.222 -j LOGACCEPT
 ### Allow the VPN - Of course, you need to allow the VPN itself. There are two parts to this.
 ### You need to allow both the service port and the interface.
 ### OpenVPN uses default port 1194, PIA uses port 1197
-$IPT -A OUTPUT -p udp -m multiport --dport 1197,1194 -j LOGACCEPT
+$IPT -A OUTPUT -p udp -m multiport --dport 1197,1194 -j ACCEPT
 $IPT -A OUTPUT -o $VPN_NIC -j ACCEPT
 
 ### jump to LOGREJECT table for debugging
