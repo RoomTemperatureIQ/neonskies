@@ -89,28 +89,43 @@ nmcli device set $WAN_NIC autoconnect yes
 $KERNCONF -p
 
 ### Kill IPv6
-$KERNCONF -w net.ipv6.conf.all.disable_ipv6=1
-$KERNCONF -w net.ipv6.conf.default.disable_ipv6=1
-$KERNCONF -w net.ipv6.conf.eth0.disable_ipv6=1
-$KERNCONF -w net.ipv6.conf.lo.disable_ipv6=1
-$KERNCONF -w net.ipv6.conf.mon.disable_ipv6=1
-$KERNCONF -w net.ipv6.conf.tun.disable_ipv6=1
-$KERNCONF -w net.ipv6.conf.wlan0.disable_ipv6=1
-$KERNCONF -w net.ipv6.conf.wlan1.disable_ipv6=1
+KILL_IPv6=1
+KILL_PING=0
+ALLOW_IPv4_FORWARD=1
+ALLOW_IPv6_FORWARD=0
+ACCEPT_REDIRECT=1
+LOG_MARTIANS=1
+
+$KERNCONF -w net.ipv6.conf.all.disable_ipv6=$KILL_IPv6
+$KERNCONF -w net.ipv6.conf.default.disable_ipv6=$KILL_IPv6
+$KERNCONF -w net.ipv6.conf.eth0.disable_ipv6=$KILL_IPv6
+$KERNCONF -w net.ipv6.conf.lo.disable_ipv6=$KILL_IPv6
+$KERNCONF -w net.ipv6.conf.wlan0.disable_ipv6=$KILL_IPv6
+$KERNCONF -w net.ipv6.conf.wlan1.disable_ipv6=$KILL_IPv6
+
+### we do a check if the directory exists
+if [ -f "/proc/sys/net/ipv6/conf/mon" ]; then
+    $KERNCONF -w net.ipv6.conf.mon.disable_ipv6=$KILL_IPv6
+    $KERNCONF -w net.ipv6.conf.mon.forwarding=$ALLOW_IPv6_FORWARD
+fi
+
+### we do a check if the directory exists
+if [ -f "/proc/sys/net/ipv6/conf/tun" ]; then
+    $KERNCONF -w net.ipv6.conf.tun.disable_ipv6=$KILL_IPv6
+    $KERNCONF -w net.ipv6.conf.tun.forwarding=$ALLOW_IPv6_FORWARD
+fi
 
 ### toggle ICMP ping response
-$KERNCONF -w net.ipv4.icmp_echo_ignore_all=0
+$KERNCONF -w net.ipv4.icmp_echo_ignore_all=$KILL_PING
 
 ### toggle allow forwarding
-$KERNCONF -w net.ipv4.ip_forward=1
-$KERNCONF -w net.ipv6.conf.all.forwarding=0
-$KERNCONF -w net.ipv6.conf.default.forwarding=0
-$KERNCONF -w net.ipv6.conf.eth0.forwarding=0
-$KERNCONF -w net.ipv6.conf.lo.forwarding=0
-$KERNCONF -w net.ipv6.conf.mon.forwarding=0
-$KERNCONF -w net.ipv6.conf.tun.forwarding=0
-$KERNCONF -w net.ipv6.conf.wlan0.forwarding=0
-$KERNCONF -w net.ipv6.conf.wlan1.forwarding=0
+$KERNCONF -w net.ipv4.ip_forward=$ALLOW_IPv4_FORWARD
+$KERNCONF -w net.ipv6.conf.all.forwarding=$ALLOW_IPv6_FORWARD
+$KERNCONF -w net.ipv6.conf.default.forwarding=$ALLOW_IPv6_FORWARD
+$KERNCONF -w net.ipv6.conf.eth0.forwarding=$ALLOW_IPv6_FORWARD
+$KERNCONF -w net.ipv6.conf.lo.forwarding=$ALLOW_IPv6_FORWARD
+$KERNCONF -w net.ipv6.conf.wlan0.forwarding=$ALLOW_IPv6_FORWARD
+$KERNCONF -w net.ipv6.conf.wlan1.forwarding=$ALLOW_IPv6_FORWARD
 
 ### TCP/IP stack tweaking
 $KERNCONF -w net.core.somaxconn=1024
@@ -139,14 +154,14 @@ $KERNCONF -w net.ipv4.tcp_timestamps=1
 $KERNCONF -w net.ipv4.tcp_rfc1337=1
 
 ### set all these redirect settings to '0' for security
-$KERNCONF -w net.ipv4.conf.all.accept_redirects=1
-$KERNCONF -w net.ipv4.conf.default.accept_redirects=1
-$KERNCONF -w net.ipv4.conf.all.secure_redirects=1
-$KERNCONF -w net.ipv4.conf.default.secure_redirects=1
-$KERNCONF -w net.ipv6.conf.all.accept_redirects=1
-$KERNCONF -w net.ipv6.conf.default.accept_redirects=1
-$KERNCONF -w net.ipv4.conf.all.send_redirects=1
-$KERNCONF -w net.ipv4.conf.default.send_redirects=1
+$KERNCONF -w net.ipv4.conf.all.accept_redirects=$ACCEPT_REDIRECT
+$KERNCONF -w net.ipv4.conf.default.accept_redirects=$ACCEPT_REDIRECT
+$KERNCONF -w net.ipv4.conf.all.secure_redirects=$ACCEPT_REDIRECT
+$KERNCONF -w net.ipv4.conf.default.secure_redirects=$ACCEPT_REDIRECT
+$KERNCONF -w net.ipv6.conf.all.accept_redirects=$ACCEPT_REDIRECT
+$KERNCONF -w net.ipv6.conf.default.accept_redirects=$ACCEPT_REDIRECT
+$KERNCONF -w net.ipv4.conf.all.send_redirects=$ACCEPT_REDIRECT
+$KERNCONF -w net.ipv4.conf.default.send_redirects=$ACCEPT_REDIRECT
 
 ### Kali RPi `vm.dirty_ratio` default is '20'
 $KERNCONF -w vm.dirty_ratio=10
@@ -175,7 +190,7 @@ $KERNCONF -w net.ipv4.conf.all.rp_filter=1
 ### Uncomment the next line to enable packet forwarding for IPv6
 ###  Enabling this option disables Stateless Address Autoconfiguration
 ###  based on Router Advertisements for this host
-$KERNCONF -w net.ipv6.conf.all.forwarding=0
+$KERNCONF -w net.ipv6.conf.all.forwarding=$ALLOW_IPv6_FORWARD
 
 
 #####################################################################
@@ -186,20 +201,20 @@ $KERNCONF -w net.ipv6.conf.all.forwarding=0
 ### settings are disabled so review and enable them as needed.
 ###
 ### Accept ICMP redirects (allow MITM attacks)
-$KERNCONF -w net.ipv4.conf.all.accept_redirects=1
-$KERNCONF -w net.ipv6.conf.all.accept_redirects=1
+$KERNCONF -w net.ipv4.conf.all.accept_redirects=$ACCEPT_REDIRECT
+$KERNCONF -w net.ipv6.conf.all.accept_redirects=$ACCEPT_REDIRECT
 ### _or_
 ### Accept ICMP redirects only for gateways listed in our default
 ### gateway list (enabled by default)
-$KERNCONF -w net.ipv4.conf.all.secure_redirects=1
+$KERNCONF -w net.ipv4.conf.all.secure_redirects=$ACCEPT_REDIRECT
 ###
 ### Send ICMP redirects (we are a router)
-$KERNCONF -w net.ipv4.conf.all.send_redirects=0
+$KERNCONF -w net.ipv4.conf.all.send_redirects=$ACCEPT_REDIRECT
 ##
 ### Log Martian Packets
 ### packet debugging
-$KERNCONF -w net.ipv4.conf.default.log_martians=1
-$KERNCONF -w net.ipv4.conf.all.log_martians=1
+$KERNCONF -w net.ipv4.conf.default.log_martians=$LOG_MARTIANS
+$KERNCONF -w net.ipv4.conf.all.log_martians=$LOG_MARTIANS
 ###
 
 #####################################################################
