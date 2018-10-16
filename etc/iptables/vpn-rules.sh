@@ -372,19 +372,36 @@ $IPT -A OUTPUT -o $WLAN_NIC -j ACCEPT
 ### WAN - allow the WAN_NIC to be issued a DHCP lease
 # $IPT -A OUTPUT -o $WAN_NIC -p udp -m multiport --dports $VPN_PORT,1194,$DHCP_PORT,$DHCPC_PORT,$NTP_PORT -j LOGACCEPT
 # $IPT -A OUTPUT -p udp -m multiport --dports $VPN_PORT,1194,$DHCP_PORT,$DHCPC_PORT,$NTP_PORT -j ACCEPT
-$IPT -A OUTPUT -p udp -m udp --dports $VPN_PORT -j ACCEPT
-$IPT -A OUTPUT -p udp -m udp --dports 1194 -j ACCEPT
-$IPT -A OUTPUT -p udp -m udp --dports $DHCP_PORT -j ACCEPT
-$IPT -A OUTPUT -p udp -m udp --dports $DHCPC_PORT -j ACCEPT
-$IPT -A OUTPUT -p udp -m udp --dports $NTP_PORT -j ACCEPT
+$IPT -A OUTPUT -p udp -m udp --dport $VPN_PORT -j ACCEPT
+$IPT -A OUTPUT -p udp -m udp --dport 1194 -j ACCEPT
+$IPT -A OUTPUT -p udp -m udp --dport $DHCP_PORT -j ACCEPT
+$IPT -A OUTPUT -p udp -m udp --dport $DHCPC_PORT -j ACCEPT
+$IPT -A OUTPUT -p udp -m udp --dport $NTP_PORT -j ACCEPT
+$IPT -A OUTPUT -p udp -m udp --dport $NETBIOS_PORT -j ACCEPT
+
+$IPT -A OUTPUT -p udp -m udp --sport $VPN_PORT -j ACCEPT
+$IPT -A OUTPUT -p udp -m udp --sport 1194 -j ACCEPT
+$IPT -A OUTPUT -p udp -m udp --sport $DHCP_PORT -j ACCEPT
+$IPT -A OUTPUT -p udp -m udp --sport $DHCPC_PORT -j ACCEPT
+$IPT -A OUTPUT -p udp -m udp --sport $NTP_PORT -j ACCEPT
+$IPT -A OUTPUT -p udp -m udp --sport $NETBIOS_PORT -j ACCEPT
+
 
 # $IPT -A OUTPUT -o $WAN_NIC -p tcp -m multiport --dports $VPN_PORT,1194,$DHCP_PORT,$DHCPC_PORT,$NTP_PORT -j LOGACCEPT
 # $IPT -A OUTPUT -p tcp -m multiport --dports $VPN_PORT,1194,$DHCP_PORT,$DHCPC_PORT,$NTP_PORT -j ACCEPT
-$IPT -A OUTPUT -p tcp -m tcp --dports $VPN_PORT -j ACCEPT
-$IPT -A OUTPUT -p tcp -m tcp --dports 1194 -j ACCEPT
-$IPT -A OUTPUT -p tcp -m tcp --dports $DHCP_PORT -j ACCEPT
-$IPT -A OUTPUT -p tcp -m tcp --dports $DHCPC_PORT -j ACCEPT
-$IPT -A OUTPUT -p tcp -m tcp --dports $NTP_PORT -j ACCEPT
+$IPT -A OUTPUT -p tcp -m tcp --dport $VPN_PORT -j ACCEPT
+$IPT -A OUTPUT -p tcp -m tcp --dport 1194 -j ACCEPT
+$IPT -A OUTPUT -p tcp -m tcp --dport $DHCP_PORT -j ACCEPT
+$IPT -A OUTPUT -p tcp -m tcp --dport $DHCPC_PORT -j ACCEPT
+$IPT -A OUTPUT -p tcp -m tcp --dport $NTP_PORT -j ACCEPT
+$IPT -A OUTPUT -p tcp -m tcp --dport $NETBIOS_PORT -j ACCEPT
+
+$IPT -A OUTPUT -p tcp -m tcp --sport $VPN_PORT -j ACCEPT
+$IPT -A OUTPUT -p tcp -m tcp --sport 1194 -j ACCEPT
+$IPT -A OUTPUT -p tcp -m tcp --sport $DHCP_PORT -j ACCEPT
+$IPT -A OUTPUT -p tcp -m tcp --sport $DHCPC_PORT -j ACCEPT
+$IPT -A OUTPUT -p tcp -m tcp --sport $NTP_PORT -j ACCEPT
+$IPT -A OUTPUT -p tcp -m tcp --sport $NETBIOS_PORT -j ACCEPT
 
 ### WAN - allow the WAN_NIC to accept ICMP for ping requests
 $IPT -A OUTPUT -o $WAN_NIC -p icmp -j LOGACCEPT
