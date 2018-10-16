@@ -403,6 +403,31 @@ $IPT -A OUTPUT -j LOGREJECT
 # $IPT -A OUTPUT -p udp -m multiport --dports 53,80,110,443,501,502,1194,1197,1198,8080,9201 -j LOGACCEPT
 # $IPT -A OUTPUT -p tcp -m multiport --dports 53,80,110,443,501,502,1194,1197,1198,8080,9201 -j LOGACCEPT
 
+echo "iptables rules imported..."
+
+echo "testing the network, priming packet counts..."
+$(command -v speedtest-cli)
+
+echo "let's cache some DNS requests..."
+$(command -v dig) facebook.com > /dev/null 2>&1
+$(command -v dig) amazon.com > /dev/null 2>&1
+$(command -v dig) netflix.com > /dev/null 2>&1
+$(command -v dig) google.com > /dev/null 2>&1
+$(command -v dig) gmail.com > /dev/null 2>&1
+$(command -v dig) youtube.com > /dev/null 2>&1
+$(command -v dig) github.com > /dev/null 2>&1
+$(command -v dig) reddit.com > /dev/null 2>&1
+$(command -v dig) twitter.com > /dev/null 2>&1
+$(command -v dig) soundcloud.com > /dev/null 2>&1
+$(command -v dig) bandcamp.com > /dev/null 2>&1
+$(command -v dig) pandora.com > /dev/null 2>&1
+$(command -v dig) di.fm > /dev/null 2>&1
+$(command -v dig)  > /dev/null 2>&1
+
+echo "let's optimize the new iptables rules..."
+$(command -v iptables-optimizer) -c
+$(command -v ip6tables-optimizer) -c
+
 echo "saving new rules..."
 $(command -v netfilter-persistent) save
 
@@ -410,4 +435,6 @@ $(command -v netfilter-persistent) save
 echo "saving current sysctl snapshot to /etc/sysctl.d/99-$HOSTNAME.conf"
 sysctl -a > "/etc/sysctl.d/99-$HOSTNAME.conf"
 
+echo "updating local system layout database..."
 updatedb
+
