@@ -172,7 +172,7 @@ shell settings (bash_history / etc.)
 `systemctl unmask hostapd`  
 `systemctl enable hostapd`  
 `dnstop`  
-`nload -U G -u M -i 102400 -o 102400`
+`nload -U G -u M -i 102400 -o 102400`  
 run I/O benchmarking (dd_obs_test / dd_ibs_test)  
 `fdisk -l`  
 https://unix.stackexchange.com/a/360080  
