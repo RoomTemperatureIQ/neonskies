@@ -71,9 +71,11 @@ SSH_PORT="22"
 ### DNS port
 DNS_PORT="53"
 
+### DHCP reserves UDP/TCP, but only listens on UDP
 ### DHCP port
 DHCP_PORT="67"
 
+### DHCPC reserves UDP/TCP, but only listens on UDP
 ### DHCPC port
 DHCPC_PORT="68"
 
@@ -385,25 +387,24 @@ $IPT -A OUTPUT -o $WLAN_NIC -j ACCEPT
 # $IPT -A OUTPUT -p udp -m multiport --dports $VPN_PORT,1194,$DHCP_PORT,$DHCPC_PORT,$NTP_PORT -j ACCEPT
 $IPT -A OUTPUT -p udp -m udp --dport $VPN_PORT -j ACCEPT
 $IPT -A OUTPUT -p udp -m udp --dport 1194 -j ACCEPT
-$IPT -A OUTPUT -p udp -m udp --dport $DHCP_PORT -j LOGACCEPT
-$IPT -A OUTPUT -p udp -m udp --dport $DHCPC_PORT -j LOGACCEPT
+$IPT -A OUTPUT -p udp -m udp --dport 67:68 --sport 67:68 -j LOGACCEPT
+# $IPT -A OUTPUT -p udp -m udp --dport $DHCP_PORT -j LOGACCEPT
+# $IPT -A OUTPUT -p udp -m udp --dport $DHCPC_PORT -j LOGACCEPT
 $IPT -A OUTPUT -p udp -m udp --dport $NTP_PORT -j LOGACCEPT
 $IPT -A OUTPUT -p udp -m udp --dport $NETBIOS_PORT -j LOGACCEPT
 
 $IPT -A OUTPUT -p udp -m udp --sport $VPN_PORT -j ACCEPT
 $IPT -A OUTPUT -p udp -m udp --sport 1194 -j ACCEPT
-$IPT -A OUTPUT -p udp -m udp --sport $DHCP_PORT -j LOGACCEPT
-$IPT -A OUTPUT -p udp -m udp --sport $DHCPC_PORT -j LOGACCEPT
+# $IPT -A OUTPUT -p udp -m udp --sport $DHCP_PORT -j LOGACCEPT
+# $IPT -A OUTPUT -p udp -m udp --sport $DHCPC_PORT -j LOGACCEPT
 $IPT -A OUTPUT -p udp -m udp --sport $NTP_PORT -j LOGACCEPT
 $IPT -A OUTPUT -p udp -m udp --sport $NETBIOS_PORT -j LOGACCEPT
 
 
 # $IPT -A OUTPUT -o $WAN_NIC -p tcp -m multiport --dports $VPN_PORT,1194,$DHCP_PORT,$DHCPC_PORT,$NTP_PORT -j LOGACCEPT
-# $IPT -A OUTPUT -p tcp -m multiport --dports $VPN_PORT,1194,$DHCP_PORT,$DHCPC_PORT,$NTP_PORT -j ACCEPT
+# $IPT -A OUTPUT -p tcp -m multiport --dports $VPN_PORT,1194,$NTP_PORT -j ACCEPT
 $IPT -A OUTPUT -p tcp -m tcp --dport $VPN_PORT -j ACCEPT
 $IPT -A OUTPUT -p tcp -m tcp --dport 1194 -j ACCEPT
-$IPT -A OUTPUT -p tcp -m tcp --dport $DHCP_PORT -j LOGACCEPT
-$IPT -A OUTPUT -p tcp -m tcp --dport $DHCPC_PORT -j LOGACCEPT
 $IPT -A OUTPUT -p tcp -m tcp --dport $NTP_PORT -j LOGACCEPT
 $IPT -A OUTPUT -p tcp -m tcp --dport $NETBIOS_PORT -j LOGACCEPT
 
