@@ -312,7 +312,7 @@ $IPT -t nat -P INPUT ACCEPT
 $IPT -t nat -P OUTPUT ACCEPT
 # $IPT -t nat -I OUTPUT -j LOGACCEPT-NAT
 
-$IPT -t nat -P POSTROUTING DROP
+$IPT -t nat -P POSTROUTING ACCEPT
 $IPT -t nat -A POSTROUTING -o $VPN_NIC -j MASQUERADE
 $IPT -t nat -A POSTROUTING -o $WAN_NIC -j LOGMASQUERADE-NAT
 # $IPT -t nat -A POSTROUTING -o $LAN_NIC -j LOGMASQUERADE-NAT
@@ -356,16 +356,16 @@ $IPT -t filter -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
 $IPT -t filter -A INPUT -i lo -j ACCEPT
 
 ### XMAS SCAN
-$IPT -A INPUT -p tcp --tcp-flags ALL FIN,PSH,URG -j LOGDROP --log-prefix "DROPPED XMAS PACKET:" --log-tcp-options
+$IPT -t filter -A INPUT -p tcp --tcp-flags ALL FIN,PSH,URG -j DROP --log-prefix "DROPPED XMAS PACKET:" --log-tcp-options
 
 ### NULL SCAN
-$IPT -A INPUT -p tcp --tcp-flags ALL NONE -j LOGDROP --log-prefix "DROPPED NULL PACKET:" --log-tcp-options
+$IPT -t filter -A INPUT -p tcp --tcp-flags ALL NONE -j DROP --log-prefix "DROPPED NULL PACKET:" --log-tcp-options
 
 ### MAIMON SCAN
-$IPT -A INPUT -p tcp --tcp-flags ALL FIN,ACK -j LOGDROP --log-prefix "DROPPED MAIMON PACKET:" --log-tcp-options
+$IPT -t filter -A INPUT -p tcp --tcp-flags ALL FIN,ACK -j DROP --log-prefix "DROPPED MAIMON PACKET:" --log-tcp-options
 
 ### FIN SCAN
-$IPT -A INPUT -p tcp --tcp-flags ALL FIN -j LOGDROP --log-prefix "DROPPED FIN PACKET:" --log-tcp-options
+$IPT -t filter -A INPUT -p tcp --tcp-flags ALL FIN -j DROP --log-prefix "DROPPED FIN PACKET:" --log-tcp-options
 
 ### LAN - allow the LAN interface
 $IPT -t filter -A INPUT -i $LAN_NIC -j ACCEPT
