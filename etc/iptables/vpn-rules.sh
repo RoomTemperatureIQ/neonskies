@@ -236,7 +236,6 @@ $KERNCONF -w net.ipv4.conf.all.log_martians=$LOG_MARTIANS
 # $KERNCONF -w kernel.sysrq=438
 
 
-
 ##### Reset iptables rules
 ### Flush all rules: -F
 ### Delete all chains: -X
@@ -339,15 +338,11 @@ $IPT -A INPUT -i $WLAN_NIC -j ACCEPT
 $IPT -A INPUT -i $WAN_NIC -p udp -m udp --dport $VPN_PORT -j LOGACCEPT
 $IPT -A INPUT -i $WAN_NIC -p udp -m udp --dport 1194 -j LOGACCEPT
 $IPT -A INPUT -i $WAN_NIC -p udp -m udp --dport 67:68 --sport 67:68 -j LOGACCEPT
-# $IPT -A INPUT -i $WAN_NIC -p udp -m udp --dport $DHCP_PORT -j LOGACCEPT
-# $IPT -A INPUT -i $WAN_NIC -p udp -m udp --dport $DHCPC_PORT -j LOGACCEPT
 $IPT -A INPUT -i $WAN_NIC -p udp -m udp --dport $NTP_PORT -j LOGACCEPT
 $IPT -A INPUT -i $WAN_NIC -p udp -m udp --dport $NETBIOS_PORT -j REJECT
 
 $IPT -A INPUT -i $WAN_NIC -p udp -m udp --sport $VPN_PORT -j LOGACCEPT
 $IPT -A INPUT -i $WAN_NIC -p udp -m udp --sport 1194 -j LOGACCEPT
-# $IPT -A INPUT -i $WAN_NIC -p udp -m udp --sport $DHCP_PORT -j LOGACCEPT
-# $IPT -A INPUT -i $WAN_NIC -p udp -m udp --sport $DHCPC_PORT -j LOGACCEPT
 $IPT -A INPUT -i $WAN_NIC -p udp -m udp --sport $NTP_PORT -j LOGACCEPT
 $IPT -A INPUT -i $WAN_NIC -p udp -m udp --sport $NETBIOS_PORT -j REJECT
 
