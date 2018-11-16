@@ -7,7 +7,7 @@
 ### Script is for stopping Portscanning, Nmap Scanning(Fin, Null, Xmas), Smurf Attacks, Shell brute-forcing
 ###
 ### location of iptables
-IPT="/usr/sbin/iptables"
+IPT=$(command -v iptables)
 
 ### UNTESTED ###
 ### add crontab job for iptables-optimizer and netfilter-persistent to save
@@ -240,34 +240,100 @@ $KERNCONF -w net.ipv4.conf.all.log_martians=$LOG_MARTIANS
 ### Flush all rules: -F
 ### Delete all chains: -X
 ### Zero all packets: -Z
-$IPT -t nat -F
-$IPT -t nat -X
+$IPT -t raw -F
+$IPT -t raw -X
 $IPT -t mangle -F
 $IPT -t mangle -X
+$IPT -t nat -F
+$IPT -t nat -X
+$IPT -t filter -F
+$IPT -t filter -X
 $IPT -F
 $IPT -X
 $IPT -Z
 
+
+
+
+### *raw table
+$IPT -t raw -P PREROUTING ACCEPT
+$IPT -t raw -P OUTPUT ACCEPT
+
+$IPT -t raw -N OUT_TUN
+
+### Log drop chain
+### https://wiki.alpinelinux.org/wiki/Linux_Router_with_VPN_on_a_Raspberry_Pi
+$IPT -t raw -N LOG_DROP_BOGON
+$IPT -t raw -A LOG_DROP_BOGON -j LOG --log-prefix "Dropped Bogon (ipv4) : " --log-level 6
+$IPT -t raw -A LOG_DROP_BOGON -j DROP
+
+# $IPT -t raw -A PREROUTING -o tun0 -j ACCEPT
+# $IPT -t raw -A PREROUTING -i tun0 -j ACCEPT
+$IPT -t raw -A PREROUTING -p tcp --tcp-flags ALL NONE -j DROP
+$IPT -t raw -A PREROUTING -p tcp --tcp-flags ALL ALL -j DROP
+# $IPT -t raw -A PREROUTING -i tun0 -m set --match-set bogon-bn-nonagg src -j LOG_DROP_BOGON
+
+
+
+### *mangle table
+$IPT -t mangle -P PREROUTING ACCEPT
+$IPT -t mangle -P INPUT ACCEPT
+$IPT -t mangle -P FORWARD ACCEPT
+$IPT -t mangle -P OUTPUT ACCEPT
+$IPT -t mangle -P POSTROUTING ACCEPT
+# $IPT -t mangle -A FORWARD -p tcp --tcp-flags SYN,RST SYN -j TCPMSS --set-mss 1452
+
+
+### *nat table
+$IPT -t nat -P PREROUTING ACCEPT
+$IPT -t nat -A PREROUTING -p udp --dport 53 -i $LAN_NIC -j DNAT --to-destination $LAN_SERVER_IP
+$IPT -t nat -A PREROUTING -p tcp --dport 53 -i $LAN_NIC -j DNAT --to-destination $LAN_SERVER_IP
+$IPT -t nat -A PREROUTING -p udp --dport 53 -i $WLAN_NIC -j DNAT --to-destination $WLAN_SERVER_IP
+$IPT -t nat -A PREROUTING -p tcp --dport 53 -i $WLAN_NIC -j DNAT --to-destination $WLAN_SERVER_IP
+# $IPT -t nat -I PREROUTING -j LOGACCEPT-NAT
+
+$IPT -t nat -P INPUT ACCEPT
+# $IPT -t nat -I INPUT -j LOGACCEPT-NAT
+
+$IPT -t nat -P OUTPUT ACCEPT
+# $IPT -t nat -I OUTPUT -j LOGACCEPT-NAT
+
+$IPT -t nat -P POSTROUTING DROP
+$IPT -t nat -A POSTROUTING -o $VPN_NIC -j MASQUERADE
+$IPT -t nat -A POSTROUTING -o $WAN_NIC -j LOGMASQUERADE-NAT
+# $IPT -t nat -A POSTROUTING -o $LAN_NIC -j LOGMASQUERADE-NAT
+# $IPT -t nat -A POSTROUTING -o $WLAN_NIC -j LOGMASQUERADE-NAT
+# $IPT -t nat -A POSTROUTING -o lo -j LOGMASQUERADE-NAT
+$IPT -t nat -A POSTROUTING -j LOGACCEPT-NAT
+
+
+
+
+### *filter table
+$IPT -t filter -P INPUT DROP
+$IPT -t filter -P FORWARD DROP
+$IPT -t filter -P OUTPUT DROP
+
 ### Jump point to LOG and ACCEPT, make a note of request (SSH, VPN)
-$IPT -N LOGACCEPT
-# $IPT -I LOGACCEPT -m limit --limit 2/min -j LOG --log-prefix "IPTables-FILTER-Accepted: " --log-level 4
-$IPT -I LOGACCEPT -j LOG --log-prefix "IPTables-FILTER-Accepted: " --log-level 4
-$IPT -A LOGACCEPT -j ACCEPT
+$IPT -t filter -N LOGACCEPT
+# $IPT -t filter -I LOGACCEPT -m limit --limit 2/min -j LOG --log-prefix "IPTables-FILTER-Accepted: " --log-level 4
+$IPT -t filter -I LOGACCEPT -j LOG --log-prefix "IPTables-FILTER-Accepted: " --log-level 4
+$IPT -t filter -A LOGACCEPT -j ACCEPT
 
 ### Jump point to LOG and DROP to blackhole connection (FTP, Telnet)
-$IPT -N LOGDROP
-# $IPT -I LOGDROP -m limit --limit 2/min -j LOG --log-prefix "IPTables-FILTER-Dropped: " --log-level 4
-$IPT -I LOGDROP -j LOG --log-prefix "IPTables-FILTER-Dropped: " --log-level 4
-$IPT -A LOGDROP -j DROP
+$IPT -t filter -N LOGDROP
+# $IPT -t filter -I LOGDROP -m limit --limit 2/min -j LOG --log-prefix "IPTables-FILTER-Dropped: " --log-level 4
+$IPT -t filter -I LOGDROP -j LOG --log-prefix "IPTables-FILTER-Dropped: " --log-level 4
+$IPT -t filter -A LOGDROP -j DROP
 
 ### Jump point to LOG and REJECT
 ### use `--reject-with tcp-reset` for TCP RST packet to appear closed
-$IPT -N LOGREJECT
-# $IPT -I LOGREJECT -m limit --limit 2/min -j LOG --log-prefix "IPTables-FILTER-Rejected: " --log-level 4
-$IPT -I LOGREJECT -j LOG --log-prefix "IPTables-FILTER-Rejected: " --log-level 4
-# $IPT -A LOGREJECT -j REJECT --reject-with tcp-reset
+$IPT -t filter -N LOGREJECT
+# $IPT -t filter -I LOGREJECT -m limit --limit 2/min -j LOG --log-prefix "IPTables-FILTER-Rejected: " --log-level 4
+$IPT -t filter -I LOGREJECT -j LOG --log-prefix "IPTables-FILTER-Rejected: " --log-level 4
+# $IPT -t filter -A LOGREJECT -j REJECT --reject-with tcp-reset
 ### not all connections use TCP
-$IPT -A LOGREJECT -j REJECT
+$IPT -t filter -A LOGREJECT -j REJECT
 
 ### NAT-specific LOG versions
 ### Jump point to LOG and ACCEPT, make a note of request (SSH, VPN)
@@ -282,130 +348,104 @@ $IPT -t nat -N LOGMASQUERADE-NAT
 $IPT -t nat -I LOGMASQUERADE-NAT -j LOG --log-prefix "IPTables-NAT-Masqueraded: " --log-level 4
 $IPT -t nat -A LOGMASQUERADE-NAT -j MASQUERADE
 
-### *filter table
-$IPT -P INPUT DROP
-$IPT -P FORWARD DROP
-$IPT -P OUTPUT DROP
-
-### Forwarding
-### jump to LOGACCEPT chain for debugging
-$IPT -A FORWARD -i $VPN_NIC -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
-$IPT -A FORWARD -o $VPN_NIC -j ACCEPT
-# $IPT -A FORWARD -o $LAN_NIC -j LOGACCEPT
-# $IPT -A FORWARD -o $WAN_NIC -j LOGACCEPT
-# $IPT -A FORWARD -o $WLAN_NIC -j LOGACCEPT
-# $IPT -A FORWARD -o lo -j LOGACCEPT
-# $IPT -A FORWARD -j ACCEPT
-
-### *nat table
-$IPT -t nat -P PREROUTING ACCEPT
-# $IPT -t nat -I PREROUTING -j LOGACCEPT-NAT
-$IPT -t nat -A PREROUTING -p udp --dport 53 -i $LAN_NIC -j DNAT --to-destination $LAN_SERVER_IP
-$IPT -t nat -A PREROUTING -p tcp --dport 53 -i $LAN_NIC -j DNAT --to-destination $LAN_SERVER_IP
-$IPT -t nat -A PREROUTING -p udp --dport 53 -i $WLAN_NIC -j DNAT --to-destination $WLAN_SERVER_IP
-$IPT -t nat -A PREROUTING -p tcp --dport 53 -i $WLAN_NIC -j DNAT --to-destination $WLAN_SERVER_IP
-
-$IPT -t nat -P INPUT ACCEPT
-# $IPT -t nat -I INPUT -j LOGACCEPT-NAT
-
-$IPT -t nat -P OUTPUT ACCEPT
-# $IPT -t nat -I OUTPUT -j LOGACCEPT-NAT
-
-$IPT -t nat -P POSTROUTING DROP
-$IPT -t nat -A POSTROUTING -o $VPN_NIC -j MASQUERADE
-# $IPT -t nat -A POSTROUTING -o $LAN_NIC -j LOGMASQUERADE-NAT
-$IPT -t nat -A POSTROUTING -o $WAN_NIC -j LOGMASQUERADE-NAT
-# $IPT -t nat -A POSTROUTING -o $WLAN_NIC -j LOGMASQUERADE-NAT
-# $IPT -t nat -A POSTROUTING -o lo -j LOGMASQUERADE-NAT
-$IPT -t nat -A POSTROUTING -j LOGACCEPT-NAT
-
 ### Input - It's most secure to only allow inbound traffic from established or related connections. Set that up next.
-$IPT -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+$IPT -t filter -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
 
 ### Loopback - allow the loopback interface
-$IPT -A INPUT -i lo -j ACCEPT
+$IPT  -t filter -A INPUT -i lo -j ACCEPT
 
 ### LAN - allow the LAN interface
-$IPT -A INPUT -i $LAN_NIC -j ACCEPT
+$IPT  -t filter -A INPUT -i $LAN_NIC -j ACCEPT
 
 ### WLAN - allow the WLAN interface (hostapd)
-$IPT -A INPUT -i $WLAN_NIC -j ACCEPT
-
+$IPT -t filter -A INPUT -i $WLAN_NIC -j ACCEPT
 
 ###### Let's see which ports get used the most for MULTIPORT order...
 ### WAN - allow the WAN_NIC to be issued a DHCP lease
-# $IPT -A INPUT -i $WAN_NIC -p udp -m multiport --dports $VPN_PORT,1194,$DHCP_PORT,$DHCPC_PORT,$NTP_PORT -j LOGACCEPT
-$IPT -A INPUT -i $WAN_NIC -p udp -m udp --dport $VPN_PORT -j LOGACCEPT
-$IPT -A INPUT -i $WAN_NIC -p udp -m udp --dport 1194 -j LOGACCEPT
-$IPT -A INPUT -i $WAN_NIC -p udp -m udp --dport 67:68 --sport 67:68 -j LOGACCEPT
-$IPT -A INPUT -i $WAN_NIC -p udp -m udp --dport $NTP_PORT -j LOGACCEPT
-$IPT -A INPUT -i $WAN_NIC -p udp -m udp --dport $NETBIOS_PORT -j REJECT
+# $IPT -t filter -A INPUT -i $WAN_NIC -p udp -m multiport --dports $VPN_PORT,1194,$DHCP_PORT,$DHCPC_PORT,$NTP_PORT -j LOGACCEPT
+$IPT -t filter -A INPUT -i $WAN_NIC -p udp -m udp --dport $VPN_PORT -j LOGACCEPT
+$IPT -t filter -A INPUT -i $WAN_NIC -p udp -m udp --dport 1194 -j LOGACCEPT
+$IPT -t filter -A INPUT -i $WAN_NIC -p udp -m udp --dport 67:68 --sport 67:68 -j LOGACCEPT
+$IPT -t filter -A INPUT -i $WAN_NIC -p udp -m udp --dport $NTP_PORT -j LOGACCEPT
+$IPT -t filter -A INPUT -i $WAN_NIC -p udp -m udp --dport $NETBIOS_PORT -j REJECT
 
-$IPT -A INPUT -i $WAN_NIC -p udp -m udp --sport $VPN_PORT -j LOGACCEPT
-$IPT -A INPUT -i $WAN_NIC -p udp -m udp --sport 1194 -j LOGACCEPT
-$IPT -A INPUT -i $WAN_NIC -p udp -m udp --sport $NTP_PORT -j LOGACCEPT
-$IPT -A INPUT -i $WAN_NIC -p udp -m udp --sport $NETBIOS_PORT -j REJECT
+$IPT -t filter -A INPUT -i $WAN_NIC -p udp -m udp --sport $VPN_PORT -j LOGACCEPT
+$IPT -t filter -A INPUT -i $WAN_NIC -p udp -m udp --sport 1194 -j LOGACCEPT
+$IPT -t filter -A INPUT -i $WAN_NIC -p udp -m udp --sport $NTP_PORT -j LOGACCEPT
+$IPT -t filter -A INPUT -i $WAN_NIC -p udp -m udp --sport $NETBIOS_PORT -j REJECT
 
-# $IPT -A INPUT -i $WAN_NIC -p tcp -m multiport --dports $VPN_PORT,1194,$NTP_PORT,$NETBIOS_PORT -j LOGACCEPT
-$IPT -A INPUT -i $WAN_NIC -p tcp -m tcp --dport $VPN_PORT -j LOGACCEPT
-$IPT -A INPUT -i $WAN_NIC -p tcp -m tcp --dport 1194 -j LOGACCEPT
-$IPT -A INPUT -i $WAN_NIC -p tcp -m tcp --dport $NTP_PORT -j LOGACCEPT
-$IPT -A INPUT -i $WAN_NIC -p tcp -m tcp --dport $NETBIOS_PORT -j REJECT
+# $IPT -t filter -A INPUT -i $WAN_NIC -p tcp -m multiport --dports $VPN_PORT,1194,$NTP_PORT,$NETBIOS_PORT -j LOGACCEPT
+$IPT -t filter -A INPUT -i $WAN_NIC -p tcp -m tcp --dport $VPN_PORT -j LOGACCEPT
+$IPT -t filter -A INPUT -i $WAN_NIC -p tcp -m tcp --dport 1194 -j LOGACCEPT
+$IPT -t filter -A INPUT -i $WAN_NIC -p tcp -m tcp --dport $NTP_PORT -j LOGACCEPT
+$IPT -t filter -A INPUT -i $WAN_NIC -p tcp -m tcp --dport $NETBIOS_PORT -j REJECT
 
-$IPT -A INPUT -i $WAN_NIC -p tcp -m tcp --sport $VPN_PORT -j LOGACCEPT
-$IPT -A INPUT -i $WAN_NIC -p tcp -m tcp --sport 1194 -j LOGACCEPT
-$IPT -A INPUT -i $WAN_NIC -p tcp -m tcp --sport $NTP_PORT -j LOGACCEPT
-$IPT -A INPUT -i $WAN_NIC -p tcp -m tcp --sport $NETBIOS_PORT -j REJECT
+$IPT -t filter -A INPUT -i $WAN_NIC -p tcp -m tcp --sport $VPN_PORT -j LOGACCEPT
+$IPT -t filter -A INPUT -i $WAN_NIC -p tcp -m tcp --sport 1194 -j LOGACCEPT
+$IPT -t filter -A INPUT -i $WAN_NIC -p tcp -m tcp --sport $NTP_PORT -j LOGACCEPT
+$IPT -t filter -A INPUT -i $WAN_NIC -p tcp -m tcp --sport $NETBIOS_PORT -j REJECT
 
 ### WAN - allow the WAN_NIC to accept ICMP for ping requests
-$IPT -A INPUT -i $WAN_NIC -p icmp -j LOGACCEPT
+$IPT -t filter -A INPUT -i $WAN_NIC -p icmp -j LOGACCEPT
 
 ### jump to LOGDROP chain for debugging
-$IPT -A INPUT -j LOGDROP
+$IPT -t filter -A INPUT -j LOGDROP
+
+
+### Forwarding
+### jump to LOGACCEPT chain for debugging
+$IPT -t filter -A FORWARD -i $VPN_NIC -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+$IPT -t filter -A FORWARD -o $VPN_NIC -j ACCEPT
+# $IPT -t filter -A FORWARD -o $LAN_NIC -j LOGACCEPT
+# $IPT -t filter -A FORWARD -o $WAN_NIC -j LOGACCEPT
+# $IPT -t filter -A FORWARD -o $WLAN_NIC -j LOGACCEPT
+# $IPT -t filter -A FORWARD -o lo -j LOGACCEPT
+# $IPT -t filter -A FORWARD -j ACCEPT
+
 
 ### Loopback and Ping - allow the loopback interface and ping.
-$IPT -A OUTPUT -o lo -j ACCEPT
-### the `$IPT -A OUTPUT -o $VPN_NIC -j LOGACCEPT` covers this case, uncomment if not using that rule (explicit port ACCEPT)
-# $IPT -A OUTPUT -o $VPN_NIC -p icmp -j LOGACCEPT
+$IPT -t filter -A OUTPUT -o lo -j ACCEPT
+### the `$IPT -t filter -A OUTPUT -o $VPN_NIC -j LOGACCEPT` covers this case, uncomment if not using that rule (explicit port ACCEPT)
+# $IPT -t filter -A OUTPUT -o $VPN_NIC -p icmp -j LOGACCEPT
 
 ### LAN - It doesn't make much sense to shut down or block your LAN traffic, especially on a home network, so allow that too.
 ### commented out $WAN_RANGE to prevent leaks
-# $IPT -A OUTPUT -d $WAN_RANGE -j LOGACCEPT
-$IPT -A OUTPUT -o $LAN_NIC -j ACCEPT
-$IPT -A OUTPUT -o $WLAN_NIC -j ACCEPT
+# $IPT -t filter -A OUTPUT -d $WAN_RANGE -j LOGACCEPT
+$IPT -t filter -A OUTPUT -o $LAN_NIC -j ACCEPT
+$IPT -t filter -A OUTPUT -o $WLAN_NIC -j ACCEPT
 
 ### WAN - allow the WAN_NIC to be issued a DHCP lease
-# $IPT -A OUTPUT -o $WAN_NIC -p udp -m multiport --dports $VPN_PORT,1194,$DHCP_PORT,$DHCPC_PORT,$NTP_PORT -j LOGACCEPT
-# $IPT -A OUTPUT -p udp -m multiport --dports $VPN_PORT,1194,$DHCP_PORT,$DHCPC_PORT,$NTP_PORT -j ACCEPT
-$IPT -A OUTPUT -p udp -m udp --dport $VPN_PORT -j ACCEPT
-$IPT -A OUTPUT -p udp -m udp --dport 1194 -j ACCEPT
-$IPT -A OUTPUT -p udp -m udp --dport 67:68 --sport 67:68 -j LOGACCEPT
-# $IPT -A OUTPUT -p udp -m udp --dport $DHCP_PORT -j LOGACCEPT
-# $IPT -A OUTPUT -p udp -m udp --dport $DHCPC_PORT -j LOGACCEPT
-$IPT -A OUTPUT -p udp -m udp --dport $NTP_PORT -j LOGACCEPT
-$IPT -A OUTPUT -p udp -m udp --dport $NETBIOS_PORT -j LOGACCEPT
+# $IPT -t filter -A OUTPUT -o $WAN_NIC -p udp -m multiport --dports $VPN_PORT,1194,$DHCP_PORT,$DHCPC_PORT,$NTP_PORT -j LOGACCEPT
+# $IPT -t filter -A OUTPUT -p udp -m multiport --dports $VPN_PORT,1194,$DHCP_PORT,$DHCPC_PORT,$NTP_PORT -j ACCEPT
+$IPT -t filter -A OUTPUT -p udp -m udp --dport $VPN_PORT -j ACCEPT
+$IPT -t filter -A OUTPUT -p udp -m udp --dport 1194 -j ACCEPT
+$IPT -t filter -A OUTPUT -p udp -m udp --dport 67:68 --sport 67:68 -j LOGACCEPT
+# $IPT -t filter -A OUTPUT -p udp -m udp --dport $DHCP_PORT -j LOGACCEPT
+# $IPT -t filter -A OUTPUT -p udp -m udp --dport $DHCPC_PORT -j LOGACCEPT
+$IPT -t filter -A OUTPUT -p udp -m udp --dport $NTP_PORT -j LOGACCEPT
+$IPT -t filter -A OUTPUT -p udp -m udp --dport $NETBIOS_PORT -j LOGACCEPT
 
-$IPT -A OUTPUT -p udp -m udp --sport $VPN_PORT -j ACCEPT
-$IPT -A OUTPUT -p udp -m udp --sport 1194 -j ACCEPT
-# $IPT -A OUTPUT -p udp -m udp --sport $DHCP_PORT -j LOGACCEPT
-# $IPT -A OUTPUT -p udp -m udp --sport $DHCPC_PORT -j LOGACCEPT
-$IPT -A OUTPUT -p udp -m udp --sport $NTP_PORT -j LOGACCEPT
-$IPT -A OUTPUT -p udp -m udp --sport $NETBIOS_PORT -j LOGACCEPT
+$IPT -t filter -A OUTPUT -p udp -m udp --sport $VPN_PORT -j ACCEPT
+$IPT -t filter -A OUTPUT -p udp -m udp --sport 1194 -j ACCEPT
+# $IPT -t filter -A OUTPUT -p udp -m udp --sport $DHCP_PORT -j LOGACCEPT
+# $IPT -t filter -A OUTPUT -p udp -m udp --sport $DHCPC_PORT -j LOGACCEPT
+$IPT -t filter -A OUTPUT -p udp -m udp --sport $NTP_PORT -j LOGACCEPT
+$IPT -t filter -A OUTPUT -p udp -m udp --sport $NETBIOS_PORT -j LOGACCEPT
 
-# $IPT -A OUTPUT -o $WAN_NIC -p tcp -m multiport --dports $VPN_PORT,1194,$NTP_PORT -j LOGACCEPT
-# $IPT -A OUTPUT -p tcp -m multiport --dports $VPN_PORT,1194,$NTP_PORT -j ACCEPT
-$IPT -A OUTPUT -p tcp -m tcp --dport $VPN_PORT -j ACCEPT
-$IPT -A OUTPUT -p tcp -m tcp --dport 1194 -j ACCEPT
-$IPT -A OUTPUT -p tcp -m tcp --dport $NTP_PORT -j LOGACCEPT
-$IPT -A OUTPUT -p tcp -m tcp --dport $NETBIOS_PORT -j LOGACCEPT
+# $IPT -t filter -A OUTPUT -o $WAN_NIC -p tcp -m multiport --dports $VPN_PORT,1194,$NTP_PORT -j LOGACCEPT
+# $IPT -t filter -A OUTPUT -p tcp -m multiport --dports $VPN_PORT,1194,$NTP_PORT -j ACCEPT
+$IPT -t filter -A OUTPUT -p tcp -m tcp --dport $VPN_PORT -j ACCEPT
+$IPT -t filter -A OUTPUT -p tcp -m tcp --dport 1194 -j ACCEPT
+$IPT -t filter -A OUTPUT -p tcp -m tcp --dport $NTP_PORT -j LOGACCEPT
+$IPT -t filter -A OUTPUT -p tcp -m tcp --dport $NETBIOS_PORT -j LOGACCEPT
 
-$IPT -A OUTPUT -p tcp -m tcp --sport $VPN_PORT -j ACCEPT
-$IPT -A OUTPUT -p tcp -m tcp --sport 1194 -j ACCEPT
-$IPT -A OUTPUT -p tcp -m tcp --sport $NTP_PORT -j LOGACCEPT
-$IPT -A OUTPUT -p tcp -m tcp --sport $NETBIOS_PORT -j LOGACCEPT
+$IPT -t filter -A OUTPUT -p tcp -m tcp --sport $VPN_PORT -j ACCEPT
+$IPT -t filter -A OUTPUT -p tcp -m tcp --sport 1194 -j ACCEPT
+$IPT -t filter -A OUTPUT -p tcp -m tcp --sport $NTP_PORT -j LOGACCEPT
+$IPT -t filter -A OUTPUT -p tcp -m tcp --sport $NETBIOS_PORT -j LOGACCEPT
 
 ### WAN - allow the WAN_NIC to accept ICMP for ping requests
-$IPT -A OUTPUT -o $WAN_NIC -p icmp -j LOGACCEPT
+$IPT -t filter -A OUTPUT -o $WAN_NIC -p icmp -j LOGACCEPT
 
 ### DNS - For this next part, you're going to need to know the IP address of your VPN's DNS server(s).
 ###       If your VPN has access or your resolv.conf, you'll probably find them i there.
@@ -414,31 +454,31 @@ $IPT -A OUTPUT -o $WAN_NIC -p icmp -j LOGACCEPT
 ###   resolver2.privateinternetaccess.com @ 209.222.18.218
 ### multiple IP matching: https://www.cyberciti.biz/faq/how-to-use-iptables-with-multiple-source-destination-ips-addresses/
 ### port 53 UDP/TCP, unsure for DNSSEC (explicit IP covers both cases)
-$IPT -A OUTPUT -d 209.222.18.222,209.222.18.218 -j ACCEPT
+$IPT -t filter -A OUTPUT -d 209.222.18.222,209.222.18.218 -j ACCEPT
 ### PIA DNS uses same subnet: use /24 to reduce rules 2 to 1
-# $IPT -A OUTPUT -d 209.222.18.0/24 -j ACCEPT
+# $IPT -t filter -A OUTPUT -d 209.222.18.0/24 -j ACCEPT
 
 ### Allow the VPN - Of course, you need to allow the VPN itself. There are two parts to this.
 ### You need to allow both the service port and the interface.
 ### OpenVPN uses default port 1194, PIA uses port 1197
-# $IPT -A OUTPUT -p udp -m multiport --dport 1197,1194 -j ACCEPT
-$IPT -A OUTPUT -o $VPN_NIC -j ACCEPT
+# $IPT -t filter -A OUTPUT -p udp -m multiport --dport 1197,1194 -j ACCEPT
+$IPT -t filter -A OUTPUT -o $VPN_NIC -j ACCEPT
 
 ### jump to LOGDROP chain for debugging
-$IPT -A OUTPUT -j LOGDROP
-
-
-
+$IPT -t filter -A OUTPUT -j LOGDROP
 
 ### Example
-# $IPT -A OUTPUT -o $VPN_NIC -p tcp --dport 443 -j LOGACCEPT
-# $IPT -A OUTPUT -o $VPN_NIC -p tcp --dport 80 -j LOGACCEPT
+# $IPT -t filter -A OUTPUT -o $VPN_NIC -p tcp --dport 443 -j LOGACCEPT
+# $IPT -t filter -A OUTPUT -o $VPN_NIC -p tcp --dport 80 -j LOGACCEPT
 
-# $IPT -A OUTPUT -o $VPN_NIC -p tcp --dport 993 -j LOGACCEPT
-# $IPT -A OUTPUT -o $VPN_NIC -p tcp --dport 465 -j LOGACCEPT
+# $IPT -t filter -A OUTPUT -o $VPN_NIC -p tcp --dport 993 -j LOGACCEPT
+# $IPT -t filter -A OUTPUT -o $VPN_NIC -p tcp --dport 465 -j LOGACCEPT
 
-# $IPT -A OUTPUT -p udp -m multiport --dports 53,80,110,443,501,502,1194,1197,1198,8080,9201 -j LOGACCEPT
-# $IPT -A OUTPUT -p tcp -m multiport --dports 53,80,110,443,501,502,1194,1197,1198,8080,9201 -j LOGACCEPT
+# $IPT -t filter -A OUTPUT -p udp -m multiport --dports 53,80,110,443,501,502,1194,1197,1198,8080,9201 -j LOGACCEPT
+# $IPT -t filter -A OUTPUT -p tcp -m multiport --dports 53,80,110,443,501,502,1194,1197,1198,8080,9201 -j LOGACCEPT
+
+
+
 
 echo "iptables rules imported..."
 
