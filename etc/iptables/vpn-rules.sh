@@ -314,8 +314,8 @@ $IPT -t nat -P OUTPUT ACCEPT
 
 $IPT -t nat -P POSTROUTING ACCEPT
 $IPT -t nat -A POSTROUTING -o $VPN_NIC -j MASQUERADE
+$IPT -t nat -A POSTROUTING -o lo -j MASQUERADE
 $IPT -t nat -A POSTROUTING -o $WAN_NIC -j LOGMASQUERADE-NAT
-$IPT -t nat -A POSTROUTING -o lo -j ACCEPT
 # $IPT -t nat -A POSTROUTING -o $LAN_NIC -j LOGMASQUERADE-NAT
 # $IPT -t nat -A POSTROUTING -o $WLAN_NIC -j LOGMASQUERADE-NAT
 $IPT -t nat -A POSTROUTING -j LOGACCEPT-NAT
@@ -356,17 +356,17 @@ $IPT -t filter -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
 $IPT -t filter -A INPUT -i lo -j ACCEPT
 
 ### XMAS SCAN
-$IPT -t filter -A INPUT -p tcp --tcp-flags ALL ALL -j LOG --log-prefix "DROPPED XMAS PACKET:" --log-tcp-options
-$IPT -t filter -A INPUT -p tcp --tcp-flags ALL FIN,PSH,URG -j LOG --log-prefix "DROPPED XMAS PACKET:" --log-tcp-options
+# $IPT -t filter -A INPUT -p tcp --tcp-flags ALL ALL -j LOG --log-prefix "DROPPED XMAS PACKET:" --log-tcp-options
+# $IPT -t filter -A INPUT -p tcp --tcp-flags ALL FIN,PSH,URG -j LOG --log-prefix "DROPPED XMAS PACKET:" --log-tcp-options
 
 ### NULL SCAN
-$IPT -t filter -A INPUT -p tcp --tcp-flags ALL NONE -j LOG --log-prefix "DROPPED NULL PACKET:" --log-tcp-options
+# $IPT -t filter -A INPUT -p tcp --tcp-flags ALL NONE -j LOG --log-prefix "DROPPED NULL PACKET:" --log-tcp-options
 
 ### MAIMON SCAN
-$IPT -t filter -A INPUT -p tcp --tcp-flags ALL FIN,ACK -j LOG --log-prefix "DROPPED MAIMON PACKET:" --log-tcp-options
+# $IPT -t filter -A INPUT -p tcp --tcp-flags ALL FIN,ACK -j LOG --log-prefix "DROPPED MAIMON PACKET:" --log-tcp-options
 
 ### FIN SCAN
-$IPT -t filter -A INPUT -p tcp --tcp-flags ALL FIN -j LOG --log-prefix "DROPPED FIN PACKET:" --log-tcp-options
+# $IPT -t filter -A INPUT -p tcp --tcp-flags ALL FIN -j LOG --log-prefix "DROPPED FIN PACKET:" --log-tcp-options
 
 ### LAN - allow the LAN interface
 $IPT -t filter -A INPUT -i $LAN_NIC -j ACCEPT
@@ -378,26 +378,16 @@ $IPT -t filter -A INPUT -i $WLAN_NIC -j ACCEPT
 ### WAN - allow the WAN_NIC to be issued a DHCP lease
 # $IPT -t filter -A INPUT -i $WAN_NIC -p udp -m multiport --dports $VPN_PORT,1194,$DHCP_PORT,$DHCPC_PORT,$NTP_PORT -j LOGACCEPT
 $IPT -t filter -A INPUT -i $WAN_NIC -p udp -m udp --dport $VPN_PORT -j LOGACCEPT
-$IPT -t filter -A INPUT -i $WAN_NIC -p udp -m udp --dport 1194 -j LOGACCEPT
-$IPT -t filter -A INPUT -i $WAN_NIC -p udp -m udp --dport 67:68 --sport 67:68 -j LOGACCEPT
-$IPT -t filter -A INPUT -i $WAN_NIC -p udp -m udp --dport $NTP_PORT -j LOGACCEPT
-$IPT -t filter -A INPUT -i $WAN_NIC -p udp -m udp --dport $NETBIOS_PORT -j REJECT
-
-$IPT -t filter -A INPUT -i $WAN_NIC -p udp -m udp --sport $VPN_PORT -j LOGACCEPT
-$IPT -t filter -A INPUT -i $WAN_NIC -p udp -m udp --sport 1194 -j LOGACCEPT
-$IPT -t filter -A INPUT -i $WAN_NIC -p udp -m udp --sport $NTP_PORT -j LOGACCEPT
-$IPT -t filter -A INPUT -i $WAN_NIC -p udp -m udp --sport $NETBIOS_PORT -j REJECT
+# $IPT -t filter -A INPUT -i $WAN_NIC -p udp -m udp --dport 1194 -j LOGACCEPT
+$IPT -t filter -A INPUT -i $WAN_NIC -p udp -m udp --dport 67:68 -j LOGACCEPT
+# $IPT -t filter -A INPUT -i $WAN_NIC -p udp -m udp --dport $NTP_PORT -j LOGACCEPT
+# $IPT -t filter -A INPUT -i $WAN_NIC -p udp -m udp --dport $NETBIOS_PORT -j REJECT
 
 # $IPT -t filter -A INPUT -i $WAN_NIC -p tcp -m multiport --dports $VPN_PORT,1194,$NTP_PORT,$NETBIOS_PORT -j LOGACCEPT
-$IPT -t filter -A INPUT -i $WAN_NIC -p tcp -m tcp --dport $VPN_PORT -j LOGACCEPT
-$IPT -t filter -A INPUT -i $WAN_NIC -p tcp -m tcp --dport 1194 -j LOGACCEPT
-$IPT -t filter -A INPUT -i $WAN_NIC -p tcp -m tcp --dport $NTP_PORT -j LOGACCEPT
-$IPT -t filter -A INPUT -i $WAN_NIC -p tcp -m tcp --dport $NETBIOS_PORT -j REJECT
-
-$IPT -t filter -A INPUT -i $WAN_NIC -p tcp -m tcp --sport $VPN_PORT -j LOGACCEPT
-$IPT -t filter -A INPUT -i $WAN_NIC -p tcp -m tcp --sport 1194 -j LOGACCEPT
-$IPT -t filter -A INPUT -i $WAN_NIC -p tcp -m tcp --sport $NTP_PORT -j LOGACCEPT
-$IPT -t filter -A INPUT -i $WAN_NIC -p tcp -m tcp --sport $NETBIOS_PORT -j REJECT
+# $IPT -t filter -A INPUT -i $WAN_NIC -p tcp -m tcp --dport $VPN_PORT -j LOGACCEPT
+# $IPT -t filter -A INPUT -i $WAN_NIC -p tcp -m tcp --dport 1194 -j LOGACCEPT
+# $IPT -t filter -A INPUT -i $WAN_NIC -p tcp -m tcp --dport $NTP_PORT -j LOGACCEPT
+# $IPT -t filter -A INPUT -i $WAN_NIC -p tcp -m tcp --dport $NETBIOS_PORT -j REJECT
 
 ### WAN - allow the WAN_NIC to accept ICMP for ping requests
 $IPT -t filter -A INPUT -i $WAN_NIC -p icmp -j LOGACCEPT
@@ -433,18 +423,11 @@ $IPT -t filter -A OUTPUT -o $WLAN_NIC -j ACCEPT
 # $IPT -t filter -A OUTPUT -p udp -m multiport --dports $VPN_PORT,1194,$DHCP_PORT,$DHCPC_PORT,$NTP_PORT -j ACCEPT
 $IPT -t filter -A OUTPUT -p udp -m udp --dport $VPN_PORT -j ACCEPT
 $IPT -t filter -A OUTPUT -p udp -m udp --dport 1194 -j ACCEPT
-$IPT -t filter -A OUTPUT -p udp -m udp --dport 67:68 --sport 67:68 -j LOGACCEPT
+$IPT -t filter -A OUTPUT -p udp -m udp --dport 67:68 -j LOGACCEPT
 # $IPT -t filter -A OUTPUT -p udp -m udp --dport $DHCP_PORT -j LOGACCEPT
 # $IPT -t filter -A OUTPUT -p udp -m udp --dport $DHCPC_PORT -j LOGACCEPT
 $IPT -t filter -A OUTPUT -p udp -m udp --dport $NTP_PORT -j LOGACCEPT
 $IPT -t filter -A OUTPUT -p udp -m udp --dport $NETBIOS_PORT -j LOGACCEPT
-
-$IPT -t filter -A OUTPUT -p udp -m udp --sport $VPN_PORT -j ACCEPT
-$IPT -t filter -A OUTPUT -p udp -m udp --sport 1194 -j ACCEPT
-# $IPT -t filter -A OUTPUT -p udp -m udp --sport $DHCP_PORT -j LOGACCEPT
-# $IPT -t filter -A OUTPUT -p udp -m udp --sport $DHCPC_PORT -j LOGACCEPT
-$IPT -t filter -A OUTPUT -p udp -m udp --sport $NTP_PORT -j LOGACCEPT
-$IPT -t filter -A OUTPUT -p udp -m udp --sport $NETBIOS_PORT -j LOGACCEPT
 
 # $IPT -t filter -A OUTPUT -o $WAN_NIC -p tcp -m multiport --dports $VPN_PORT,1194,$NTP_PORT -j LOGACCEPT
 # $IPT -t filter -A OUTPUT -p tcp -m multiport --dports $VPN_PORT,1194,$NTP_PORT -j ACCEPT
@@ -452,11 +435,6 @@ $IPT -t filter -A OUTPUT -p tcp -m tcp --dport $VPN_PORT -j ACCEPT
 $IPT -t filter -A OUTPUT -p tcp -m tcp --dport 1194 -j ACCEPT
 $IPT -t filter -A OUTPUT -p tcp -m tcp --dport $NTP_PORT -j LOGACCEPT
 $IPT -t filter -A OUTPUT -p tcp -m tcp --dport $NETBIOS_PORT -j LOGACCEPT
-
-$IPT -t filter -A OUTPUT -p tcp -m tcp --sport $VPN_PORT -j ACCEPT
-$IPT -t filter -A OUTPUT -p tcp -m tcp --sport 1194 -j ACCEPT
-$IPT -t filter -A OUTPUT -p tcp -m tcp --sport $NTP_PORT -j LOGACCEPT
-$IPT -t filter -A OUTPUT -p tcp -m tcp --sport $NETBIOS_PORT -j LOGACCEPT
 
 ### WAN - allow the WAN_NIC to accept ICMP for ping requests
 $IPT -t filter -A OUTPUT -o $WAN_NIC -p icmp -j LOGACCEPT
