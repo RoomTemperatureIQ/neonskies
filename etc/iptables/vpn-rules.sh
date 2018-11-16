@@ -269,8 +269,8 @@ $IPT -t raw -A LOG_DROP_BOGON -j DROP
 
 # $IPT -t raw -A PREROUTING -o tun0 -j ACCEPT
 # $IPT -t raw -A PREROUTING -i tun0 -j ACCEPT
-$IPT -t raw -A PREROUTING -p tcp --tcp-flags ALL NONE -j DROP
-$IPT -t raw -A PREROUTING -p tcp --tcp-flags ALL ALL -j DROP
+# $IPT -t raw -A PREROUTING -p tcp --tcp-flags ALL NONE -j DROP
+# $IPT -t raw -A PREROUTING -p tcp --tcp-flags ALL ALL -j DROP
 # $IPT -t raw -A PREROUTING -i tun0 -m set --match-set bogon-bn-nonagg src -j LOG_DROP_BOGON
 
 
@@ -315,9 +315,9 @@ $IPT -t nat -P OUTPUT ACCEPT
 $IPT -t nat -P POSTROUTING ACCEPT
 $IPT -t nat -A POSTROUTING -o $VPN_NIC -j MASQUERADE
 $IPT -t nat -A POSTROUTING -o $WAN_NIC -j LOGMASQUERADE-NAT
+$IPT -t nat -A POSTROUTING -o lo -j ACCEPT
 # $IPT -t nat -A POSTROUTING -o $LAN_NIC -j LOGMASQUERADE-NAT
 # $IPT -t nat -A POSTROUTING -o $WLAN_NIC -j LOGMASQUERADE-NAT
-# $IPT -t nat -A POSTROUTING -o lo -j LOGMASQUERADE-NAT
 $IPT -t nat -A POSTROUTING -j LOGACCEPT-NAT
 
 
@@ -356,16 +356,17 @@ $IPT -t filter -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
 $IPT -t filter -A INPUT -i lo -j ACCEPT
 
 ### XMAS SCAN
-$IPT -t filter -A INPUT -p tcp --tcp-flags ALL FIN,PSH,URG -j DROP --log-prefix "DROPPED XMAS PACKET:" --log-tcp-options
+$IPT -t filter -A INPUT -p tcp --tcp-flags ALL ALL -j LOG --log-prefix "DROPPED XMAS PACKET:" --log-tcp-options
+$IPT -t filter -A INPUT -p tcp --tcp-flags ALL FIN,PSH,URG -j LOG --log-prefix "DROPPED XMAS PACKET:" --log-tcp-options
 
 ### NULL SCAN
-$IPT -t filter -A INPUT -p tcp --tcp-flags ALL NONE -j DROP --log-prefix "DROPPED NULL PACKET:" --log-tcp-options
+$IPT -t filter -A INPUT -p tcp --tcp-flags ALL NONE -j LOG --log-prefix "DROPPED NULL PACKET:" --log-tcp-options
 
 ### MAIMON SCAN
-$IPT -t filter -A INPUT -p tcp --tcp-flags ALL FIN,ACK -j DROP --log-prefix "DROPPED MAIMON PACKET:" --log-tcp-options
+$IPT -t filter -A INPUT -p tcp --tcp-flags ALL FIN,ACK -j LOG --log-prefix "DROPPED MAIMON PACKET:" --log-tcp-options
 
 ### FIN SCAN
-$IPT -t filter -A INPUT -p tcp --tcp-flags ALL FIN -j DROP --log-prefix "DROPPED FIN PACKET:" --log-tcp-options
+$IPT -t filter -A INPUT -p tcp --tcp-flags ALL FIN -j LOG --log-prefix "DROPPED FIN PACKET:" --log-tcp-options
 
 ### LAN - allow the LAN interface
 $IPT -t filter -A INPUT -i $LAN_NIC -j ACCEPT
