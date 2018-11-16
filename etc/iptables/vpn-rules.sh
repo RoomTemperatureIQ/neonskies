@@ -381,13 +381,12 @@ $IPT -t filter -A INPUT -i $WAN_NIC -p udp -m udp --dport $VPN_PORT -j LOGACCEPT
 # $IPT -t filter -A INPUT -i $WAN_NIC -p udp -m udp --dport 1194 -j LOGACCEPT
 $IPT -t filter -A INPUT -i $WAN_NIC -p udp -m udp --dport 67:68 -j LOGACCEPT
 # $IPT -t filter -A INPUT -i $WAN_NIC -p udp -m udp --dport $NTP_PORT -j LOGACCEPT
-# $IPT -t filter -A INPUT -i $WAN_NIC -p udp -m udp --dport $NETBIOS_PORT -j REJECT
+# $IPT -t filter -A INPUT -i $WAN_NIC -p udp -m udp --dports 137:139 -j DROP
 
 # $IPT -t filter -A INPUT -i $WAN_NIC -p tcp -m multiport --dports $VPN_PORT,1194,$NTP_PORT,$NETBIOS_PORT -j LOGACCEPT
 # $IPT -t filter -A INPUT -i $WAN_NIC -p tcp -m tcp --dport $VPN_PORT -j LOGACCEPT
 # $IPT -t filter -A INPUT -i $WAN_NIC -p tcp -m tcp --dport 1194 -j LOGACCEPT
 # $IPT -t filter -A INPUT -i $WAN_NIC -p tcp -m tcp --dport $NTP_PORT -j LOGACCEPT
-# $IPT -t filter -A INPUT -i $WAN_NIC -p tcp -m tcp --dport $NETBIOS_PORT -j REJECT
 
 ### WAN - allow the WAN_NIC to accept ICMP for ping requests
 $IPT -t filter -A INPUT -i $WAN_NIC -p icmp -j LOGACCEPT
@@ -427,14 +426,13 @@ $IPT -t filter -A OUTPUT -p udp -m udp --dport 67:68 -j LOGACCEPT
 # $IPT -t filter -A OUTPUT -p udp -m udp --dport $DHCP_PORT -j LOGACCEPT
 # $IPT -t filter -A OUTPUT -p udp -m udp --dport $DHCPC_PORT -j LOGACCEPT
 $IPT -t filter -A OUTPUT -p udp -m udp --dport $NTP_PORT -j LOGACCEPT
-$IPT -t filter -A OUTPUT -p udp -m udp --dport $NETBIOS_PORT -j LOGACCEPT
+$IPT -t filter -A OUTPUT -p udp -m udp --dports 137:139 -j LOGACCEPT
 
 # $IPT -t filter -A OUTPUT -o $WAN_NIC -p tcp -m multiport --dports $VPN_PORT,1194,$NTP_PORT -j LOGACCEPT
 # $IPT -t filter -A OUTPUT -p tcp -m multiport --dports $VPN_PORT,1194,$NTP_PORT -j ACCEPT
 $IPT -t filter -A OUTPUT -p tcp -m tcp --dport $VPN_PORT -j ACCEPT
 $IPT -t filter -A OUTPUT -p tcp -m tcp --dport 1194 -j ACCEPT
 $IPT -t filter -A OUTPUT -p tcp -m tcp --dport $NTP_PORT -j LOGACCEPT
-$IPT -t filter -A OUTPUT -p tcp -m tcp --dport $NETBIOS_PORT -j LOGACCEPT
 
 ### WAN - allow the WAN_NIC to accept ICMP for ping requests
 $IPT -t filter -A OUTPUT -o $WAN_NIC -p icmp -j LOGACCEPT
