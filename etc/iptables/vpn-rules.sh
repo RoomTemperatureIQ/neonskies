@@ -312,13 +312,13 @@ $IPT -t nat -P INPUT ACCEPT
 $IPT -t nat -P OUTPUT ACCEPT
 # $IPT -t nat -I OUTPUT -j LOGACCEPT-NAT
 
-$IPT -t nat -P POSTROUTING ACCEPT
+$IPT -t nat -P POSTROUTING DROP
 $IPT -t nat -A POSTROUTING -o $VPN_NIC -j MASQUERADE
 # $IPT -t nat -A POSTROUTING -o $LAN_NIC -j LOGMASQUERADE-NAT
 $IPT -t nat -A POSTROUTING -o $WAN_NIC -j LOGMASQUERADE-NAT
 # $IPT -t nat -A POSTROUTING -o $WLAN_NIC -j LOGMASQUERADE-NAT
 # $IPT -t nat -A POSTROUTING -o lo -j LOGMASQUERADE-NAT
-# $IPT -t nat -A POSTROUTING -j LOGACCEPT-NAT
+$IPT -t nat -A POSTROUTING -j LOGACCEPT-NAT
 
 ### Input - It's most secure to only allow inbound traffic from established or related connections. Set that up next.
 $IPT -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
@@ -346,12 +346,12 @@ $IPT -A INPUT -i $WAN_NIC -p udp -m udp --dport $NETBIOS_PORT -j REJECT
 
 $IPT -A INPUT -i $WAN_NIC -p udp -m udp --sport $VPN_PORT -j LOGACCEPT
 $IPT -A INPUT -i $WAN_NIC -p udp -m udp --sport 1194 -j LOGACCEPT
-$IPT -A INPUT -i $WAN_NIC -p udp -m udp --sport $DHCP_PORT -j LOGACCEPT
-$IPT -A INPUT -i $WAN_NIC -p udp -m udp --sport $DHCPC_PORT -j LOGACCEPT
+# $IPT -A INPUT -i $WAN_NIC -p udp -m udp --sport $DHCP_PORT -j LOGACCEPT
+# $IPT -A INPUT -i $WAN_NIC -p udp -m udp --sport $DHCPC_PORT -j LOGACCEPT
 $IPT -A INPUT -i $WAN_NIC -p udp -m udp --sport $NTP_PORT -j LOGACCEPT
 $IPT -A INPUT -i $WAN_NIC -p udp -m udp --sport $NETBIOS_PORT -j REJECT
 
-# $IPT -A INPUT -i $WAN_NIC -p tcp -m multiport --dports $VPN_PORT,1194,$NTP_PORT -j LOGACCEPT
+# $IPT -A INPUT -i $WAN_NIC -p tcp -m multiport --dports $VPN_PORT,1194,$NTP_PORT,$NETBIOS_PORT -j LOGACCEPT
 $IPT -A INPUT -i $WAN_NIC -p tcp -m tcp --dport $VPN_PORT -j LOGACCEPT
 $IPT -A INPUT -i $WAN_NIC -p tcp -m tcp --dport 1194 -j LOGACCEPT
 $IPT -A INPUT -i $WAN_NIC -p tcp -m tcp --dport $NTP_PORT -j LOGACCEPT
@@ -359,8 +359,6 @@ $IPT -A INPUT -i $WAN_NIC -p tcp -m tcp --dport $NETBIOS_PORT -j REJECT
 
 $IPT -A INPUT -i $WAN_NIC -p tcp -m tcp --sport $VPN_PORT -j LOGACCEPT
 $IPT -A INPUT -i $WAN_NIC -p tcp -m tcp --sport 1194 -j LOGACCEPT
-$IPT -A INPUT -i $WAN_NIC -p tcp -m tcp --sport $DHCP_PORT -j LOGACCEPT
-$IPT -A INPUT -i $WAN_NIC -p tcp -m tcp --sport $DHCPC_PORT -j LOGACCEPT
 $IPT -A INPUT -i $WAN_NIC -p tcp -m tcp --sport $NTP_PORT -j LOGACCEPT
 $IPT -A INPUT -i $WAN_NIC -p tcp -m tcp --sport $NETBIOS_PORT -j REJECT
 
@@ -398,7 +396,6 @@ $IPT -A OUTPUT -p udp -m udp --sport 1194 -j ACCEPT
 # $IPT -A OUTPUT -p udp -m udp --sport $DHCPC_PORT -j LOGACCEPT
 $IPT -A OUTPUT -p udp -m udp --sport $NTP_PORT -j LOGACCEPT
 $IPT -A OUTPUT -p udp -m udp --sport $NETBIOS_PORT -j LOGACCEPT
-
 
 # $IPT -A OUTPUT -o $WAN_NIC -p tcp -m multiport --dports $VPN_PORT,1194,$NTP_PORT -j LOGACCEPT
 # $IPT -A OUTPUT -p tcp -m multiport --dports $VPN_PORT,1194,$NTP_PORT -j ACCEPT
