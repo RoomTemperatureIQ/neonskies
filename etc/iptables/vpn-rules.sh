@@ -47,17 +47,23 @@ LAN_NIC="eth0"
 ### WLAN NIC
 WLAN_NIC="wlan0"
 
-### server WAN_NIC static IP
-HOST_IP="192.168.1.254"
-
 ### your WAN IP range (we act as a gateway on this subnet)
 WAN_RANGE="192.168.1.0/24"
+
+### server WAN_NIC static IP
+WAN_SERVER_IP="192.168.1.254"
 
 ### your LAN IP range
 LAN_RANGE="192.168.232.0/24"
 
+### server LAN_NIC static IP
+LAN_SERVER_IP="192.168.232.1"
+
 ### your WLAN IP range
 WLAN_RANGE="192.168.2.0/24"
+
+### server WLAN_NIC static IP
+WLAN_SERVER_IP="192.168.2.1"
 
 ### SSH port
 SSH_PORT="22"
@@ -277,12 +283,13 @@ $IPT -t nat -A LOGMASQUERADE-NAT -j MASQUERADE
 
 ### *filter table
 $IPT -P INPUT DROP
-$IPT -P FORWARD ACCEPT
+$IPT -P FORWARD DROP
 $IPT -P OUTPUT DROP
 
 ### Forwarding
 ### jump to LOGACCEPT chain for debugging
-# $IPT -A FORWARD -o $VPN_NIC -j LOGACCEPT
+$IPT -A FORWARD -i $VPN_NIC -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+$IPT -A FORWARD -o $VPN_NIC -j ACCEPT
 # $IPT -A FORWARD -o $LAN_NIC -j LOGACCEPT
 # $IPT -A FORWARD -o $WAN_NIC -j LOGACCEPT
 # $IPT -A FORWARD -o $WLAN_NIC -j LOGACCEPT
@@ -292,6 +299,10 @@ $IPT -P OUTPUT DROP
 ### *nat table
 $IPT -t nat -P PREROUTING ACCEPT
 # $IPT -t nat -I PREROUTING -j LOGACCEPT-NAT
+$IPT -t nat -A PREROUTING -p udp --dport 53 -i $LAN_NIC -j DNAT --to-destination $LAN_SERVER_IP
+$IPT -t nat -A PREROUTING -p tcp --dport 53 -i $LAN_NIC -j DNAT --to-destination $LAN_SERVER_IP
+$IPT -t nat -A PREROUTING -p udp --dport 53 -i $WLAN_NIC -j DNAT --to-destination $WLAN_SERVER_IP
+$IPT -t nat -A PREROUTING -p tcp --dport 53 -i $WLAN_NIC -j DNAT --to-destination $WLAN_SERVER_IP
 
 $IPT -t nat -P INPUT ACCEPT
 # $IPT -t nat -I INPUT -j LOGACCEPT-NAT
