@@ -338,8 +338,9 @@ $IPT -A INPUT -i $WLAN_NIC -j ACCEPT
 # $IPT -A INPUT -i $WAN_NIC -p udp -m multiport --dports $VPN_PORT,1194,$DHCP_PORT,$DHCPC_PORT,$NTP_PORT -j LOGACCEPT
 $IPT -A INPUT -i $WAN_NIC -p udp -m udp --dport $VPN_PORT -j LOGACCEPT
 $IPT -A INPUT -i $WAN_NIC -p udp -m udp --dport 1194 -j LOGACCEPT
-$IPT -A INPUT -i $WAN_NIC -p udp -m udp --dport $DHCP_PORT -j LOGACCEPT
-$IPT -A INPUT -i $WAN_NIC -p udp -m udp --dport $DHCPC_PORT -j LOGACCEPT
+$IPT -A INPUT -i $WAN_NIC -p udp -m udp --dport 67:68 --sport 67:68 -j LOGACCEPT
+# $IPT -A INPUT -i $WAN_NIC -p udp -m udp --dport $DHCP_PORT -j LOGACCEPT
+# $IPT -A INPUT -i $WAN_NIC -p udp -m udp --dport $DHCPC_PORT -j LOGACCEPT
 $IPT -A INPUT -i $WAN_NIC -p udp -m udp --dport $NTP_PORT -j LOGACCEPT
 $IPT -A INPUT -i $WAN_NIC -p udp -m udp --dport $NETBIOS_PORT -j REJECT
 
@@ -350,11 +351,9 @@ $IPT -A INPUT -i $WAN_NIC -p udp -m udp --sport $DHCPC_PORT -j LOGACCEPT
 $IPT -A INPUT -i $WAN_NIC -p udp -m udp --sport $NTP_PORT -j LOGACCEPT
 $IPT -A INPUT -i $WAN_NIC -p udp -m udp --sport $NETBIOS_PORT -j REJECT
 
-# $IPT -A INPUT -i $WAN_NIC -p tcp -m multiport --dports $VPN_PORT,1194,$DHCP_PORT,$DHCPC_PORT,$NTP_PORT -j LOGACCEPT
+# $IPT -A INPUT -i $WAN_NIC -p tcp -m multiport --dports $VPN_PORT,1194,$NTP_PORT -j LOGACCEPT
 $IPT -A INPUT -i $WAN_NIC -p tcp -m tcp --dport $VPN_PORT -j LOGACCEPT
 $IPT -A INPUT -i $WAN_NIC -p tcp -m tcp --dport 1194 -j LOGACCEPT
-$IPT -A INPUT -i $WAN_NIC -p tcp -m tcp --dport $DHCP_PORT -j LOGACCEPT
-$IPT -A INPUT -i $WAN_NIC -p tcp -m tcp --dport $DHCPC_PORT -j LOGACCEPT
 $IPT -A INPUT -i $WAN_NIC -p tcp -m tcp --dport $NTP_PORT -j LOGACCEPT
 $IPT -A INPUT -i $WAN_NIC -p tcp -m tcp --dport $NETBIOS_PORT -j REJECT
 
@@ -401,7 +400,7 @@ $IPT -A OUTPUT -p udp -m udp --sport $NTP_PORT -j LOGACCEPT
 $IPT -A OUTPUT -p udp -m udp --sport $NETBIOS_PORT -j LOGACCEPT
 
 
-# $IPT -A OUTPUT -o $WAN_NIC -p tcp -m multiport --dports $VPN_PORT,1194,$DHCP_PORT,$DHCPC_PORT,$NTP_PORT -j LOGACCEPT
+# $IPT -A OUTPUT -o $WAN_NIC -p tcp -m multiport --dports $VPN_PORT,1194,$NTP_PORT -j LOGACCEPT
 # $IPT -A OUTPUT -p tcp -m multiport --dports $VPN_PORT,1194,$NTP_PORT -j ACCEPT
 $IPT -A OUTPUT -p tcp -m tcp --dport $VPN_PORT -j ACCEPT
 $IPT -A OUTPUT -p tcp -m tcp --dport 1194 -j ACCEPT
@@ -410,8 +409,6 @@ $IPT -A OUTPUT -p tcp -m tcp --dport $NETBIOS_PORT -j LOGACCEPT
 
 $IPT -A OUTPUT -p tcp -m tcp --sport $VPN_PORT -j ACCEPT
 $IPT -A OUTPUT -p tcp -m tcp --sport 1194 -j ACCEPT
-$IPT -A OUTPUT -p tcp -m tcp --sport $DHCP_PORT -j LOGACCEPT
-$IPT -A OUTPUT -p tcp -m tcp --sport $DHCPC_PORT -j LOGACCEPT
 $IPT -A OUTPUT -p tcp -m tcp --sport $NTP_PORT -j LOGACCEPT
 $IPT -A OUTPUT -p tcp -m tcp --sport $NETBIOS_PORT -j LOGACCEPT
 
