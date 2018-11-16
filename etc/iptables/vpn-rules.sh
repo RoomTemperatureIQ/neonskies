@@ -286,6 +286,20 @@ $IPT -t mangle -P POSTROUTING ACCEPT
 
 ### *nat table
 $IPT -t nat -P PREROUTING ACCEPT
+
+### NAT-specific LOG versions
+### Jump point to LOG and ACCEPT, make a note of request (SSH, VPN)
+$IPT -t nat -N LOGACCEPT-NAT
+# $IPT -t nat -I LOGACCEPT-NAT -m limit --limit 2/min -j LOG --log-prefix "IPTables-NAT-Accepted: " --log-level 4
+$IPT -t nat -I LOGACCEPT-NAT -j LOG --log-prefix "IPTables-NAT-Accepted: " --log-level 4
+$IPT -t nat -A LOGACCEPT-NAT -j ACCEPT
+
+### Jump point to LOG and MASQUERADE
+$IPT -t nat -N LOGMASQUERADE-NAT
+# $IPT -t nat -I LOGMASQUERADE-NAT -m limit --limit 2/min -j LOG --log-prefix "IPTables-NAT-Masqueraded: " --log-level 4
+$IPT -t nat -I LOGMASQUERADE-NAT -j LOG --log-prefix "IPTables-NAT-Masqueraded: " --log-level 4
+$IPT -t nat -A LOGMASQUERADE-NAT -j MASQUERADE
+
 $IPT -t nat -A PREROUTING -p udp --dport 53 -i $LAN_NIC -j DNAT --to-destination $LAN_SERVER_IP
 $IPT -t nat -A PREROUTING -p tcp --dport 53 -i $LAN_NIC -j DNAT --to-destination $LAN_SERVER_IP
 $IPT -t nat -A PREROUTING -p udp --dport 53 -i $WLAN_NIC -j DNAT --to-destination $WLAN_SERVER_IP
@@ -335,27 +349,26 @@ $IPT -t filter -I LOGREJECT -j LOG --log-prefix "IPTables-FILTER-Rejected: " --l
 ### not all connections use TCP
 $IPT -t filter -A LOGREJECT -j REJECT
 
-### NAT-specific LOG versions
-### Jump point to LOG and ACCEPT, make a note of request (SSH, VPN)
-$IPT -t nat -N LOGACCEPT-NAT
-# $IPT -t nat -I LOGACCEPT-NAT -m limit --limit 2/min -j LOG --log-prefix "IPTables-NAT-Accepted: " --log-level 4
-$IPT -t nat -I LOGACCEPT-NAT -j LOG --log-prefix "IPTables-NAT-Accepted: " --log-level 4
-$IPT -t nat -A LOGACCEPT-NAT -j ACCEPT
-
-### Jump point to LOG and MASQUERADE
-$IPT -t nat -N LOGMASQUERADE-NAT
-# $IPT -t nat -I LOGMASQUERADE-NAT -m limit --limit 2/min -j LOG --log-prefix "IPTables-NAT-Masqueraded: " --log-level 4
-$IPT -t nat -I LOGMASQUERADE-NAT -j LOG --log-prefix "IPTables-NAT-Masqueraded: " --log-level 4
-$IPT -t nat -A LOGMASQUERADE-NAT -j MASQUERADE
-
 ### Input - It's most secure to only allow inbound traffic from established or related connections. Set that up next.
 $IPT -t filter -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
 
 ### Loopback - allow the loopback interface
-$IPT  -t filter -A INPUT -i lo -j ACCEPT
+$IPT -t filter -A INPUT -i lo -j ACCEPT
+
+### XMAS SCAN
+$IPT -A INPUT -p tcp --tcp-flags ALL FIN,PSH,URG -j LOGDROP --log-prefix "DROPPED XMAS PACKET:" --log-tcp-options
+
+### NULL SCAN
+$IPT -A INPUT -p tcp --tcp-flags ALL NONE -j LOGDROP --log-prefix "DROPPED NULL PACKET:" --log-tcp-options
+
+### MAIMON SCAN
+$IPT -A INPUT -p tcp --tcp-flags ALL FIN,ACK -j LOGDROP --log-prefix "DROPPED MAIMON PACKET:" --log-tcp-options
+
+### FIN SCAN
+$IPT -A INPUT -p tcp --tcp-flags ALL FIN -j LOGDROP --log-prefix "DROPPED FIN PACKET:" --log-tcp-options
 
 ### LAN - allow the LAN interface
-$IPT  -t filter -A INPUT -i $LAN_NIC -j ACCEPT
+$IPT -t filter -A INPUT -i $LAN_NIC -j ACCEPT
 
 ### WLAN - allow the WLAN interface (hostapd)
 $IPT -t filter -A INPUT -i $WLAN_NIC -j ACCEPT
