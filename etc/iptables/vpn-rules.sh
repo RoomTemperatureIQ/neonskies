@@ -8,6 +8,7 @@
 ###
 ### location of iptables
 IPT=$(command -v iptables)
+IPT6=$(command -v ip6tables)
 
 ### UNTESTED ###
 ### add crontab job for iptables-optimizer and netfilter-persistent to save
@@ -379,9 +380,9 @@ $IPT -t filter -A INPUT -i $WLAN_NIC -j ACCEPT
 # $IPT -t filter -A INPUT -i $WAN_NIC -p udp -m multiport --dports $VPN_PORT,1194,$DHCP_PORT,$DHCPC_PORT,$NTP_PORT -j LOGACCEPT
 $IPT -t filter -A INPUT -i $WAN_NIC -p udp -m udp --dport $VPN_PORT -j LOGACCEPT
 # $IPT -t filter -A INPUT -i $WAN_NIC -p udp -m udp --dport 1194 -j LOGACCEPT
-$IPT -t filter -A INPUT -i $WAN_NIC -p udp -m udp --dport 67:68 -j LOGACCEPT
+$IPT -t filter -A INPUT -i $WAN_NIC -p udp -m multiport --dports 67:68 -j LOGACCEPT
 # $IPT -t filter -A INPUT -i $WAN_NIC -p udp -m udp --dport $NTP_PORT -j LOGACCEPT
-# $IPT -t filter -A INPUT -i $WAN_NIC -p udp -m udp --dports 137:139 -j DROP
+# $IPT -t filter -A INPUT -i $WAN_NIC -p udp -m multiport --dports 137:139 -j DROP
 
 # $IPT -t filter -A INPUT -i $WAN_NIC -p tcp -m multiport --dports $VPN_PORT,1194,$NTP_PORT,$NETBIOS_PORT -j LOGACCEPT
 # $IPT -t filter -A INPUT -i $WAN_NIC -p tcp -m tcp --dport $VPN_PORT -j LOGACCEPT
@@ -422,11 +423,11 @@ $IPT -t filter -A OUTPUT -o $WLAN_NIC -j ACCEPT
 # $IPT -t filter -A OUTPUT -p udp -m multiport --dports $VPN_PORT,1194,$DHCP_PORT,$DHCPC_PORT,$NTP_PORT -j ACCEPT
 $IPT -t filter -A OUTPUT -p udp -m udp --dport $VPN_PORT -j ACCEPT
 $IPT -t filter -A OUTPUT -p udp -m udp --dport 1194 -j ACCEPT
-$IPT -t filter -A OUTPUT -p udp -m udp --dport 67:68 -j LOGACCEPT
+$IPT -t filter -A OUTPUT -p udp -m multiport --dports 67:68 -j LOGACCEPT
 # $IPT -t filter -A OUTPUT -p udp -m udp --dport $DHCP_PORT -j LOGACCEPT
 # $IPT -t filter -A OUTPUT -p udp -m udp --dport $DHCPC_PORT -j LOGACCEPT
 $IPT -t filter -A OUTPUT -p udp -m udp --dport $NTP_PORT -j LOGACCEPT
-# $IPT -t filter -A OUTPUT -p udp -m udp --dport 137:139 -j LOGACCEPT
+# $IPT -t filter -A OUTPUT -p udp -m multiport --dports 137:139 -j LOGACCEPT
 
 # $IPT -t filter -A OUTPUT -o $WAN_NIC -p tcp -m multiport --dports $VPN_PORT,1194,$NTP_PORT -j LOGACCEPT
 # $IPT -t filter -A OUTPUT -p tcp -m multiport --dports $VPN_PORT,1194,$NTP_PORT -j ACCEPT
@@ -451,7 +452,7 @@ $IPT -t filter -A OUTPUT -d 209.222.18.222,209.222.18.218 -j ACCEPT
 ### Allow the VPN - Of course, you need to allow the VPN itself. There are two parts to this.
 ### You need to allow both the service port and the interface.
 ### OpenVPN uses default port 1194, PIA uses port 1197
-# $IPT -t filter -A OUTPUT -p udp -m multiport --dport 1197,1194 -j ACCEPT
+# $IPT -t filter -A OUTPUT -p udp -m multiport --dports 1197,1194 -j ACCEPT
 $IPT -t filter -A OUTPUT -o $VPN_NIC -j ACCEPT
 
 ### jump to LOGDROP chain for debugging
@@ -468,6 +469,45 @@ $IPT -t filter -A OUTPUT -j LOGDROP
 # $IPT -t filter -A OUTPUT -p tcp -m multiport --dports 53,80,110,443,501,502,1194,1197,1198,8080,9201 -j LOGACCEPT
 
 
+### NUKE IPv6
+
+##### Reset iptables rules
+### Flush all rules: -F
+### Delete all chains: -X
+### Zero all packets: -Z
+$IPT6 -t raw -F
+$IPT6 -t raw -X
+$IPT6 -t mangle -F
+$IPT6 -t mangle -X
+$IPT6 -t nat -F
+$IPT6 -t nat -X
+$IPT6 -t filter -F
+$IPT6 -t filter -X
+$IPT6 -F
+$IPT6 -X
+$IPT6 -Z
+
+### *raw table
+$IPT6 -t raw -P PREROUTING DROP
+$IPT6 -t raw -P OUTPUT DROP
+
+### *mangle table
+$IPT6 -t mangle -P PREROUTING DROP
+$IPT6 -t mangle -P INPUT DROP
+$IPT6 -t mangle -P FORWARD DROP
+$IPT6 -t mangle -P OUTPUT DROP
+$IPT6 -t mangle -P POSTROUTING DROP
+
+### *nat table
+$IPT6 -t nat -P PREROUTING DROP
+$IPT6 -t nat -P INPUT DROP
+$IPT6 -t nat -P OUTPUT DROP
+$IPT6 -t nat -P POSTROUTING DROP
+
+### *filter table
+$IPT6 -t filter -P INPUT DROP
+$IPT6 -t filter -P FORWARD DROP
+$IPT6 -t filter -P OUTPUT DROP
 
 
 echo "iptables rules imported..."
