@@ -426,7 +426,7 @@ $IPT -t filter -A OUTPUT -p udp -m udp --dport 67:68 -j LOGACCEPT
 # $IPT -t filter -A OUTPUT -p udp -m udp --dport $DHCP_PORT -j LOGACCEPT
 # $IPT -t filter -A OUTPUT -p udp -m udp --dport $DHCPC_PORT -j LOGACCEPT
 $IPT -t filter -A OUTPUT -p udp -m udp --dport $NTP_PORT -j LOGACCEPT
-$IPT -t filter -A OUTPUT -p udp -m udp --dports 137:139 -j LOGACCEPT
+# $IPT -t filter -A OUTPUT -p udp -m udp --dport 137:139 -j LOGACCEPT
 
 # $IPT -t filter -A OUTPUT -o $WAN_NIC -p tcp -m multiport --dports $VPN_PORT,1194,$NTP_PORT -j LOGACCEPT
 # $IPT -t filter -A OUTPUT -p tcp -m multiport --dports $VPN_PORT,1194,$NTP_PORT -j ACCEPT
