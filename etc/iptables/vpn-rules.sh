@@ -499,10 +499,10 @@ $IPT6 -t mangle -P OUTPUT DROP
 $IPT6 -t mangle -P POSTROUTING DROP
 
 ### *nat table
-$IPT6 -t nat -P PREROUTING DROP
-$IPT6 -t nat -P INPUT DROP
-$IPT6 -t nat -P OUTPUT DROP
-$IPT6 -t nat -P POSTROUTING DROP
+$IPT6 -t nat -P PREROUTING ACCEPT
+$IPT6 -t nat -P INPUT ACCEPT
+$IPT6 -t nat -P OUTPUT ACCEPT
+$IPT6 -t nat -P POSTROUTING ACCEPT
 
 ### *filter table
 $IPT6 -t filter -P INPUT DROP
