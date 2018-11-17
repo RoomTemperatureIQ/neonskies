@@ -503,7 +503,7 @@ $(command -v netfilter-persistent) save > /dev/null 2>&1
 
 ### let's make a snapshot of the current sysctl settings and load at boot
 echo "saving current sysctl snapshot to /etc/sysctl.d/99-$(hostname).conf"
-sysctl -a > "/etc/sysctl.d/99-$(hostname).conf" > /dev/null 2>&1
+sysctl -a > "/etc/sysctl.d/99-$(hostname).conf"
 
 echo "updating local system layout database..."
 updatedb > /dev/null 2>&1
