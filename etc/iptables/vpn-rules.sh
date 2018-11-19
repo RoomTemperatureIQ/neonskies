@@ -404,7 +404,7 @@ $IPT -t nat -A HTTP_PROXY -p tcp --dport 80 -j LOG --log-prefix "IPTables-NAT (H
 $IPT -t nat -A HTTP_PROXY -p tcp --dport 80 -j REDIRECT --to-port $HTTP_PROXY
 
 ### CATCH-ALL to LOG
-$IPT -t nat -A HTTP_PROXY -j LOG --log-prefix "IPTables-NAT-DNS_PROXY (ERROR): " --log-level 4
+$IPT -t nat -A HTTP_PROXY -j LOG --log-prefix "IPTables-NAT-HTTP_PROXY (ERROR): " --log-level 4
 
 
 ### Jump point to HTTPS PROXY hook
@@ -436,7 +436,7 @@ $IPT -t nat -A HTTPS_PROXY -p tcp --dport 443 -j LOG --log-prefix "IPTables-NAT 
 $IPT -t nat -A HTTPS_PROXY -p tcp --dport 443 -j REDIRECT --to-port $HTTPS_PROXY
 
 ### CATCH-ALL to LOG
-$IPT -t nat -A HTTPS_PROXY -j LOG --log-prefix "IPTables-NAT-DNS_PROXY (ERROR): " --log-level 4
+$IPT -t nat -A HTTPS_PROXY -j LOG --log-prefix "IPTables-NAT-HTTPS_PROXY (ERROR): " --log-level 4
 
 
 ### *nat table - PREROUTING chain
