@@ -244,6 +244,10 @@ $KERNCONF -w net.ipv4.conf.all.log_martians=$LOG_MARTIANS
 ### for what other values do
 # $KERNCONF -w kernel.sysrq=438
 
+### let's make a snapshot of the current sysctl settings and load at boot
+echo "saving current sysctl snapshot to /etc/sysctl.d/99-$(hostname).conf"
+sysctl -a > "/etc/sysctl.d/99-$(hostname).conf"
+
 
 ##### Reset iptables rules
 ### Flush all rules: -F
@@ -260,8 +264,6 @@ $IPT -t filter -X
 $IPT -F
 $IPT -X
 $IPT -Z
-
-
 
 
 ### *raw table
@@ -739,13 +741,8 @@ $IPT6 -t filter -P OUTPUT DROP
 
 echo "iptables rules imported..."
 
-### let's make a snapshot of the current sysctl settings and load at boot
-echo "saving current sysctl snapshot to /etc/sysctl.d/99-$(hostname).conf"
-sysctl -a > "/etc/sysctl.d/99-$(hostname).conf"
-
 
 echo "let's cache some DNS requests..."
-
 ### Ranked by Alex Top 500
 $(command -v dig) google.com > /dev/null 2>&1 &
 $(command -v dig) youtube.com > /dev/null 2>&1 &
