@@ -364,15 +364,15 @@ $IPT -t nat -A DNS_PROXY -p tcp --dport 53 -i $WLAN_NIC ! -d $WLAN_SERVER_IP -j 
 # $IPT -t nat -A DNS_PROXY -p tcp --dport 53 -i $WLAN_NIC ! -d $WLAN_SERVER_IP -j REDIRECT --to-port $DNS_PROXY
 
 ### REDIRECT match all interfaces for port 53, REDIRECT locally
-$IPT -t nat -A DNS_PROXY -p udp --dport 53 -j LOG --log-prefix "IPTables-NAT (DNS BYPASS): " --log-level 4
-$IPT -t nat -A DNS_PROXY -p udp --dport 53 -j REDIRECT --to-port $DNS_PROXY
+# $IPT -t nat -A DNS_PROXY -p udp --dport 53 -j LOG --log-prefix "IPTables-NAT (DNS BYPASS): " --log-level 4
+# $IPT -t nat -A DNS_PROXY -p udp --dport 53 -j REDIRECT --to-port $DNS_PROXY
 
 ### REDIRECT match all interfaces for port 53, REDIRECT locally
-$IPT -t nat -A DNS_PROXY -p tcp --dport 53 -j LOG --log-prefix "IPTables-NAT (DNS BYPASS): " --log-level 4
-$IPT -t nat -A DNS_PROXY -p tcp --dport 53 -j REDIRECT --to-port $DNS_PROXY
+# $IPT -t nat -A DNS_PROXY -p tcp --dport 53 -j LOG --log-prefix "IPTables-NAT (DNS BYPASS): " --log-level 4
+# $IPT -t nat -A DNS_PROXY -p tcp --dport 53 -j REDIRECT --to-port $DNS_PROXY
 
 ### CATCH-ALL to LOG
-$IPT -t nat -A DNS_PROXY -j LOG --log-prefix "IPTables-NAT-DNS_PROXY (ERROR): " --log-level 4
+$IPT -t nat -A DNS_PROXY ! -d 192.168.0.0/16 -j LOG --log-prefix "IPTables-NAT-DNS_PROXY (ERROR): " --log-level 4
 
 
 ### Jump point to HTTP PROXY hook
@@ -396,15 +396,15 @@ $IPT -t nat -A HTTP_PROXY -p tcp --dport 80 -i $WLAN_NIC ! -d $WLAN_SERVER_IP -j
 # $IPT -t nat -A HTTP_PROXY -p tcp --dport 80 -i $WLAN_NIC ! -d $WLAN_SERVER_IP -j REDIRECT --to-port $HTTP_PROXY
 
 ### REDIRECT match all interfaces for port 53, REDIRECT locally
-$IPT -t nat -A HTTP_PROXY -p udp --dport 80 -j LOG --log-prefix "IPTables-NAT (HTTP BYPASS): " --log-level 4
-$IPT -t nat -A HTTP_PROXY -p udp --dport 80 -j REDIRECT --to-port $HTTP_PROXY
+# $IPT -t nat -A HTTP_PROXY -p udp --dport 80 -j LOG --log-prefix "IPTables-NAT (HTTP BYPASS): " --log-level 4
+# $IPT -t nat -A HTTP_PROXY -p udp --dport 80 -j REDIRECT --to-port $HTTP_PROXY
 
 ### REDIRECT match all interfaces for port 53, REDIRECT locally
-$IPT -t nat -A HTTP_PROXY -p tcp --dport 80 -j LOG --log-prefix "IPTables-NAT (HTTP BYPASS): " --log-level 4
-$IPT -t nat -A HTTP_PROXY -p tcp --dport 80 -j REDIRECT --to-port $HTTP_PROXY
+# $IPT -t nat -A HTTP_PROXY -p tcp --dport 80 -j LOG --log-prefix "IPTables-NAT (HTTP BYPASS): " --log-level 4
+# $IPT -t nat -A HTTP_PROXY -p tcp --dport 80 -j REDIRECT --to-port $HTTP_PROXY
 
 ### CATCH-ALL to LOG
-$IPT -t nat -A HTTP_PROXY -j LOG --log-prefix "IPTables-NAT-HTTP_PROXY (ERROR): " --log-level 4
+$IPT -t nat -A HTTP_PROXY ! -d 192.168.0.0/16 -j LOG --log-prefix "IPTables-NAT-HTTP_PROXY (ERROR): " --log-level 4
 
 
 ### Jump point to HTTPS PROXY hook
@@ -428,15 +428,15 @@ $IPT -t nat -A HTTPS_PROXY -p tcp --dport 443 -i $WLAN_NIC ! -d $WLAN_SERVER_IP 
 # $IPT -t nat -A HTTPS_PROXY -p tcp --dport 443 -i $WLAN_NIC ! -d $WLAN_SERVER_IP -j REDIRECT --to-port $HTTPS_PROXY
 
 ### REDIRECT match all interfaces for port 53, REDIRECT locally
-$IPT -t nat -A HTTPS_PROXY -p udp --dport 443 -j LOG --log-prefix "IPTables-NAT (HTTPS BYPASS): " --log-level 4
-$IPT -t nat -A HTTPS_PROXY -p udp --dport 443 -j REDIRECT --to-port $HTTPS_PROXY
+# $IPT -t nat -A HTTPS_PROXY -p udp --dport 443 -j LOG --log-prefix "IPTables-NAT (HTTPS BYPASS): " --log-level 4
+# $IPT -t nat -A HTTPS_PROXY -p udp --dport 443 -j REDIRECT --to-port $HTTPS_PROXY
 
 ### REDIRECT match all interfaces for port 53, REDIRECT locally
-$IPT -t nat -A HTTPS_PROXY -p tcp --dport 443 -j LOG --log-prefix "IPTables-NAT (HTTPS BYPASS): " --log-level 4
-$IPT -t nat -A HTTPS_PROXY -p tcp --dport 443 -j REDIRECT --to-port $HTTPS_PROXY
+# $IPT -t nat -A HTTPS_PROXY -p tcp --dport 443 -j LOG --log-prefix "IPTables-NAT (HTTPS BYPASS): " --log-level 4
+# $IPT -t nat -A HTTPS_PROXY -p tcp --dport 443 -j REDIRECT --to-port $HTTPS_PROXY
 
 ### CATCH-ALL to LOG
-$IPT -t nat -A HTTPS_PROXY -j LOG --log-prefix "IPTables-NAT-HTTPS_PROXY (ERROR): " --log-level 4
+$IPT -t nat -A HTTPS_PROXY ! -d 192.168.0.0/16 -j LOG --log-prefix "IPTables-NAT-HTTPS_PROXY (ERROR): " --log-level 4
 
 
 ### *nat table - PREROUTING chain
