@@ -87,7 +87,7 @@ NTP_PORT="123"
 NETBIOS_PORT="138"
 
 ### HTTPS port
-HTTPS_PORT="443"
+HTTPS_PROXY="443"
 
 ### VPN port
 ### OpenVPN default port: 1194
