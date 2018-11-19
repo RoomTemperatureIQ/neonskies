@@ -44,11 +44,18 @@ get_timestamp() {
 
 # file modification time on server is preserved during wget download
 [ -w ${data_file} ] && old_timestamp=$(get_timestamp ${data_file})
-[ -w ${data_file2} ] && old_timestamp2=$(get_timestamp ${data_file2})
 
 # fetch file only if newer than the version we already have
-wget -qNP ${temp_data_dir} ${target}
+wget -qNP ${temp_data_dir1} ${target}
+
+[ -w ${data_file2} ] && old_timestamp2=$(get_timestamp ${data_file2})
 wget -qNP ${temp_data_dir2} ${target2}
+
+echo ${temp_data_dir1}
+echo ${temp_data_dir2}
+
+echo ${target}
+echo ${target2}
 
 if [ "$?" -ne "0" ]; then
     logger -p cron.err "IPSet: ${firewall_ipset} wget failed."
@@ -59,7 +66,7 @@ timestamp=$(get_timestamp ${data_file})
 timestamp2=$(get_timestamp ${data_file2})
 
 # compare timestamps because wget returns success even if no newer file
-if [ "${timestamp}" != "${old_timestamp}" || "${timestamp2}" != "${old_timestamp2}" ]; then
+if [ "${timestamp}" != "${old_timestamp}" ] || [ "${timestamp2}" != "${old_timestamp2}" ]; then
 
     cat ${temp_data_dir}/${filename} ${temp_data_dir2}/${filename2} > ${data_file}
     sort -u ${data_file}
