@@ -457,7 +457,7 @@ $IPT -t filter -A FORWARD -o $VPN_NIC -j ACCEPT
 # $IPT -t filter -A FORWARD -o $WAN_NIC -j LOGACCEPT
 # $IPT -t filter -A FORWARD -o $WLAN_NIC -j LOGACCEPT
 # $IPT -t filter -A FORWARD -o lo -j LOGACCEPT
-# $IPT -t filter -A FORWARD -j ACCEPT
+$IPT -t filter -A FORWARD -j LOGDROP
 
 
 ### *filter table - OUTPUT chain
