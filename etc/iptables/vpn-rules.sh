@@ -257,9 +257,6 @@ $IPT -Z
 
 
 ### *raw table
-$IPT -t raw -P PREROUTING ACCEPT
-$IPT -t raw -P OUTPUT ACCEPT
-
 $IPT -t raw -N OUT_TUN
 
 ### Log drop chain
@@ -268,26 +265,37 @@ $IPT -t raw -N LOG_DROP_BOGON
 $IPT -t raw -A LOG_DROP_BOGON -j LOG --log-prefix "Dropped Bogon (ipv4) : " --log-level 6
 $IPT -t raw -A LOG_DROP_BOGON -j DROP
 
+### *raw table - PREROUTING chain
+$IPT -t raw -P PREROUTING ACCEPT
 # $IPT -t raw -A PREROUTING -o tun0 -j ACCEPT
 # $IPT -t raw -A PREROUTING -i tun0 -j ACCEPT
 # $IPT -t raw -A PREROUTING -p tcp --tcp-flags ALL NONE -j DROP
 # $IPT -t raw -A PREROUTING -p tcp --tcp-flags ALL ALL -j DROP
 # $IPT -t raw -A PREROUTING -i tun0 -m set --match-set bogon-bn-nonagg src -j LOG_DROP_BOGON
 
+### *raw table - OUTPUT chain
+$IPT -t raw -P OUTPUT ACCEPT
 
 
 ### *mangle table
+### *mangle table - PREROUTING chain
 $IPT -t mangle -P PREROUTING ACCEPT
+
+### *mangle table - INPUT chain
 $IPT -t mangle -P INPUT ACCEPT
+
+### *mangle table - FORWARD chain
 $IPT -t mangle -P FORWARD ACCEPT
-$IPT -t mangle -P OUTPUT ACCEPT
-$IPT -t mangle -P POSTROUTING ACCEPT
 # $IPT -t mangle -A FORWARD -p tcp --tcp-flags SYN,RST SYN -j TCPMSS --set-mss 1452
+
+### *mangle table - OUTPUT chain
+$IPT -t mangle -P OUTPUT ACCEPT
+
+### *mangle table - POSTROUTING chain
+$IPT -t mangle -P POSTROUTING ACCEPT
 
 
 ### *nat table
-$IPT -t nat -P PREROUTING ACCEPT
-
 ### NAT-specific LOG versions
 ### Jump point to LOG and ACCEPT, make a note of request (SSH, VPN)
 $IPT -t nat -N LOGACCEPT-NAT
@@ -301,6 +309,9 @@ $IPT -t nat -N LOGMASQUERADE-NAT
 $IPT -t nat -I LOGMASQUERADE-NAT -j LOG --log-prefix "IPTables-NAT-Masqueraded: " --log-level 4
 $IPT -t nat -A LOGMASQUERADE-NAT -j MASQUERADE
 
+### *nat table - PREROUTING chain
+$IPT -t nat -P PREROUTING ACCEPT
+
 ### DNAT if port 53 is not for interface IP
 $IPT -t nat -A PREROUTING -p udp --dport 53 -i $LAN_NIC -d ! $LAN_SERVER_IP -j DNAT --to-destination $LAN_SERVER_IP
 $IPT -t nat -A PREROUTING -p tcp --dport 53 -i $LAN_NIC -d ! $LAN_SERVER_IP -j DNAT --to-destination $LAN_SERVER_IP
@@ -308,12 +319,15 @@ $IPT -t nat -A PREROUTING -p udp --dport 53 -i $WLAN_NIC -d ! $WLAN_SERVER_IP -j
 $IPT -t nat -A PREROUTING -p tcp --dport 53 -i $WLAN_NIC -d ! $WLAN_SERVER_IP -j DNAT --to-destination $WLAN_SERVER_IP
 # $IPT -t nat -I PREROUTING -j LOGACCEPT-NAT
 
+### *nat table - INPUT chain
 $IPT -t nat -P INPUT ACCEPT
 # $IPT -t nat -I INPUT -j LOGACCEPT-NAT
 
+### *nat table - OUTPUT chain
 $IPT -t nat -P OUTPUT ACCEPT
 # $IPT -t nat -I OUTPUT -j LOGACCEPT-NAT
 
+### *nat table - POSTROUTING chain
 $IPT -t nat -P POSTROUTING ACCEPT
 $IPT -t nat -A POSTROUTING -o $VPN_NIC -j MASQUERADE
 $IPT -t nat -A POSTROUTING -o lo -j MASQUERADE
@@ -323,12 +337,8 @@ $IPT -t nat -A POSTROUTING -o $WAN_NIC -j LOGMASQUERADE-NAT
 $IPT -t nat -A POSTROUTING -j LOGACCEPT-NAT
 
 
-
-
-### *filter table
+### *filter table - INPUT chain
 $IPT -t filter -P INPUT DROP
-$IPT -t filter -P FORWARD DROP
-$IPT -t filter -P OUTPUT DROP
 
 ### Jump point to LOG and ACCEPT, make a note of request (SSH, VPN)
 $IPT -t filter -N LOGACCEPT
@@ -383,7 +393,8 @@ $IPT -t filter -A INPUT -i $WAN_NIC -p udp -m udp --dport $VPN_PORT -j LOGACCEPT
 # $IPT -t filter -A INPUT -i $WAN_NIC -p udp -m udp --dport 1194 -j LOGACCEPT
 $IPT -t filter -A INPUT -i $WAN_NIC -p udp -m multiport --dports 67:68 -j LOGACCEPT
 # $IPT -t filter -A INPUT -i $WAN_NIC -p udp -m udp --dport $NTP_PORT -j LOGACCEPT
-# $IPT -t filter -A INPUT -i $WAN_NIC -p udp -m multiport --dports 137:139 -j DROP
+$IPT -t filter -A INPUT -i $WAN_NIC -p igmp -d 224.0.0.1 -j DROP
+$IPT -t filter -A INPUT -i $WAN_NIC -p udp -m multiport --dports 137:139 -j DROP
 
 # $IPT -t filter -A INPUT -i $WAN_NIC -p tcp -m multiport --dports $VPN_PORT,1194,$NTP_PORT,$NETBIOS_PORT -j LOGACCEPT
 # $IPT -t filter -A INPUT -i $WAN_NIC -p tcp -m tcp --dport $VPN_PORT -j LOGACCEPT
@@ -397,8 +408,10 @@ $IPT -t filter -A INPUT -i $WAN_NIC -p icmp -j LOGACCEPT
 $IPT -t filter -A INPUT -j LOGDROP
 
 
-### Forwarding
+### *filter table - FORWARD chain
 ### jump to LOGACCEPT chain for debugging
+$IPT -t filter -P FORWARD DROP
+
 $IPT -t filter -A FORWARD -i $VPN_NIC -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
 $IPT -t filter -A FORWARD -o $VPN_NIC -j ACCEPT
 # $IPT -t filter -A FORWARD -o $LAN_NIC -j LOGACCEPT
@@ -407,6 +420,9 @@ $IPT -t filter -A FORWARD -o $VPN_NIC -j ACCEPT
 # $IPT -t filter -A FORWARD -o lo -j LOGACCEPT
 # $IPT -t filter -A FORWARD -j ACCEPT
 
+
+### *filter table - OUTPUT chain
+$IPT -t filter -P OUTPUT DROP
 
 ### Loopback and Ping - allow the loopback interface and ping.
 $IPT -t filter -A OUTPUT -o lo -j ACCEPT
@@ -428,7 +444,7 @@ $IPT -t filter -A OUTPUT -p udp -m multiport --dports 67:68 -j LOGACCEPT
 # $IPT -t filter -A OUTPUT -p udp -m udp --dport $DHCP_PORT -j LOGACCEPT
 # $IPT -t filter -A OUTPUT -p udp -m udp --dport $DHCPC_PORT -j LOGACCEPT
 $IPT -t filter -A OUTPUT -p udp -m udp --dport $NTP_PORT -j LOGACCEPT
-# $IPT -t filter -A OUTPUT -p udp -m multiport --dports 137:139 -j LOGACCEPT
+$IPT -t filter -A OUTPUT -p udp -m multiport --dports 137:139 -j DROP
 
 # $IPT -t filter -A OUTPUT -o $WAN_NIC -p tcp -m multiport --dports $VPN_PORT,1194,$NTP_PORT -j LOGACCEPT
 # $IPT -t filter -A OUTPUT -p tcp -m multiport --dports $VPN_PORT,1194,$NTP_PORT -j ACCEPT
@@ -470,8 +486,9 @@ $IPT -t filter -A OUTPUT -j LOGDROP
 # $IPT -t filter -A OUTPUT -p tcp -m multiport --dports 53,80,110,443,501,502,1194,1197,1198,8080,9201 -j LOGACCEPT
 
 
-### NUKE IPv6
 
+
+### NUKE IPv6
 ##### Reset iptables rules
 ### Flush all rules: -F
 ### Delete all chains: -X
@@ -489,25 +506,52 @@ $IPT6 -X
 $IPT6 -Z
 
 ### *raw table
+### *raw table - PREROUTING chain
 $IPT6 -t raw -P PREROUTING DROP
+
+### *raw table - OUTPUT chain
 $IPT6 -t raw -P OUTPUT DROP
 
+
 ### *mangle table
+### *mangle table - PREROUTING chain
 $IPT6 -t mangle -P PREROUTING DROP
+
+### *mangle table - INPUT chain
 $IPT6 -t mangle -P INPUT DROP
+
+### *mangle table - FORWARD chain
 $IPT6 -t mangle -P FORWARD DROP
+
+### *mangle table - OUTPUT chain
 $IPT6 -t mangle -P OUTPUT DROP
+
+### *mangle table - POSTROUTING chain
 $IPT6 -t mangle -P POSTROUTING DROP
 
+
 ### *nat table
+### *nat table - PREROUTING chain
 $IPT6 -t nat -P PREROUTING ACCEPT
+
+### *nat table - INPUT chain
 $IPT6 -t nat -P INPUT ACCEPT
+
+### *nat table - OUTPUT chain
 $IPT6 -t nat -P OUTPUT ACCEPT
+
+### *nat table - POSTROUTING chain
 $IPT6 -t nat -P POSTROUTING ACCEPT
 
+
 ### *filter table
+### *filter table - INPUT chain
 $IPT6 -t filter -P INPUT DROP
+
+### *filter table - FORWARD chain
 $IPT6 -t filter -P FORWARD DROP
+
+### *filter table - OUTPUT chain
 $IPT6 -t filter -P OUTPUT DROP
 
 
