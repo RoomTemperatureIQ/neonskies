@@ -83,11 +83,19 @@ DHCPC_PORT="68"
 ### NTP port - UDP
 NTP_PORT="123"
 
-### NETBIOS port
+### NETBIOS port - (137,138,139)
 NETBIOS_PORT="138"
 
+### HTTPS port
+HTTPS_PORT="443"
+
 ### VPN port
+### OpenVPN default port: 1194
 VPN_PORT="1197"
+
+### HTTP Proxy port
+### Squid default port: 3129
+HTTP_PROXY="8080"
 
 ### set the WAN to autoconnect
 nmcli device set $WAN_NIC autoconnect yes
@@ -301,8 +309,8 @@ $IPT -t mangle -P PREROUTING ACCEPT
 ### OpenVPN: set --passtos in config file for traffic shaping
 ###   \-- Set the TOS field of the tunnel packet to what the payload's TOS is.
 
-iptables -t mangle -A PREROUTING -m multiport -p tcp --dport 80,23,22 -j TOS --set-tos 16
-iptables -t mangle -A PREROUTING -m multiport -p tcp --sport 80,23,22 -j TOS --set-tos 16
+iptables -t mangle -A PREROUTING -m multiport -p tcp --dport $HTTP_PROXY,80,443,23,$SSH_PORT -j TOS --set-tos 16
+iptables -t mangle -A PREROUTING -m multiport -p tcp --sport $HTTP_PROXY,80,443,23,$SSH_PORT -j TOS --set-tos 16
 iptables -t mangle -A PREROUTING -p tcp --dport 25 -j TOS --set-tos 0x04
 iptables -t mangle -A PREROUTING -p tcp --sport 25 -j TOS --set-tos 0x04
 
