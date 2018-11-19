@@ -344,23 +344,21 @@ $IPT -t nat -A LOGMASQUERADE-NAT -j MASQUERADE
 $IPT -t nat -P PREROUTING ACCEPT
 
 ### DNAT if port 53 is not for interface IP
-$IPT -t nat -A PREROUTING -p udp --dport 53 -i $LAN_NIC ! -d $LAN_SERVER_IP -j DNAT --to-destination $LAN_SERVER_IP
 $IPT -t nat -A PREROUTING -p udp --dport 53 -i $LAN_NIC ! -d $LAN_SERVER_IP -j LOG --log-prefix "IPTables-NAT (DNS BYPASS): " --log-level 4
-
+$IPT -t nat -A PREROUTING -p udp --dport 53 -i $LAN_NIC ! -d $LAN_SERVER_IP -j DNAT --to-destination $LAN_SERVER_IP
 # $IPT -t nat -A PREROUTING -p udp --dport 53 -i $LAN_NIC ! -d $LAN_SERVER_IP -j REDIRECT --to-port 53
 
-$IPT -t nat -A PREROUTING -p tcp --dport 53 -i $LAN_NIC ! -d $LAN_SERVER_IP -j DNAT --to-destination $LAN_SERVER_IP
 $IPT -t nat -A PREROUTING -p tcp --dport 53 -i $LAN_NIC ! -d $LAN_SERVER_IP -j LOG --log-prefix "IPTables-NAT (DNS BYPASS): " --log-level 4
+$IPT -t nat -A PREROUTING -p tcp --dport 53 -i $LAN_NIC ! -d $LAN_SERVER_IP -j DNAT --to-destination $LAN_SERVER_IP
 # $IPT -t nat -A PREROUTING -p tcp --dport 53 -i $LAN_NIC ! -d $LAN_SERVER_IP -j REDIRECT --to-port 53
 
-$IPT -t nat -A PREROUTING -p udp --dport 53 -i $WLAN_NIC ! -d $WLAN_SERVER_IP -j DNAT --to-destination $WLAN_SERVER_IP
 $IPT -t nat -A PREROUTING -p udp --dport 53 -i $WLAN_NIC ! -d $WLAN_SERVER_IP -j LOG --log-prefix "IPTables-NAT (DNS BYPASS): " --log-level 4
+$IPT -t nat -A PREROUTING -p udp --dport 53 -i $WLAN_NIC ! -d $WLAN_SERVER_IP -j DNAT --to-destination $WLAN_SERVER_IP
 # $IPT -t nat -A PREROUTING -p udp --dport 53 -i $WLAN_NIC ! -d $WLAN_SERVER_IP -j REDIRECT --to-port 53
 
-$IPT -t nat -A PREROUTING -p tcp --dport 53 -i $WLAN_NIC ! -d $WLAN_SERVER_IP -j DNAT --to-destination $WLAN_SERVER_IP
 $IPT -t nat -A PREROUTING -p tcp --dport 53 -i $WLAN_NIC ! -d $WLAN_SERVER_IP -j LOG --log-prefix "IPTables-NAT (DNS BYPASS): " --log-level 4
+$IPT -t nat -A PREROUTING -p tcp --dport 53 -i $WLAN_NIC ! -d $WLAN_SERVER_IP -j DNAT --to-destination $WLAN_SERVER_IP
 # $IPT -t nat -A PREROUTING -p tcp --dport 53 -i $WLAN_NIC ! -d $WLAN_SERVER_IP -j REDIRECT --to-port 53
-
 
 ### REDIRECT match all interfaces for port 53, REDIRECT locally
 $IPT -t nat -A PREROUTING -p tcp --dport 53 -j LOG --log-prefix "IPTables-NAT (DNS BYPASS): " --log-level 4
