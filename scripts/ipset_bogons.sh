@@ -68,8 +68,8 @@ timestamp2=$(get_timestamp ${data_file2})
 # compare timestamps because wget returns success even if no newer file
 if [ "${timestamp}" != "${old_timestamp}" ] || [ "${timestamp2}" != "${old_timestamp2}" ]; then
 
-    cat ${temp_data_dir}/${filename} ${temp_data_dir2}/${filename2} > ${data_file}
-    sort -u ${data_file}
+    cat ${temp_data_dir}/${filename} ${temp_data_dir2}/${filename2} > ${data_file}_combined
+    sort -u ${data_file}_combined > ${data_file}
     
     temp_ipset="${firewall_ipset}_temp"
     ipset create ${temp_ipset} ${ipset_params}
