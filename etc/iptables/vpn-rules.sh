@@ -496,7 +496,7 @@ $IPT -t filter -P FORWARD DROP
 $IPT -t filter -A FORWARD -i $VPN_NIC -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
 $IPT -t filter -A FORWARD -o $VPN_NIC -j ACCEPT
 # $IPT -t filter -A FORWARD -o $LAN_NIC -j LOGACCEPT
-# $IPT -t filter -A FORWARD -o $WAN_NIC -j LOGACCEPT
+$IPT -t filter -A FORWARD -o $WAN_NIC -j DROP
 # $IPT -t filter -A FORWARD -o $WLAN_NIC -j LOGACCEPT
 # $IPT -t filter -A FORWARD -o lo -j LOGACCEPT
 $IPT -t filter -A FORWARD -j LOGDROP
