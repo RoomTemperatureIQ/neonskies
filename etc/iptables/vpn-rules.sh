@@ -739,42 +739,77 @@ $IPT6 -t filter -P OUTPUT DROP
 
 echo "iptables rules imported..."
 
+### let's make a snapshot of the current sysctl settings and load at boot
+echo "saving current sysctl snapshot to /etc/sysctl.d/99-$(hostname).conf"
+sysctl -a > "/etc/sysctl.d/99-$(hostname).conf"
+
+
 echo "let's cache some DNS requests..."
-$(command -v dig) facebook.com > /dev/null 2>&1 &
-$(command -v dig) amazon.com > /dev/null 2>&1 &
-$(command -v dig) netflix.com > /dev/null 2>&1 &
+
+### Ranked by Alex Top 500
 $(command -v dig) google.com > /dev/null 2>&1 &
-$(command -v dig) gmail.com > /dev/null 2>&1 &
-$(command -v dig) github.com > /dev/null 2>&1 &
-$(command -v dig) reddit.com > /dev/null 2>&1 &
-$(command -v dig) twitter.com > /dev/null 2>&1 &
-$(command -v dig) instagram.com > /dev/null 2>&1 &
 $(command -v dig) youtube.com > /dev/null 2>&1 &
+$(command -v dig) facebook.com > /dev/null 2>&1 &
+$(command -v dig) baidu.com > /dev/null 2>&1 &
+$(command -v dig) wikipedia.org > /dev/null 2>&1 &
+$(command -v dig) yahoo.com > /dev/null 2>&1 &
+$(command -v dig) amazon.com > /dev/null 2>&1 &
+$(command -v dig) twitter.com > /dev/null 2>&1 &
+$(command -v dig) live.com > /dev/null 2>&1 &
+$(command -v dig) instagram.com > /dev/null 2>&1 &
+$(command -v dig) reddit.com > /dev/null 2>&1 &
+$(command -v dig) blogspot.com > /dev/null 2>&1 &
+$(command -v dig) yandex.ru > /dev/null 2>&1 &
+$(command -v dig) netflix.com > /dev/null 2>&1 &
+$(command -v dig) linkedin.com > /dev/null 2>&1 &
+$(command -v dig) twitch.tv > /dev/null 2>&1 &
+$(command -v dig) aliexpress.com > /dev/null 2>&1 &
+$(command -v dig) mail.ru > /dev/null 2>&1 &
+$(command -v dig) office.com > /dev/null 2>&1 &
+$(command -v dig) ebay.com > /dev/null 2>&1 &
+$(command -v dig) microsoft.com > /dev/null 2>&1 &
+$(command -v dig) bing.com > /dev/null 2>&1 &
+$(command -v dig) imgur.com > /dev/null 2>&1 &
+$(command -v dig) pinterest.com > /dev/null 2>&1 &
+$(command -v dig) tumblr.com > /dev/null 2>&1 &
+$(command -v dig) github.com > /dev/null 2>&1 &
+$(command -v dig) walmart.com > /dev/null 2>&1 &
+$(command -v dig) stackoverflow.com > /dev/null 2>&1 &
+$(command -v dig) dropbox.com > /dev/null 2>&1 &
+$(command -v dig) yelp.com > /dev/null 2>&1 &
+$(command -v dig) hulu.com > /dev/null 2>&1 &
+$(command -v dig) quora.com > /dev/null 2>&1 &
+$(command -v dig) weather.com > /dev/null 2>&1 &
+$(command -v dig) adobe.com > /dev/null 2>&1 &
+$(command -v dig) archive.org > /dev/null 2>&1 &
+$(command -v dig) apple.com > /dev/null 2>&1 &
+$(command -v dig) gmail.com > /dev/null 2>&1 &
 $(command -v dig) soundcloud.com > /dev/null 2>&1 &
 $(command -v dig) pandora.com > /dev/null 2>&1 &
 $(command -v dig) bandcamp.com > /dev/null 2>&1 &
 $(command -v dig) di.fm > /dev/null 2>&1 &
-
-echo "testing the network, priming packet counts (this may take some time)..."
-$(command -v speedtest-cli)
+$(command -v dig) speedtest.net > /dev/null 2>&1 &
 
 ### small pause to let DNS queries finish in background
 sleep 2
 
+echo "testing the network, priming packet counts (this may take some time)..."
+$(command -v speedtest-cli)
+
 echo "let's optimize the new iptables rules..."
+$(command -v iptables-optimizer) -c > /dev/null 2>&1
+$(command -v ip6tables-optimizer) -c > /dev/null 2>&1
+
+echo "second pass for speedtest..."
+$(command -v speedtest-cli)
+
+echo "second pass for iptables-optimizer..."
 $(command -v iptables-optimizer) -c > /dev/null 2>&1
 $(command -v ip6tables-optimizer) -c > /dev/null 2>&1
 
 echo "let's save the new rules..."
 $(command -v netfilter-persistent) save > /dev/null 2>&1
 
-### let's make a snapshot of the current sysctl settings and load at boot
-echo "saving current sysctl snapshot to /etc/sysctl.d/99-$(hostname).conf"
-sysctl -a > "/etc/sysctl.d/99-$(hostname).conf"
-
 echo "updating local system layout database..."
 updatedb > /dev/null 2>&1
-
-echo "second pass for speedtest..."
-$(command -v speedtest-cli)
 
