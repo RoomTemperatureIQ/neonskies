@@ -52,19 +52,19 @@ WLAN_NIC="wlan0"
 WAN_RANGE="192.168.1.0/24"
 
 ### server WAN_NIC static IP
-WAN_SERVER_IP="192.168.1.254"
+WAN_SERVER_IP="192.168.1.254/32"
 
 ### your LAN IP range
 LAN_RANGE="192.168.232.0/24"
 
 ### server LAN_NIC static IP
-LAN_SERVER_IP="192.168.232.1"
+LAN_SERVER_IP="192.168.232.1/32"
 
 ### your WLAN IP range
 WLAN_RANGE="192.168.2.0/24"
 
 ### server WLAN_NIC static IP
-WLAN_SERVER_IP="192.168.2.1"
+WLAN_SERVER_IP="192.168.2.1/32"
 
 ### SSH port
 SSH_PORT="22"
@@ -313,10 +313,10 @@ $IPT -t nat -A LOGMASQUERADE-NAT -j MASQUERADE
 $IPT -t nat -P PREROUTING ACCEPT
 
 ### DNAT if port 53 is not for interface IP
-$IPT -t nat -A PREROUTING -p udp --dport 53 -i $LAN_NIC -d ! $LAN_SERVER_IP -j DNAT --to-destination $LAN_SERVER_IP
-$IPT -t nat -A PREROUTING -p tcp --dport 53 -i $LAN_NIC -d ! $LAN_SERVER_IP -j DNAT --to-destination $LAN_SERVER_IP
-$IPT -t nat -A PREROUTING -p udp --dport 53 -i $WLAN_NIC -d ! $WLAN_SERVER_IP -j DNAT --to-destination $WLAN_SERVER_IP
-$IPT -t nat -A PREROUTING -p tcp --dport 53 -i $WLAN_NIC -d ! $WLAN_SERVER_IP -j DNAT --to-destination $WLAN_SERVER_IP
+$IPT -t nat -A PREROUTING -p udp --dport 53 -i $LAN_NIC ! -d $LAN_SERVER_IP -j DNAT --to-destination $LAN_SERVER_IP
+$IPT -t nat -A PREROUTING -p tcp --dport 53 -i $LAN_NIC ! -d $LAN_SERVER_IP -j DNAT --to-destination $LAN_SERVER_IP
+$IPT -t nat -A PREROUTING -p udp --dport 53 -i $WLAN_NIC ! -d $WLAN_SERVER_IP -j DNAT --to-destination $WLAN_SERVER_IP
+$IPT -t nat -A PREROUTING -p tcp --dport 53 -i $WLAN_NIC ! -d $WLAN_SERVER_IP -j DNAT --to-destination $WLAN_SERVER_IP
 # $IPT -t nat -I PREROUTING -j LOGACCEPT-NAT
 
 ### *nat table - INPUT chain
