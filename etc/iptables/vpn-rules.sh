@@ -275,11 +275,9 @@ $IPT -t raw -A LOG_DROP_BOGON -j DROP
 
 ### *raw table - PREROUTING chain
 $IPT -t raw -P PREROUTING ACCEPT
-# $IPT -t raw -A PREROUTING -o tun0 -j ACCEPT
+$IPT -t raw -A PREROUTING -i tun0 -m set --match-set bogon-bn-nonagg src -j LOG_DROP_BOGON
 # $IPT -t raw -A PREROUTING -i tun0 -j ACCEPT
-# $IPT -t raw -A PREROUTING -p tcp --tcp-flags ALL NONE -j DROP
-# $IPT -t raw -A PREROUTING -p tcp --tcp-flags ALL ALL -j DROP
-# $IPT -t raw -A PREROUTING -i tun0 -m set --match-set bogon-bn-nonagg src -j LOG_DROP_BOGON
+# $IPT -t raw -A PREROUTING -o tun0 -j ACCEPT
 
 ### *raw table - OUTPUT chain
 $IPT -t raw -P OUTPUT ACCEPT
@@ -309,10 +307,10 @@ $IPT -t mangle -P PREROUTING ACCEPT
 ### OpenVPN: set --passtos in config file for traffic shaping
 ###   \-- Set the TOS field of the tunnel packet to what the payload's TOS is.
 
-iptables -t mangle -A PREROUTING -m multiport -p tcp --dport $HTTP_PROXY,80,443,23,$SSH_PORT -j TOS --set-tos 16
 iptables -t mangle -A PREROUTING -m multiport -p tcp --sport $HTTP_PROXY,80,443,23,$SSH_PORT -j TOS --set-tos 16
-iptables -t mangle -A PREROUTING -p tcp --dport 25 -j TOS --set-tos 0x04
-iptables -t mangle -A PREROUTING -p tcp --sport 25 -j TOS --set-tos 0x04
+iptables -t mangle -A PREROUTING -m multiport -p tcp --dport $HTTP_PROXY,80,443,23,$SSH_PORT -j TOS --set-tos 16
+# iptables -t mangle -A PREROUTING -p tcp --sport 25 -j TOS --set-tos 0x04
+# iptables -t mangle -A PREROUTING -p tcp --dport 25 -j TOS --set-tos 0x04
 
 ### *mangle table - INPUT chain
 $IPT -t mangle -P INPUT ACCEPT
