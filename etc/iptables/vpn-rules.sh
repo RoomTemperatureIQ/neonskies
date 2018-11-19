@@ -463,6 +463,8 @@ $IPT -t filter -A FORWARD -j LOGDROP
 ### *filter table - OUTPUT chain
 $IPT -t filter -P OUTPUT DROP
 
+$IPT -t filter -A OUTPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+
 ### Loopback and Ping - allow the loopback interface and ping.
 $IPT -t filter -A OUTPUT -o lo -j ACCEPT
 ### the `$IPT -t filter -A OUTPUT -o $VPN_NIC -j LOGACCEPT` covers this case, uncomment if not using that rule (explicit port ACCEPT)
