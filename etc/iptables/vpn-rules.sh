@@ -361,24 +361,44 @@ $IPT -t filter -I LOGREJECT -j LOG --log-prefix "IPTables-FILTER-Rejected: " --l
 ### not all connections use TCP
 $IPT -t filter -A LOGREJECT -j REJECT
 
+
+### *filter table - bad_tcp_packets chain
+$IPT -t filter -N bad_tcp_packets
+
+#new not syn
+$IPT -t filter -A bad_tcp_packets -p tcp ! --syn -m state --state NEW -j DROP
+
+$IPT -t filter -A bad_tcp_packets -p tcp --tcp-flags ALL FIN,URG,PSH -j DROP
+$IPT -t filter -A bad_tcp_packets -p tcp --tcp-flags ALL SYN,RST,ACK,FIN,URG -j DROP
+$IPT -t filter -A bad_tcp_packets -p tcp --tcp-flags SYN,RST SYN,RST -j DROP
+$IPT -t filter -A bad_tcp_packets -p tcp --tcp-flags SYN,FIN SYN,FIN -j DROP
+
+### NULL SCAN
+$IPT -t filter -A bad_tcp_packets -p tcp --tcp-flags ALL NONE -j LOG --log-prefix "DROPPED NULL PACKET:" --log-tcp-options
+$IPT -t filter -A bad_tcp_packets -p tcp --tcp-flags ALL NONE -j DROP
+
+### XMAS SCAN
+$IPT -t filter -A bad_tcp_packets -p tcp --tcp-flags ALL ALL -j LOG --log-prefix "DROPPED XMAS PACKET:" --log-tcp-options
+$IPT -t filter -A bad_tcp_packets -p tcp --tcp-flags ALL ALL -j DROP
+$IPT -t filter -A bad_tcp_packets -p tcp --tcp-flags ALL FIN,PSH,URG -j LOG --log-prefix "DROPPED XMAS PACKET:" --log-tcp-options
+$IPT -t filter -A bad_tcp_packets -p tcp --tcp-flags ALL FIN,PSH,URG -j DROP
+
+### MAIMON SCAN
+$IPT -t filter -A bad_tcp_packets -p tcp --tcp-flags ALL FIN,ACK -j LOG --log-prefix "DROPPED MAIMON PACKET:" --log-tcp-options
+$IPT -t filter -A bad_tcp_packets -p tcp --tcp-flags ALL FIN,ACK -j DROP
+
+### FIN SCAN
+$IPT -t filter -A bad_tcp_packets -p tcp --tcp-flags ALL FIN -j LOG --log-prefix "DROPPED FIN PACKET:" --log-tcp-options
+$IPT -t filter -A bad_tcp_packets -p tcp --tcp-flags ALL FIN -j DROP
+
+
+
+### *filter table - INPUT chain
 ### Input - It's most secure to only allow inbound traffic from established or related connections. Set that up next.
 $IPT -t filter -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
 
 ### Loopback - allow the loopback interface
 $IPT -t filter -A INPUT -i lo -j ACCEPT
-
-### XMAS SCAN
-# $IPT -t filter -A INPUT -p tcp --tcp-flags ALL ALL -j LOG --log-prefix "DROPPED XMAS PACKET:" --log-tcp-options
-# $IPT -t filter -A INPUT -p tcp --tcp-flags ALL FIN,PSH,URG -j LOG --log-prefix "DROPPED XMAS PACKET:" --log-tcp-options
-
-### NULL SCAN
-# $IPT -t filter -A INPUT -p tcp --tcp-flags ALL NONE -j LOG --log-prefix "DROPPED NULL PACKET:" --log-tcp-options
-
-### MAIMON SCAN
-# $IPT -t filter -A INPUT -p tcp --tcp-flags ALL FIN,ACK -j LOG --log-prefix "DROPPED MAIMON PACKET:" --log-tcp-options
-
-### FIN SCAN
-# $IPT -t filter -A INPUT -p tcp --tcp-flags ALL FIN -j LOG --log-prefix "DROPPED FIN PACKET:" --log-tcp-options
 
 ### LAN - allow the LAN interface
 $IPT -t filter -A INPUT -i $LAN_NIC -j ACCEPT
@@ -388,21 +408,25 @@ $IPT -t filter -A INPUT -i $WLAN_NIC -j ACCEPT
 
 ###### Let's see which ports get used the most for MULTIPORT order...
 ### WAN - allow the WAN_NIC to be issued a DHCP lease
-# $IPT -t filter -A INPUT -i $WAN_NIC -p udp -m multiport --dports $VPN_PORT,1194,$DHCP_PORT,$DHCPC_PORT,$NTP_PORT -j LOGACCEPT
-$IPT -t filter -A INPUT -i $WAN_NIC -p udp -m udp --dport $VPN_PORT -j LOGACCEPT
+$IPT -t filter -A INPUT -i $WAN_NIC -p udp -m multiport --dports $VPN_PORT,1194,$DHCP_PORT,$DHCPC_PORT,$NTP_PORT -j LOGACCEPT
+# $IPT -t filter -A INPUT -i $WAN_NIC -p udp -m udp --dport $VPN_PORT -j LOGACCEPT
 # $IPT -t filter -A INPUT -i $WAN_NIC -p udp -m udp --dport 1194 -j LOGACCEPT
-$IPT -t filter -A INPUT -i $WAN_NIC -p udp -m multiport --dports 67:68 -j LOGACCEPT
+# $IPT -t filter -A INPUT -i $WAN_NIC -p udp -m multiport --dports 67:68 -j LOGACCEPT
 # $IPT -t filter -A INPUT -i $WAN_NIC -p udp -m udp --dport $NTP_PORT -j LOGACCEPT
-$IPT -t filter -A INPUT -i $WAN_NIC -p igmp -d 224.0.0.1 -j DROP
-$IPT -t filter -A INPUT -i $WAN_NIC -p udp -m multiport --dports 137:139 -j DROP
 
-# $IPT -t filter -A INPUT -i $WAN_NIC -p tcp -m multiport --dports $VPN_PORT,1194,$NTP_PORT,$NETBIOS_PORT -j LOGACCEPT
+$IPT -t filter -A INPUT -i $WAN_NIC -p tcp -m multiport --dports $VPN_PORT,1194,$NTP_PORT -j LOGACCEPT
 # $IPT -t filter -A INPUT -i $WAN_NIC -p tcp -m tcp --dport $VPN_PORT -j LOGACCEPT
 # $IPT -t filter -A INPUT -i $WAN_NIC -p tcp -m tcp --dport 1194 -j LOGACCEPT
 # $IPT -t filter -A INPUT -i $WAN_NIC -p tcp -m tcp --dport $NTP_PORT -j LOGACCEPT
 
+$IPT -t filter -A INPUT -p tcp -j bad_tcp_packets
+
 ### WAN - allow the WAN_NIC to accept ICMP for ping requests
 $IPT -t filter -A INPUT -i $WAN_NIC -p icmp -j LOGACCEPT
+
+### Block NETBIOS and IGMP snoop
+$IPT -t filter -A INPUT -i $WAN_NIC -p udp -m multiport --dports 137:139 -j DROP
+$IPT -t filter -A INPUT -i $WAN_NIC -p igmp -d 224.0.0.1 -j DROP
 
 ### jump to LOGDROP chain for debugging
 $IPT -t filter -A INPUT -j LOGDROP
@@ -437,23 +461,19 @@ $IPT -t filter -A OUTPUT -o $WLAN_NIC -j ACCEPT
 
 ### WAN - allow the WAN_NIC to be issued a DHCP lease
 # $IPT -t filter -A OUTPUT -o $WAN_NIC -p udp -m multiport --dports $VPN_PORT,1194,$DHCP_PORT,$DHCPC_PORT,$NTP_PORT -j LOGACCEPT
-# $IPT -t filter -A OUTPUT -p udp -m multiport --dports $VPN_PORT,1194,$DHCP_PORT,$DHCPC_PORT,$NTP_PORT -j ACCEPT
-$IPT -t filter -A OUTPUT -p udp -m udp --dport $VPN_PORT -j ACCEPT
-$IPT -t filter -A OUTPUT -p udp -m udp --dport 1194 -j ACCEPT
-$IPT -t filter -A OUTPUT -p udp -m multiport --dports 67:68 -j LOGACCEPT
+$IPT -t filter -A OUTPUT -p udp -m multiport --dports $VPN_PORT,1194,$DHCP_PORT,$DHCPC_PORT,$NTP_PORT -j ACCEPT
+# $IPT -t filter -A OUTPUT -p udp -m udp --dport $VPN_PORT -j ACCEPT
+# $IPT -t filter -A OUTPUT -p udp -m udp --dport 1194 -j ACCEPT
+# $IPT -t filter -A OUTPUT -p udp -m multiport --dports 67:68 -j LOGACCEPT
 # $IPT -t filter -A OUTPUT -p udp -m udp --dport $DHCP_PORT -j LOGACCEPT
 # $IPT -t filter -A OUTPUT -p udp -m udp --dport $DHCPC_PORT -j LOGACCEPT
-$IPT -t filter -A OUTPUT -p udp -m udp --dport $NTP_PORT -j LOGACCEPT
-$IPT -t filter -A OUTPUT -p udp -m multiport --dports 137:139 -j DROP
+# $IPT -t filter -A OUTPUT -p udp -m udp --dport $NTP_PORT -j LOGACCEPT
 
 # $IPT -t filter -A OUTPUT -o $WAN_NIC -p tcp -m multiport --dports $VPN_PORT,1194,$NTP_PORT -j LOGACCEPT
-# $IPT -t filter -A OUTPUT -p tcp -m multiport --dports $VPN_PORT,1194,$NTP_PORT -j ACCEPT
-$IPT -t filter -A OUTPUT -p tcp -m tcp --dport $VPN_PORT -j ACCEPT
-$IPT -t filter -A OUTPUT -p tcp -m tcp --dport 1194 -j ACCEPT
-$IPT -t filter -A OUTPUT -p tcp -m tcp --dport $NTP_PORT -j LOGACCEPT
-
-### WAN - allow the WAN_NIC to accept ICMP for ping requests
-$IPT -t filter -A OUTPUT -o $WAN_NIC -p icmp -j LOGACCEPT
+$IPT -t filter -A OUTPUT -p tcp -m multiport --dports $VPN_PORT,1194,$NTP_PORT -j ACCEPT
+# $IPT -t filter -A OUTPUT -p tcp -m tcp --dport $VPN_PORT -j ACCEPT
+# $IPT -t filter -A OUTPUT -p tcp -m tcp --dport 1194 -j ACCEPT
+# $IPT -t filter -A OUTPUT -p tcp -m tcp --dport $NTP_PORT -j ACCEPT
 
 ### DNS - For this next part, you're going to need to know the IP address of your VPN's DNS server(s).
 ###       If your VPN has access or your resolv.conf, you'll probably find them i there.
@@ -471,6 +491,11 @@ $IPT -t filter -A OUTPUT -d 209.222.18.222,209.222.18.218 -j ACCEPT
 ### OpenVPN uses default port 1194, PIA uses port 1197
 # $IPT -t filter -A OUTPUT -p udp -m multiport --dports 1197,1194 -j ACCEPT
 $IPT -t filter -A OUTPUT -o $VPN_NIC -j ACCEPT
+
+### WAN - allow the WAN_NIC to accept ICMP for ping requests
+$IPT -t filter -A OUTPUT -o $WAN_NIC -p icmp -j LOGACCEPT
+
+$IPT -t filter -A OUTPUT -p udp -m multiport --dports 137:139 -j DROP
 
 ### jump to LOGDROP chain for debugging
 $IPT -t filter -A OUTPUT -j LOGDROP
