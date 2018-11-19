@@ -275,7 +275,7 @@ $IPT -t raw -A LOG_DROP_BOGON -j DROP
 
 ### *raw table - PREROUTING chain
 $IPT -t raw -P PREROUTING ACCEPT
-$IPT -t raw -A PREROUTING -i tun0 -m set --match-set fullbogons-ipv4 src -j LOG_DROP_BOGON
+# $IPT -t raw -A PREROUTING -i tun0 -m set --match-set fullbogons-ipv4 src -j LOG_DROP_BOGON
 # $IPT -t raw -A PREROUTING -i tun0 -j ACCEPT
 # $IPT -t raw -A PREROUTING -o tun0 -j ACCEPT
 
