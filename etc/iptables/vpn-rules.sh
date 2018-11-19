@@ -281,6 +281,31 @@ $IPT -t raw -P OUTPUT ACCEPT
 ### *mangle table - PREROUTING chain
 $IPT -t mangle -P PREROUTING ACCEPT
 
+###
+### make sure to modprobe 
+###
+### http://www.informit.com/articles/article.aspx?p=19626
+### TOS field values:
+### Minimum delay (16 or 0x10)
+### Maximum throughput (8 or 0x08)
+### Maximum reliability (4 or 0x04)
+### Minimum cost (2 or 0x02)
+### Normal service (0 or 0x00)
+###
+### telnet, ssh, http - Minimum delay
+### ftp, ftp-data, scp - Maximum throughput
+### smtp - Maximum reliability
+### pop3, imap - Minimum cost
+###
+### https://community.openvpn.net/openvpn/wiki/Openvpn24ManPage
+### OpenVPN: set --passtos in config file for traffic shaping
+###   \-- Set the TOS field of the tunnel packet to what the payload's TOS is.
+
+iptables -t mangle -A PREROUTING -m multiport -p tcp --dport 80,23,22 -j TOS --set-tos 16
+iptables -t mangle -A PREROUTING -m multiport -p tcp --sport 80,23,22 -j TOS --set-tos 16
+iptables -t mangle -A PREROUTING -p tcp --dport 25 -j TOS --set-tos 0x04
+iptables -t mangle -A PREROUTING -p tcp --sport 25 -j TOS --set-tos 0x04
+
 ### *mangle table - INPUT chain
 $IPT -t mangle -P INPUT ACCEPT
 
@@ -313,10 +338,21 @@ $IPT -t nat -A LOGMASQUERADE-NAT -j MASQUERADE
 $IPT -t nat -P PREROUTING ACCEPT
 
 ### DNAT if port 53 is not for interface IP
-$IPT -t nat -A PREROUTING -p udp --dport 53 -i $LAN_NIC ! -d $LAN_SERVER_IP -j DNAT --to-destination $LAN_SERVER_IP
-$IPT -t nat -A PREROUTING -p tcp --dport 53 -i $LAN_NIC ! -d $LAN_SERVER_IP -j DNAT --to-destination $LAN_SERVER_IP
-$IPT -t nat -A PREROUTING -p udp --dport 53 -i $WLAN_NIC ! -d $WLAN_SERVER_IP -j DNAT --to-destination $WLAN_SERVER_IP
-$IPT -t nat -A PREROUTING -p tcp --dport 53 -i $WLAN_NIC ! -d $WLAN_SERVER_IP -j DNAT --to-destination $WLAN_SERVER_IP
+# $IPT -t nat -A PREROUTING -p udp --dport 53 -i $LAN_NIC ! -d $LAN_SERVER_IP -j DNAT --to-destination $LAN_SERVER_IP
+# $IPT -t nat -A PREROUTING -p udp --dport 53 -i $LAN_NIC ! -d $LAN_SERVER_IP -j REDIRECT --to-port 53
+
+# $IPT -t nat -A PREROUTING -p tcp --dport 53 -i $LAN_NIC ! -d $LAN_SERVER_IP -j DNAT --to-destination $LAN_SERVER_IP
+# $IPT -t nat -A PREROUTING -p tcp --dport 53 -i $LAN_NIC ! -d $LAN_SERVER_IP -j REDIRECT --to-port 53
+
+# $IPT -t nat -A PREROUTING -p udp --dport 53 -i $WLAN_NIC ! -d $WLAN_SERVER_IP -j DNAT --to-destination $WLAN_SERVER_IP
+# $IPT -t nat -A PREROUTING -p udp --dport 53 -i $WLAN_NIC ! -d $WLAN_SERVER_IP -j REDIRECT --to-port 53
+
+# $IPT -t nat -A PREROUTING -p tcp --dport 53 -i $WLAN_NIC ! -d $WLAN_SERVER_IP -j DNAT --to-destination $WLAN_SERVER_IP
+# $IPT -t nat -A PREROUTING -p tcp --dport 53 -i $WLAN_NIC ! -d $WLAN_SERVER_IP -j REDIRECT --to-port 53
+
+### REDIRECT match all interfaces for port 53, REDIRECT locally
+$IPT -t nat -A PREROUTING -p tcp --dport 53 -j REDIRECT --to-port 53
+
 # $IPT -t nat -I PREROUTING -j LOGACCEPT-NAT
 
 ### *nat table - INPUT chain
@@ -334,7 +370,7 @@ $IPT -t nat -A POSTROUTING -o lo -j MASQUERADE
 $IPT -t nat -A POSTROUTING -o $WAN_NIC -j LOGMASQUERADE-NAT
 # $IPT -t nat -A POSTROUTING -o $LAN_NIC -j LOGMASQUERADE-NAT
 # $IPT -t nat -A POSTROUTING -o $WLAN_NIC -j LOGMASQUERADE-NAT
-$IPT -t nat -A POSTROUTING -j LOGACCEPT-NAT
+$IPT -t nat -A POSTROUTING -j LOGMASQUERADE-NAT
 
 
 ### *filter table - INPUT chain
