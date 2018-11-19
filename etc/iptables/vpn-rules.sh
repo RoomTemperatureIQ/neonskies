@@ -70,7 +70,7 @@ WLAN_SERVER_IP="192.168.2.1"
 SSH_PORT="22"
 
 ### DNS port
-DNS_PORT="53"
+DNS_PROXY="53"
 
 ### DHCP reserves UDP/TCP, but only listens on UDP
 ### DHCP port
@@ -327,6 +327,7 @@ $IPT -t mangle -P POSTROUTING ACCEPT
 
 
 ### *nat table
+
 ### NAT-specific LOG versions
 ### Jump point to LOG and ACCEPT, make a note of request (SSH, VPN)
 $IPT -t nat -N LOGACCEPT-NAT
@@ -334,35 +335,102 @@ $IPT -t nat -N LOGACCEPT-NAT
 $IPT -t nat -I LOGACCEPT-NAT -j LOG --log-prefix "IPTables-NAT-Accepted: " --log-level 4
 $IPT -t nat -A LOGACCEPT-NAT -j ACCEPT
 
+
 ### Jump point to LOG and MASQUERADE
 $IPT -t nat -N LOGMASQUERADE-NAT
 # $IPT -t nat -I LOGMASQUERADE-NAT -m limit --limit 2/min -j LOG --log-prefix "IPTables-NAT-Masqueraded: " --log-level 4
 $IPT -t nat -I LOGMASQUERADE-NAT -j LOG --log-prefix "IPTables-NAT-Masqueraded: " --log-level 4
 $IPT -t nat -A LOGMASQUERADE-NAT -j MASQUERADE
 
+
+### Jump point to DNS PROXY hook
+$IPT -t nat -N DNS_PROXY
+
+### DNAT if port 53 is not for interface IP
+$IPT -t nat -A DNS_PROXY -p udp --dport 53 -i $LAN_NIC ! -d $LAN_SERVER_IP -j LOG --log-prefix "IPTables-NAT (DNS BYPASS): " --log-level 4
+$IPT -t nat -A DNS_PROXY -p udp --dport 53 -i $LAN_NIC ! -d $LAN_SERVER_IP -j DNAT --to-destination $LAN_SERVER_IP:$DNS_PROXY
+# $IPT -t nat -A DNS_PROXY -p udp --dport 53 -i $LAN_NIC ! -d $LAN_SERVER_IP -j REDIRECT --to-port $DNS_PROXY
+
+$IPT -t nat -A DNS_PROXY -p tcp --dport 53 -i $LAN_NIC ! -d $LAN_SERVER_IP -j LOG --log-prefix "IPTables-NAT (DNS BYPASS): " --log-level 4
+$IPT -t nat -A DNS_PROXY -p tcp --dport 53 -i $LAN_NIC ! -d $LAN_SERVER_IP -j DNAT --to-destination $LAN_SERVER_IP:$DNS_PROXY
+# $IPT -t nat -A DNS_PROXY -p tcp --dport 53 -i $LAN_NIC ! -d $LAN_SERVER_IP -j REDIRECT --to-port $DNS_PROXY
+
+$IPT -t nat -A DNS_PROXY -p udp --dport 53 -i $WLAN_NIC ! -d $WLAN_SERVER_IP -j LOG --log-prefix "IPTables-NAT (DNS BYPASS): " --log-level 4
+$IPT -t nat -A DNS_PROXY -p udp --dport 53 -i $WLAN_NIC ! -d $WLAN_SERVER_IP -j DNAT --to-destination $WLAN_SERVER_IP:$DNS_PROXY
+# $IPT -t nat -A DNS_PROXY -p udp --dport 53 -i $WLAN_NIC ! -d $WLAN_SERVER_IP -j REDIRECT --to-port $DNS_PROXY
+
+$IPT -t nat -A DNS_PROXY -p tcp --dport 53 -i $WLAN_NIC ! -d $WLAN_SERVER_IP -j LOG --log-prefix "IPTables-NAT (DNS BYPASS): " --log-level 4
+$IPT -t nat -A DNS_PROXY -p tcp --dport 53 -i $WLAN_NIC ! -d $WLAN_SERVER_IP -j DNAT --to-destination $WLAN_SERVER_IP:$DNS_PROXY
+# $IPT -t nat -A DNS_PROXY -p tcp --dport 53 -i $WLAN_NIC ! -d $WLAN_SERVER_IP -j REDIRECT --to-port $DNS_PROXY
+
+### REDIRECT match all interfaces for port 53, REDIRECT locally
+$IPT -t nat -A DNS_PROXY -p tcp --dport 53 -j LOG --log-prefix "IPTables-NAT (DNS BYPASS): " --log-level 4
+$IPT -t nat -A DNS_PROXY -p tcp --dport 53 -j REDIRECT --to-port $DNS_PROXY
+
+
+### Jump point to HTTP PROXY hook
+$IPT -t nat -N HTTP_PROXY
+
+### DNAT if port 80 is not for interface IP
+$IPT -t nat -A HTTP_PROXY -p udp --dport 80 -i $LAN_NIC ! -d $LAN_SERVER_IP -j LOG --log-prefix "IPTables-NAT (HTTP BYPASS): " --log-level 4
+$IPT -t nat -A HTTP_PROXY -p udp --dport 80 -i $LAN_NIC ! -d $LAN_SERVER_IP -j DNAT --to-destination $LAN_SERVER_IP:$HTTP_PROXY
+# $IPT -t nat -A HTTP_PROXY -p udp --dport 80 -i $LAN_NIC ! -d $LAN_SERVER_IP -j REDIRECT --to-port $HTTP_PROXY
+
+$IPT -t nat -A HTTP_PROXY -p tcp --dport 80 -i $LAN_NIC ! -d $LAN_SERVER_IP -j LOG --log-prefix "IPTables-NAT (HTTP BYPASS): " --log-level 4
+$IPT -t nat -A HTTP_PROXY -p tcp --dport 80 -i $LAN_NIC ! -d $LAN_SERVER_IP -j DNAT --to-destination $LAN_SERVER_IP:$HTTP_PROXY
+# $IPT -t nat -A HTTP_PROXY -p tcp --dport 80 -i $LAN_NIC ! -d $LAN_SERVER_IP -j REDIRECT --to-port $HTTP_PROXY
+
+$IPT -t nat -A HTTP_PROXY -p udp --dport 80 -i $WLAN_NIC ! -d $WLAN_SERVER_IP -j LOG --log-prefix "IPTables-NAT (HTTP BYPASS): " --log-level 4
+$IPT -t nat -A HTTP_PROXY -p udp --dport 80 -i $WLAN_NIC ! -d $WLAN_SERVER_IP -j DNAT --to-destination $WLAN_SERVER_IP:$HTTP_PROXY
+# $IPT -t nat -A HTTP_PROXY -p udp --dport 80 -i $WLAN_NIC ! -d $WLAN_SERVER_IP -j REDIRECT --to-port $HTTP_PROXY
+
+$IPT -t nat -A HTTP_PROXY -p tcp --dport 80 -i $WLAN_NIC ! -d $WLAN_SERVER_IP -j LOG --log-prefix "IPTables-NAT (HTTP BYPASS): " --log-level 4
+$IPT -t nat -A HTTP_PROXY -p tcp --dport 80 -i $WLAN_NIC ! -d $WLAN_SERVER_IP -j DNAT --to-destination $WLAN_SERVER_IP:$HTTP_PROXY
+# $IPT -t nat -A HTTP_PROXY -p tcp --dport 80 -i $WLAN_NIC ! -d $WLAN_SERVER_IP -j REDIRECT --to-port $HTTP_PROXY
+
+### REDIRECT match all interfaces for port 53, REDIRECT locally
+$IPT -t nat -A HTTP_PROXY -p tcp --dport 80 -j LOG --log-prefix "IPTables-NAT (DNS BYPASS): " --log-level 4
+$IPT -t nat -A HTTP_PROXY -p tcp --dport 80 -j REDIRECT --to-port $HTTP_PROXY
+
+
+### Jump point to HTTPS PROXY hook
+$IPT -t nat -N HTTPS_PROXY
+
+### DNAT if port 443 is not for interface IP
+$IPT -t nat -A HTTPS_PROXY -p udp --dport 443 -i $LAN_NIC ! -d $LAN_SERVER_IP -j LOG --log-prefix "IPTables-NAT (HTTPS BYPASS): " --log-level 4
+$IPT -t nat -A HTTPS_PROXY -p udp --dport 443 -i $LAN_NIC ! -d $LAN_SERVER_IP -j DNAT --to-destination $LAN_SERVER_IP:$HTTPS_PROXY
+# $IPT -t nat -A HTTPS_PROXY -p udp --dport 443 -i $LAN_NIC ! -d $LAN_SERVER_IP -j REDIRECT --to-port $HTTPS_PROXY
+
+$IPT -t nat -A HTTPS_PROXY -p tcp --dport 443 -i $LAN_NIC ! -d $LAN_SERVER_IP -j LOG --log-prefix "IPTables-NAT (HTTPS BYPASS): " --log-level 4
+$IPT -t nat -A HTTPS_PROXY -p tcp --dport 443 -i $LAN_NIC ! -d $LAN_SERVER_IP -j DNAT --to-destination $LAN_SERVER_IP:$HTTPS_PROXY
+# $IPT -t nat -A HTTPS_PROXY -p tcp --dport 443 -i $LAN_NIC ! -d $LAN_SERVER_IP -j REDIRECT --to-port $HTTPS_PROXY
+
+$IPT -t nat -A HTTPS_PROXY -p udp --dport 443 -i $WLAN_NIC ! -d $WLAN_SERVER_IP -j LOG --log-prefix "IPTables-NAT (HTTPS BYPASS): " --log-level 4
+$IPT -t nat -A HTTPS_PROXY -p udp --dport 443 -i $WLAN_NIC ! -d $WLAN_SERVER_IP -j DNAT --to-destination $WLAN_SERVER_IP:$HTTPS_PROXY
+# $IPT -t nat -A HTTPS_PROXY -p udp --dport 443 -i $WLAN_NIC ! -d $WLAN_SERVER_IP -j REDIRECT --to-port $HTTPS_PROXY
+
+$IPT -t nat -A HTTPS_PROXY -p tcp --dport 443 -i $WLAN_NIC ! -d $WLAN_SERVER_IP -j LOG --log-prefix "IPTables-NAT (HTTPS BYPASS): " --log-level 4
+$IPT -t nat -A HTTPS_PROXY -p tcp --dport 443 -i $WLAN_NIC ! -d $WLAN_SERVER_IP -j DNAT --to-destination $WLAN_SERVER_IP:$HTTPS_PROXY
+# $IPT -t nat -A HTTPS_PROXY -p tcp --dport 443 -i $WLAN_NIC ! -d $WLAN_SERVER_IP -j REDIRECT --to-port $HTTPS_PROXY
+
+### REDIRECT match all interfaces for port 53, REDIRECT locally
+$IPT -t nat -A HTTPS_PROXY -p tcp --dport 443 -j LOG --log-prefix "IPTables-NAT (DNS BYPASS): " --log-level 4
+$IPT -t nat -A HTTPS_PROXY -p tcp --dport 443 -j REDIRECT --to-port $HTTP_PROXY
+
 ### *nat table - PREROUTING chain
 $IPT -t nat -P PREROUTING ACCEPT
 
-### DNAT if port 53 is not for interface IP
-$IPT -t nat -A PREROUTING -p udp --dport 53 -i $LAN_NIC ! -d $LAN_SERVER_IP -j LOG --log-prefix "IPTables-NAT (DNS BYPASS): " --log-level 4
-$IPT -t nat -A PREROUTING -p udp --dport 53 -i $LAN_NIC ! -d $LAN_SERVER_IP -j DNAT --to-destination $LAN_SERVER_IP
-# $IPT -t nat -A PREROUTING -p udp --dport 53 -i $LAN_NIC ! -d $LAN_SERVER_IP -j REDIRECT --to-port 53
+### DNS PROXY HOOK
+$IPT -t nat -A PREROUTING -p udp --dport 53 -j DNS_PROXY
+$IPT -t nat -A PREROUTING -p tcp --dport 53 -j DNS_PROXY
 
-$IPT -t nat -A PREROUTING -p tcp --dport 53 -i $LAN_NIC ! -d $LAN_SERVER_IP -j LOG --log-prefix "IPTables-NAT (DNS BYPASS): " --log-level 4
-$IPT -t nat -A PREROUTING -p tcp --dport 53 -i $LAN_NIC ! -d $LAN_SERVER_IP -j DNAT --to-destination $LAN_SERVER_IP
-# $IPT -t nat -A PREROUTING -p tcp --dport 53 -i $LAN_NIC ! -d $LAN_SERVER_IP -j REDIRECT --to-port 53
+### HTTP PROXY HOOK
+# $IPT -t nat -A PREROUTING -p tcp --dport 80 -j HTTP_PROXY
+# $IPT -t nat -A PREROUTING -p udp --dport 80 -j HTTP_PROXY
 
-$IPT -t nat -A PREROUTING -p udp --dport 53 -i $WLAN_NIC ! -d $WLAN_SERVER_IP -j LOG --log-prefix "IPTables-NAT (DNS BYPASS): " --log-level 4
-$IPT -t nat -A PREROUTING -p udp --dport 53 -i $WLAN_NIC ! -d $WLAN_SERVER_IP -j DNAT --to-destination $WLAN_SERVER_IP
-# $IPT -t nat -A PREROUTING -p udp --dport 53 -i $WLAN_NIC ! -d $WLAN_SERVER_IP -j REDIRECT --to-port 53
-
-$IPT -t nat -A PREROUTING -p tcp --dport 53 -i $WLAN_NIC ! -d $WLAN_SERVER_IP -j LOG --log-prefix "IPTables-NAT (DNS BYPASS): " --log-level 4
-$IPT -t nat -A PREROUTING -p tcp --dport 53 -i $WLAN_NIC ! -d $WLAN_SERVER_IP -j DNAT --to-destination $WLAN_SERVER_IP
-# $IPT -t nat -A PREROUTING -p tcp --dport 53 -i $WLAN_NIC ! -d $WLAN_SERVER_IP -j REDIRECT --to-port 53
-
-### REDIRECT match all interfaces for port 53, REDIRECT locally
-$IPT -t nat -A PREROUTING -p tcp --dport 53 -j LOG --log-prefix "IPTables-NAT (DNS BYPASS): " --log-level 4
-$IPT -t nat -A PREROUTING -p tcp --dport 53 -j REDIRECT --to-port 53
+### HTTPS PROXY HOOK
+# $IPT -t nat -A PREROUTING -p tcp --dport 443 -j HTTP_PROXY
+# $IPT -t nat -A PREROUTING -p udp --dport 443 -j HTTP_PROXY
 
 # $IPT -t nat -I PREROUTING -j LOGACCEPT-NAT
 
