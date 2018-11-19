@@ -366,11 +366,19 @@ $IPT -t filter -A LOGREJECT -j REJECT
 $IPT -t filter -N bad_tcp_packets
 
 #new not syn
-$IPT -t filter -A bad_tcp_packets -p tcp ! --syn -m state --state NEW -j DROP
+$IPT -t filter -A bad_tcp_packets -p tcp ! --syn -m conntrack --ctstate NEW -j LOG --log-prefix "DROPPED BAD TCP PACKET:" --log-tcp-options
+$IPT -t filter -A bad_tcp_packets -p tcp ! --syn -m conntrack --ctstate NEW -j DROP
 
+$IPT -t filter -A bad_tcp_packets -p tcp --tcp-flags ALL FIN,URG,PSH -j LOG --log-prefix "DROPPED BAD TCP PACKET:" --log-tcp-options
 $IPT -t filter -A bad_tcp_packets -p tcp --tcp-flags ALL FIN,URG,PSH -j DROP
+
+$IPT -t filter -A bad_tcp_packets -p tcp --tcp-flags ALL SYN,RST,ACK,FIN,URG -j LOG --log-prefix "DROPPED BAD TCP PACKET:" --log-tcp-options
 $IPT -t filter -A bad_tcp_packets -p tcp --tcp-flags ALL SYN,RST,ACK,FIN,URG -j DROP
+
+$IPT -t filter -A bad_tcp_packets -p tcp --tcp-flags SYN,RST SYN,RST -j LOG --log-prefix "DROPPED BAD TCP PACKET:" --log-tcp-options
 $IPT -t filter -A bad_tcp_packets -p tcp --tcp-flags SYN,RST SYN,RST -j DROP
+
+$IPT -t filter -A bad_tcp_packets -p tcp --tcp-flags SYN,FIN SYN,FIN -j LOG --log-prefix "DROPPED BAD TCP PACKET:" --log-tcp-options
 $IPT -t filter -A bad_tcp_packets -p tcp --tcp-flags SYN,FIN SYN,FIN -j DROP
 
 ### NULL SCAN
@@ -390,6 +398,12 @@ $IPT -t filter -A bad_tcp_packets -p tcp --tcp-flags ALL FIN,ACK -j DROP
 ### FIN SCAN
 $IPT -t filter -A bad_tcp_packets -p tcp --tcp-flags ALL FIN -j LOG --log-prefix "DROPPED FIN PACKET:" --log-tcp-options
 $IPT -t filter -A bad_tcp_packets -p tcp --tcp-flags ALL FIN -j DROP
+
+$IPT -t filter -A bad_tcp_packets -p tcp -m conntrack --ctstate INVALID -j LOG --log-prefix "DROPPED BAD TCP PACKET:" --log-tcp-options
+$IPT -t filter -A bad_tcp_packets -p tcp -m conntrack --ctstate INVALID -j DROP
+
+$IPT -t filter -A bad_tcp_packets -j LOG --log-prefix "DROPPED BAD TCP PACKET (END):" --log-tcp-options
+$IPT -t filter -A bad_tcp_packets -j DROP
 
 
 
@@ -419,10 +433,11 @@ $IPT -t filter -A INPUT -i $WAN_NIC -p tcp -m multiport --dports $VPN_PORT,1194,
 # $IPT -t filter -A INPUT -i $WAN_NIC -p tcp -m tcp --dport 1194 -j LOGACCEPT
 # $IPT -t filter -A INPUT -i $WAN_NIC -p tcp -m tcp --dport $NTP_PORT -j LOGACCEPT
 
-$IPT -t filter -A INPUT -p tcp -j bad_tcp_packets
-
 ### WAN - allow the WAN_NIC to accept ICMP for ping requests
 $IPT -t filter -A INPUT -i $WAN_NIC -p icmp -j LOGACCEPT
+
+### TCP - invalid
+$IPT -t filter -A INPUT -p tcp -j bad_tcp_packets
 
 ### Block NETBIOS and IGMP snoop
 $IPT -t filter -A INPUT -i $WAN_NIC -p udp -m multiport --dports 137:139 -j DROP
